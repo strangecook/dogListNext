@@ -1,9 +1,14 @@
+/* styles/globals.css */
 html, body {
-  font-family: 'Nanum Gothic', sans-serif;
-  background-color: #f7f7f7;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  overflow-x: hidden;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Nanum Gothic', sans-serif;
+  background-color: #f7f7f7;
+}
+
+* {
+  box-sizing: border-box;
 }
