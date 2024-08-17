@@ -1,29 +1,52 @@
 import styled from 'styled-components';
+import Image from 'next/image';
 
-export let DescriptionCover = styled.div`
-  width: 100vw;
-  height: 100vh; /* 전체 화면 높이 사용 */
+export const DescriptionCover = styled.div`
   position: relative;
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* 자식 요소가 부모 요소를 넘지 않도록 설정 */
+  overflow: hidden;
 `;
 
-export let Dogimage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
+export const CombinedImageContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지가 전체를 덮도록 설정 */
 `;
 
-export let Context = styled.div`
+export const MainImage = styled(Image)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+`;
+
+export const OverlayImage = styled(Image)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5; /* 투명도를 조정하여 겹치는 효과 */
+  z-index: 2;
+`;
+
+export const StyledImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+`;
+
+
+export const Context = styled.div`
   position: relative;
-  text-align: center; /* 중앙 정렬 */
+  text-align: center;
   color: #fff;
-  z-index: 1; /* 이미지 위에 표시되도록 설정 */
+  z-index: 3; /* 이미지 위에 표시되도록 설정 */
   right: 220px;
 
   .contextH1 {
@@ -124,15 +147,15 @@ export let Context = styled.div`
   }
 `;
 
-export let Notification = styled.p<{ isError: boolean }>`
-  color: ${(props) => (props.isError ? 'red' : 'green')};
+export const Notification = styled.p<{ $isError: boolean }>`
+  color: ${(props) => (props.$isError ? 'red' : 'green')};
   font-weight: bold;
   text-align: center;
   margin-top: 10px;
   width: 50%;
   max-width: 350px;
   padding: 7px;
-  z-index: 1; /* 이미지 위에 표시되도록 설정 */
+  z-index: 3; /* 이미지 위에 표시되도록 설정 */
 
   @media (max-width: 768px) {
     width: 100%;
