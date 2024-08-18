@@ -1,14 +1,11 @@
-// components/DogCard.tsx
 import React, { useState, useEffect, forwardRef, ForwardedRef, MouseEvent } from 'react';
 import styled from 'styled-components';
 import { ClipLoader } from 'react-spinners';
 import useStore from '../../store/useStore';
-import { 
-  Card, ImageContainer, Image, CardContentTopLeft, Text, CardContentBottomRight, SingleLineText 
-} from './styles/animalDaterPartCss';
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from '../firebase';
 import Link from 'next/link';
+import Image from 'next/image';  // next/image import
 import { Breed } from '../../types/Breed';
 
 interface DogCardProps {
@@ -67,6 +64,72 @@ const Overlay = styled.div<{ $showContent: boolean }>`
     padding: 5px;
     overflow: hidden;
     justify-content: flex-start;
+  }
+`;
+
+const Card = styled.div`
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  &:hover .hide-on-hover {
+    opacity: 0;
+  }
+`;
+
+const Text = styled.p`
+  margin: 0;
+  font-size: 1.2em;
+  -webkit-text-stroke-width: 0.3px;
+  -webkit-text-stroke-color: black;
+  color: #f5f5f5;
+  font-family: 'Nanum Gothic', sans-serif;
+  @media (max-width: 768px) {
+    font-size: 0.6em;
+  }
+`;
+
+const CardContentTopLeft = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  transition: opacity 0.2s ease-in-out;
+`;
+
+const CardContentBottomRight = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  text-align: right;
+`;
+
+const SingleLineText = styled(Text)`
+  font-size: 1em;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    font-size: 0.6em;
+    span {
+      display: none;
+    }
   }
 `;
 
@@ -179,6 +242,15 @@ const BarSection = styled.div`
   }
 `;
 
+const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 75%;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #e0e0e0;
+`;
+
 const FixedImageContainer = styled(ImageContainer)`
   position: relative;
   width: 100%;
@@ -195,6 +267,13 @@ const DetailButton = styled.a`
   text-decoration: none;
   border-radius: 5px;
   text-align: center;
+`;
+
+const StyledImage = styled(Image)`
+  object-fit: cover; // objectFit 대신 CSS 스타일 사용
+  width: 100%;
+  height: 100%;
+  position: absolute;
 `;
 
 const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, ref) => {
@@ -252,9 +331,17 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
         {loading ? (
           <ClipLoader color="#4caf50" size={50} />
         ) : (
-          imageUrl && <Image src={imageUrl} alt={breed.englishName} />
+          imageUrl && (
+            <StyledImage
+              src={imageUrl}
+              alt={breed.englishName}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 
+              priority // 우선 로드
+            />
+          )
         )}
-<Overlay $showContent={showContent} style={{ opacity: hovered ? 1 : 0 }}>
+        <Overlay $showContent={showContent} style={{ opacity: hovered ? 1 : 0 }}>
           <BarSection>
             <BarContainer>
               <Emoji>👶</Emoji>
