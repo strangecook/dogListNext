@@ -31,7 +31,7 @@ const DropdownContainer = styled.div`
 const Dropdown = styled.select`
   width: 100%;
   padding: 10px;
-  font-size: 1em;
+  font-size: 0.9em;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,7 +45,7 @@ const Dropdown = styled.select`
 
   @media (max-width: 768px) {
     padding: 6px;
-    font-size: 0.9em;
+    font-size: 0.8em;
   }
 `;
 
@@ -62,7 +62,6 @@ const Label = styled.label`
 const filterOptions = [
   { name: 'size', label: '크기', options: ['모두', '소형견', '중형견', '대형견', '초대형견'] },
   { name: 'breedGroup', label: '견종 그룹', options: ['모두', '논스포팅', '스포팅', '스피츠', '워킹', '테리어', '토이', '하운드', '허딩'] },
-  { name: 'coatType', label: '코트 타입', options: ['모두', '단모', '장모'] },
   { name: 'affectionWithFamily', label: '가족과의 애정', options: ['모두', '1', '2', '3', '4', '5'] },
   { name: 'goodWithOtherDogs', label: '다른 개와 친화력', options: ['모두', '1', '2', '3', '4', '5'] },
   { name: 'trainabilityLevel', label: '훈련 가능성', options: ['모두', '1', '2', '3', '4', '5'] },

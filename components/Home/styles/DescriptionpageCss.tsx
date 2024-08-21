@@ -47,7 +47,8 @@ export const Context = styled.div`
   text-align: center;
   color: #fff;
   z-index: 3; /* 이미지 위에 표시되도록 설정 */
-  right: 220px;
+  top: 220px;
+  right: 230px;
 
   .contextH1 {
     white-space: pre-wrap;
@@ -88,7 +89,7 @@ export const Context = styled.div`
       padding: 10px;
       border: 0;
       border-bottom: 2px solid #ccc;
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
 
     .emailInput:focus {
@@ -123,6 +124,7 @@ export const Context = styled.div`
   @media (max-width: 768px) {
     margin-top: 70vh;
     right: 0;
+    top: 0px;
 
     .emailcontainer {
       display: none;

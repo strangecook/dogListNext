@@ -216,7 +216,6 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
     setFilters({
       size: 'all',
       breedGroup: 'all',
-      coatType: 'all',
       affectionWithFamily: 'all',
       goodWithOtherDogs: 'all',
       trainabilityLevel: 'all',

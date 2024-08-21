@@ -86,7 +86,6 @@ const Descriptionpage: React.FC = () => {
           priority // 중요한 이미지인 경우 추가하여 로드 우선순위 부여
           sizes="100vw, 50vw" // 적절한 이미지 크기 지정
         />
-      </CombinedImageContainer>
       <Context>
         <div className="text">
           <h1 className="contextH1">{`당신의 완벽한 강아지를 찾는 여정,\n지금 시작하세요`}</h1>
@@ -98,7 +97,7 @@ const Descriptionpage: React.FC = () => {
               <input
                 className="emailInput"
                 type="text"
-                placeholder="이메일을 입력하세요"
+                placeholder="이메일을 입력하세요."
                 value={emailvalue}
                 onChange={(e) => {
                   e.preventDefault();
@@ -119,6 +118,7 @@ const Descriptionpage: React.FC = () => {
           {message && <Notification $isError={isError}>{message}</Notification>}
         </div>
       </Context>
+      </CombinedImageContainer>
     </DescriptionCover>
   );
 };

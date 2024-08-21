@@ -5,7 +5,6 @@ import { Breed } from '../types/Breed';
 interface FilterOptions {
   size: string;
   breedGroup: string;
-  coatType: string;
   affectionWithFamily: string;
   goodWithOtherDogs: string;
   trainabilityLevel: string;
@@ -25,7 +24,6 @@ interface StoreState {
 const initialFilters: FilterOptions = {
   size: 'all',
   breedGroup: 'all',
-  coatType: 'all',
   affectionWithFamily: 'all',
   goodWithOtherDogs: 'all',
   trainabilityLevel: 'all',
