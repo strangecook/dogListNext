@@ -3,6 +3,9 @@ import type { AppProps } from 'next/app';
 import NaviBar from '../components/Navibar/Navibar';
 import { useEffect } from 'react';
 import useStore from '../store/useStore'; // Zustand store import
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
