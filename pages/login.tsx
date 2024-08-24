@@ -25,7 +25,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const moveToCreatePage = () => {
-    router.push("/CreateAccount");
+    router.push("/createAccount");
   };
 
   const onSubmit = async (data: LoginFormData) => {
