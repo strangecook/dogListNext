@@ -276,6 +276,17 @@ const StyledImage = styled(Image)`
   position: absolute;
 `;
 
+const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;  // LoaderContainer를 이미지 컨테이너 안에서 절대 위치로 설정
+  top: 0;
+  left: 0;
+`;
+
 const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, ref) => {
   const [hovered, setHovered] = useState<boolean>(false);
   const [showContent, setShowContent] = useState<boolean>(false);
@@ -329,7 +340,9 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
     >
       <FixedImageContainer>
         {loading ? (
-          <ClipLoader color="#4caf50" size={50} />
+          <LoaderContainer>
+            <ClipLoader color="#4caf50" size={75} />
+        </LoaderContainer>
         ) : (
           imageUrl && (
             <StyledImage

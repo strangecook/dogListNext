@@ -276,7 +276,7 @@ export const FilterInfoContainer = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 20px;
+    height: 50px;
   }
 `;
 

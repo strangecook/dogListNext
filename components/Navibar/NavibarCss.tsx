@@ -127,7 +127,7 @@ export const NavBar = styled.div`
     }
 
     .navTitle {
-      font-size: 24px;
+      font-size: 28px;
     }
 
     .navLink {
