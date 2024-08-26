@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { DescriptionCover, CombinedImageContainer, Context, Notification, StyledImage } from './styles/DescriptionpageCss';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import Image from 'next/image';
 import dogLogoImage from '../../public/anna-dudkova-urs_y9NwFcc-unsplash.webp';
 import dogMediaImage from '../../public/tadeusz-lakota-LUNqk8qth2A-unsplash.webp';
 
@@ -83,8 +82,7 @@ const Descriptionpage: React.FC = () => {
           src={imageSrc}
           alt="Responsive Image"
           style={{ width: '100vw', height: '100%', objectFit: 'cover', position: 'absolute' }}
-          priority // 중요한 이미지인 경우 추가하여 로드 우선순위 부여
-          sizes="100vw, 50vw" // 적절한 이미지 크기 지정
+          priority
         />
       <Context>
         <div className="text">

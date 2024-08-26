@@ -7,6 +7,8 @@ import Link from 'next/link';
 import useStore from '../../store/useStore';
 import { Breed } from '../../types/Breed';
 
+Modal.setAppElement('#__next'); // Next.js의 경우, root 엘리먼트로 #__next를 사용합니다.
+
 const BarContainer = styled.div`
   display: grid;
   grid-template-columns: 40px 120px 1fr;
@@ -74,7 +76,7 @@ const CustomModalContainer = styled.div`
   max-height: 75vh;
 `;
 
-const DetailButton = styled.a`
+const StyledLink = styled(Link)`
   display: inline-block;
   padding: 10px 20px;
   margin-top: 20px;
@@ -154,7 +156,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, breed
             </BarWrapper>
           </BarContainer>
           <BarContainer>
-            <Emoji>🐾</Emoji>
+            <Emoji>🐕</Emoji>
             <Label>다른 개와의 친화력:</Label>
             <BarWrapper>
               <Bar width={`${breed.goodWithOtherDogs * 20}%`} />
@@ -162,13 +164,13 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, breed
           </BarContainer>
           <BarContainer>
             <Emoji>👶</Emoji>
-            <Label>어린 아이와의 친화력:</Label>
+            <Label>아이와의 친화력:</Label>
             <BarWrapper>
               <Bar width={`${breed.goodWithYoungChildren * 20}%`} />
             </BarWrapper>
           </BarContainer>
           <BarContainer>
-            <Emoji>🐕</Emoji>
+            <Emoji>🐾</Emoji>
             <Label>타인에 대한 개방성:</Label>
             <BarWrapper>
               <Bar width={`${breed.opennessToStrangers * 20}%`} />
@@ -213,28 +215,28 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, breed
             <Emoji>🪮</Emoji>
             <Label>털 빠짐 정도:</Label>
             <BarWrapper>
-            <Bar width={`${breed.sheddingLevel * 20}%`} $reverse="true" />
+              <Bar width={`${breed.sheddingLevel * 20}%`} $reverse="true" />
             </BarWrapper>
           </BarContainer>
           <BarContainer>
             <Emoji>🧼</Emoji>
             <Label>그루밍 필요도:</Label>
             <BarWrapper>
-            <Bar width={`${breed.groomingLevel * 20}%`} $reverse="true" />
+              <Bar width={`${breed.groomingLevel * 20}%`} $reverse="true" />
             </BarWrapper>
           </BarContainer>
           <BarContainer>
             <Emoji>🗣️</Emoji>
             <Label>짖는 수준:</Label>
             <BarWrapper>
-            <Bar width={`${breed.barkingLevel * 20}%`} $reverse="true" />
+              <Bar width={`${breed.barkingLevel * 20}%`} $reverse="true" />
             </BarWrapper>
           </BarContainer>
           <BarContainer>
             <Emoji>💧</Emoji>
             <Label>침 흘림 수준:</Label>
             <BarWrapper>
-            <Bar width={`${breed.droolingLevel * 20}%`} $reverse="true" />
+              <Bar width={`${breed.droolingLevel * 20}%`} $reverse="true" />
             </BarWrapper>
           </BarContainer>
         </BarSection>
@@ -249,11 +251,9 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, breed
           <ListItem>체중: {breed.weight}</ListItem>
         </ul>
         <p>{breed.description}</p>
-        <Link href={`/breeds/${breed.englishName.toLowerCase()}`} passHref>
-          <DetailButton onClick={handleDetailButtonClick}>
-            자세한 정보 보러가기
-          </DetailButton>
-        </Link>
+        <StyledLink href={`/breeds/${breed.englishName.toLowerCase()}`} onClick={handleDetailButtonClick}>
+          자세한 정보 보러가기
+        </StyledLink>
       </CustomModalContainer>
     </Modal>
   );

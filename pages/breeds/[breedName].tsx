@@ -166,18 +166,18 @@ const renderBars = (breed: Breed) => (
   <>
     <BarItem emoji="🌟" label="적응력" level={breed.adaptabilityLevel} />
     <BarItem emoji="❤️" label="가족과의 애정" level={breed.affectionWithFamily} />
-    <BarItem emoji="🐾" label="다른 개와의 친화력" level={breed.goodWithOtherDogs} />
+    <BarItem emoji="🐕" label="다른 개와의 친화력" level={breed.goodWithOtherDogs} />
     <BarItem emoji="👶" label="아이와의 친화력" level={breed.goodWithYoungChildren} />
-    <BarItem emoji="🐕" label="타인에 대한 개방성" level={breed.opennessToStrangers} />
+    <BarItem emoji="🐾" label="타인에 대한 개방성" level={breed.opennessToStrangers} />
     <BarItem emoji="🛡️" label="보호 본능" level={breed.guardProtectiveInstinct} />
     <BarItem emoji="⚡" label="에너지 수준" level={breed.energyLevel} />
     <BarItem emoji="🎮" label="장난기" level={breed.playfulnessLevel} />
     <BarItem emoji="🧠" label="정신적 자극 필요도" level={breed.needsMentalStimulation} />
     <BarItem emoji="🎓" label="훈련 가능성" level={breed.trainabilityLevel} />
-    <BarItem emoji="🪮" label="털 빠짐 정도" level={breed.sheddingLevel} reverse={true} />
-    <BarItem emoji="🧼" label="그루밍 필요도" level={breed.groomingLevel} reverse={true} />
-    <BarItem emoji="🗣️" label="짖는 수준" level={breed.barkingLevel} reverse={true} />
-    <BarItem emoji="💧" label="침 흘림 수준" level={breed.droolingLevel} reverse={true} />
+    <BarItem emoji="🪮" label="털 빠짐 정도" level={breed.sheddingLevel} reverse="true" />
+    <BarItem emoji="🧼" label="그루밍 필요도" level={breed.groomingLevel} reverse="true" />
+    <BarItem emoji="🗣️" label="짖는 수준" level={breed.barkingLevel} reverse="true" />
+    <BarItem emoji="💧" label="침 흘림 수준" level={breed.droolingLevel} reverse="true" />
   </>
 );
 

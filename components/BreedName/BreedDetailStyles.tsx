@@ -94,12 +94,12 @@ export const BarWrapper = styled.div`
   overflow: hidden;
 `;
 
-export const Bar = styled.div<{ width: string; reverse?: boolean }>`
+export const Bar = styled.div<{ width: string; reverse?: string }>`
   width: ${props => props.width};
   height: 12px;
   background-color: ${props => {
     const numericWidth = parseFloat(props.width);
-    if (props.reverse === true) {
+    if (props.reverse === "true") {
       if (numericWidth <= 40) return '#4caf50';
       if (numericWidth <= 75) return '#FFC924';
       return '#FF4742';

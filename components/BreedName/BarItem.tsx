@@ -5,15 +5,15 @@ interface BarItemProps {
   emoji: string;
   label: string;
   level: number;
-  reverse?: boolean; // optional prop
+  reverse?: string; // optional prop
 }
 
-const BarItem: React.FC<BarItemProps> = ({ emoji, label, level, reverse = false }) => (
+const BarItem: React.FC<BarItemProps> = ({ emoji, label, level, reverse = "false" }) => (
   <BarContainer>
     <Emoji>{emoji}</Emoji>
     <Label>{label}: {level}</Label>
     <BarWrapper>
-      <Bar width={`${level * 20}%`} reverse={reverse ? true : false} />
+      <Bar width={`${level * 20}%`} reverse={reverse} />
     </BarWrapper>
   </BarContainer>
 );
