@@ -439,4 +439,6 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
   );
 });
 
+DogCard.displayName = "DogCard";
+
 export default DogCard;

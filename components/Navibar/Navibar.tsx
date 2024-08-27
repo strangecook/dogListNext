@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';  // next/image import
 import { NavBar, UserProfileImage, ProfileButtonHover, UserName, MenuTrigger, MenuSpan, Overlay, MobileMenu, MobileMenuItem } from './NavibarCss';
 import pawImage from '../../public/dog-paw.png';
 import { auth } from '../firebase';
@@ -67,7 +68,7 @@ const LoginNavi: React.FC = () => {
             onMouseEnter={handleLogoMouseEnter}
             onMouseLeave={handleLogoMouseLeave}
           >
-            <img className='MainImage' src={pawImage.src} alt="Paw Icon" />
+            <Image className='MainImage' src={pawImage} alt="Paw Icon" width={50} height={50} />
           </span>
         </Link>
         <Link href="/" className="navTitle">Dog List</Link>
