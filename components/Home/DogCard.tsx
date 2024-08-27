@@ -258,7 +258,7 @@ const FixedImageContainer = styled(ImageContainer)`
   border-radius: 8px;
 `;
 
-const DetailButton = styled.a`
+const DetailButton = styled(Link)`
   display: inline-block;
   width: 100%;
   margin: 3px auto;
@@ -415,11 +415,9 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
             showContent &&
             <BarSection>
               <BarContainer>
-                <Link href={`/breeds/${breed.englishName.toLowerCase()}`} passHref>
-                  <DetailButton onClick={handleDetailButtonClick}>
+                <DetailButton href={`/breeds/${breed.englishName.toLowerCase()}`} onClick={handleDetailButtonClick}>
                     자세한 정보
-                  </DetailButton>
-                </Link>
+                </DetailButton>
               </BarContainer>
             </BarSection>
           }
