@@ -40,6 +40,7 @@ export default class MyDocument extends Document {
           <link rel="icon" href="/dog-paw.png" type="image/png" />
           <meta property="og:type" content="website" />
           <meta name="google-adsense-account" content="ca-pub-9810617727266867" />
+          <meta name="naver-site-verification" content="087283ca812e07b2081a3d51ff3dc06deae3e1e3" />
         </Head>
         <body>
           <Main />
