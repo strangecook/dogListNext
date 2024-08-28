@@ -39,6 +39,7 @@ export default class MyDocument extends Document {
           <link rel="canonical" href="https://www.doglist.info/" />
           <link rel="icon" href="/dog-paw.png" type="image/png" />
           <meta property="og:type" content="website" />
+          <meta name="google-adsense-account" content="ca-pub-9810617727266867" />
         </Head>
         <body>
           <Main />
