@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import dogLoginPicture from "../public/anna-dudkova-urs_y9NwFcc-unsplash.webp";
+import dogLoginPicture from "../public/mainwebImage.webp";
 import googleLogo from "../public/logo_google_icon.png"; // Google 로고 이미지 추가
 import facebookLogo from "../public/facebook_icon.png"; // Facebook 로고 이미지 추가
 import { useForm } from "react-hook-form";

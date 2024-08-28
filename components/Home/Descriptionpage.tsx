@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { DescriptionCover, CombinedImageContainer, Context, Notification, StyledImage } from './styles/DescriptionpageCss';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import dogLogoImage from '../../public/anna-dudkova-urs_y9NwFcc-unsplash.webp';
-import dogMediaImage from '../../public/tadeusz-lakota-LUNqk8qth2A-unsplash.webp';
+import dogLogoImage from '../../public/mainwebImage.webp';
+import dogMediaImage from '../../public/mediaImage.webp';
 
 const Descriptionpage: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);

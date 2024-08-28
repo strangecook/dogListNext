@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import dogLoginPicture from "../public/anna-dudkova-urs_y9NwFcc-unsplash.webp";
+import dogLoginPicture from "../public/mainwebImage.webp";
 import { useForm } from "react-hook-form";
 import { Wrapper, BackgroundImage, FormBox, Form, Input, ErrorMessage, LoginButton } from "../components/CreateAccount/CreateAccountCss";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
