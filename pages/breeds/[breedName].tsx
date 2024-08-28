@@ -17,6 +17,7 @@ import {
   BarSection
 } from '../../components/BreedName/BreedDetailStyles';
 import { Breed } from '../../types/Breed';
+import Head from 'next/head'; // Head 컴포넌트 추가
 
 const BreedDetail: React.FC = () => {
   const router = useRouter();
@@ -108,57 +109,80 @@ const BreedDetail: React.FC = () => {
   }
 
   return (
-    <DetailContainer>
-      {loading || !allImagesLoaded ? (
-        <LoaderDiv>
-          <Loader />
-        </LoaderDiv>
-      ) : images.length > 1 ? (
-        <SliderContainer>
-          <Slider {...sliderSettings}>
-            {images.map((url, index) => (
-              <div key={index}>
-                <Image src={url} alt={`${selectedBreed.englishName} ${index + 1}`} />
-              </div>
-            ))}
-          </Slider>
-        </SliderContainer>
-      ) : (
-        images.length === 1 && (
-          <SingleImageContainer>
-            <Image src={images[0]} alt={selectedBreed.englishName} />
-          </SingleImageContainer>
-        )
-      )}
-      <Section>
-        <SectionTitle>기본 정보</SectionTitle>
-        <ul>
-          <li><strong>품종 그룹: </strong>{selectedBreed.breedGroup}</li>
-          <li><strong>털 길이: </strong>{selectedBreed.coatLength}</li>
-          <li><strong>털 타입: </strong>{selectedBreed.coatType}</li>
-          <li><strong>키: </strong>{selectedBreed.height}</li>
-          <li><strong>체중: </strong>{selectedBreed.weight}</li>
-          <li><strong>수명: </strong>{selectedBreed.lifeExpectancy}</li>
-          <li><strong>기원: </strong>{selectedBreed.origin}</li>
-        </ul>
-      </Section>
-      <Section>
-        <SectionTitle>성격 및 훈련</SectionTitle>
-        <BarSection>
-          {renderBars(selectedBreed)}
-        </BarSection>
-      </Section>
-      <Section>
-        <SectionTitle>추가 정보</SectionTitle>
-        <p><strong>운동: </strong>{selectedBreed.exercise}</p>
-        <p><strong>영양: </strong>{selectedBreed.nutrition}</p>
-        <p><strong>훈련: </strong>{selectedBreed.training}</p>
-      </Section>
-      <Section>
-        <SectionTitle>설명</SectionTitle>
-        <p>{selectedBreed.description}</p>
-      </Section>
-    </DetailContainer>
+    <>
+      <Head>
+        <title>{selectedBreed?.englishName || '강아지'} - Dog List</title>
+        <meta name="description" content={`${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`} />
+        <meta name="keywords" content={`${selectedBreed?.englishName || '강아지'}, 개 품종, Dog List, 강아지 정보`} />
+        <meta property="og:title" content={`${selectedBreed?.englishName || '강아지'} - Dog List`} />
+        <meta property="og:description" content={`${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`} />
+        <meta property="og:image" content={images[0] || "/mainImage.avif"} />
+        <meta property="og:url" content={`https://www.doglist.info/breed/${breedName}`} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={`https://www.doglist.info/breed/${breedName}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": `${selectedBreed?.englishName || '강아지'} - Dog List`,
+            "url": `https://www.doglist.info/breed/${breedName}`,
+            "description": `${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`,
+            "breedName": selectedBreed?.englishName || "unknown"
+          })}
+        </script>
+      </Head>
+      <DetailContainer>
+        {loading || !allImagesLoaded ? (
+          <LoaderDiv>
+            <Loader />
+          </LoaderDiv>
+        ) : images.length > 1 ? (
+          <SliderContainer>
+            <Slider {...sliderSettings}>
+              {images.map((url, index) => (
+                <div key={index}>
+                  <Image src={url} alt={`${selectedBreed.englishName} ${index + 1}`} />
+                </div>
+              ))}
+            </Slider>
+          </SliderContainer>
+        ) : (
+          images.length === 1 && (
+            <SingleImageContainer>
+              <Image src={images[0]} alt={selectedBreed.englishName} />
+            </SingleImageContainer>
+          )
+        )}
+        <Section>
+          <SectionTitle>기본 정보</SectionTitle>
+          <ul>
+            <li><strong>품종 그룹: </strong>{selectedBreed.breedGroup}</li>
+            <li><strong>털 길이: </strong>{selectedBreed.coatLength}</li>
+            <li><strong>털 타입: </strong>{selectedBreed.coatType}</li>
+            <li><strong>키: </strong>{selectedBreed.height}</li>
+            <li><strong>체중: </strong>{selectedBreed.weight}</li>
+            <li><strong>수명: </strong>{selectedBreed.lifeExpectancy}</li>
+            <li><strong>기원: </strong>{selectedBreed.origin}</li>
+          </ul>
+        </Section>
+        <Section>
+          <SectionTitle>성격 및 훈련</SectionTitle>
+          <BarSection>
+            {renderBars(selectedBreed)}
+          </BarSection>
+        </Section>
+        <Section>
+          <SectionTitle>추가 정보</SectionTitle>
+          <p><strong>운동: </strong>{selectedBreed.exercise}</p>
+          <p><strong>영양: </strong>{selectedBreed.nutrition}</p>
+          <p><strong>훈련: </strong>{selectedBreed.training}</p>
+        </Section>
+        <Section>
+          <SectionTitle>설명</SectionTitle>
+          <p>{selectedBreed.description}</p>
+        </Section>
+      </DetailContainer>
+    </>
   );
 };
 

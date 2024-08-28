@@ -2,10 +2,10 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import NaviBar from '../components/Navibar/Navibar';
 import { useEffect } from 'react';
+import Head from 'next/head';
 import useStore from '../store/useStore'; // Zustand store import
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -15,6 +15,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <Head>
+        {/* 페이지에서 기본적으로 필요한 Open Graph 및 Twitter Card 메타데이터 */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Dog List - 완벽한 개 품종 찾기" />
+        <meta name="twitter:image" content="/mainwebImage.webp" />
+        <meta name="twitter:site" content="@YourTwitterHandle" />
+      </Head>
       <NaviBar />
       <Component {...pageProps} />
     </>
