@@ -21,6 +21,7 @@ const Home: React.FC<HomeProps> = ({ initialBreedsData }) => {
   return (
     <>
       <Head>
+        {/* 페이지에 특화된 메타데이터 */}
         <title>Dog List - 완벽한 개 품종 찾기</title>
         <meta name="description" content="다양한 강아지 품종에 대한 신뢰할 수 있는 정보 제공. 품종 특성, 관리 방법, 가족에게 맞는 반려견 찾기 팁 등 최신 정보를 확인하세요." />
         <meta name="keywords" content="개, 개 품종, 개 리스트, 애완동물, 동물" />
@@ -28,8 +29,10 @@ const Home: React.FC<HomeProps> = ({ initialBreedsData }) => {
         {/* Open Graph Meta Tags */}
         <meta property="og:title" content="Dog List - 완벽한 개 품종 찾기" />
         <meta property="og:description" content="다양한 강아지 품종에 대한 신뢰할 수 있는 정보 제공. 품종 특성, 관리 방법, 가족에게 맞는 반려견 찾기 팁 등 최신 정보를 확인하세요." />
+        <meta property="og:image" content="/mainwebImage.webp" />
+        <meta property="og:url" content="https://www.doglist.info/" />
 
-        {/* JSON-LD Structured Data */}
+        {/* JSON-LD Structured Data (이 페이지에 특화된 데이터) */}
         <script type="application/ld+json">
           {`
           {

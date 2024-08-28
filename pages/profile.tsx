@@ -147,53 +147,53 @@ const Profile: React.FC = () => {
     e.preventDefault();
 
     if (user) {
-        try {
-          const isNicknameExists = await checkNicknameExists(displayName);
-          if (isNicknameExists) {
-            setModalMessage('닉네임이 이미 존재합니다. 다른 닉네임을 입력하세요.');
-            setModalIsOpen(true);
-            return;
-          }
-      
-          let updatedPhotoURL = photoURL;
-      
-          if (file) {
-            const storageRef = ref(storage, `profileImages/${user.uid}`);
-            await uploadBytes(storageRef, file);
-            updatedPhotoURL = await getDownloadURL(storageRef);
-          }
-      
-          await updateProfile(user, {
-            displayName,
-            photoURL: updatedPhotoURL,
-          });
-      
-          await setDoc(doc(db, 'users', user.uid), {
-            displayName,
-            photoURL: updatedPhotoURL,
-            email,
-            uid: user.uid,
-          });
-      
-          // Null 체크 후 updateEmail 호출
-          if (email && email !== user.email) {
-            await updateEmail(user, email);
-          }
-      
-          if (newPassword) {
-            const credential = EmailAuthProvider.credential(user.email as string, password);
-            await reauthenticateWithCredential(user, credential);
-            await (user as any).updatePassword(newPassword);
-          }
-      
-          setModalMessage('프로필이 업데이트되었습니다.');
+      try {
+        const isNicknameExists = await checkNicknameExists(displayName);
+        if (isNicknameExists) {
+          setModalMessage('닉네임이 이미 존재합니다. 다른 닉네임을 입력하세요.');
           setModalIsOpen(true);
-        } catch (error) {
-          console.error('프로필 업데이트 실패:', error);
-          setModalMessage('프로필 업데이트 중 오류가 발생했습니다.');
-          setModalIsOpen(true);
+          return;
         }
+
+        let updatedPhotoURL = photoURL;
+
+        if (file) {
+          const storageRef = ref(storage, `profileImages/${user.uid}`);
+          await uploadBytes(storageRef, file);
+          updatedPhotoURL = await getDownloadURL(storageRef);
+        }
+
+        await updateProfile(user, {
+          displayName,
+          photoURL: updatedPhotoURL,
+        });
+
+        await setDoc(doc(db, 'users', user.uid), {
+          displayName,
+          photoURL: updatedPhotoURL,
+          email,
+          uid: user.uid,
+        });
+
+        // Null 체크 후 updateEmail 호출
+        if (email && email !== user.email) {
+          await updateEmail(user, email);
+        }
+
+        if (newPassword) {
+          const credential = EmailAuthProvider.credential(user.email as string, password);
+          await reauthenticateWithCredential(user, credential);
+          await (user as any).updatePassword(newPassword);
+        }
+
+        setModalMessage('프로필이 업데이트되었습니다.');
+        setModalIsOpen(true);
+      } catch (error) {
+        console.error('프로필 업데이트 실패:', error);
+        setModalMessage('프로필 업데이트 중 오류가 발생했습니다.');
+        setModalIsOpen(true);
       }
+    }
   };
 
   const closeModal = () => {
@@ -219,11 +219,25 @@ const Profile: React.FC = () => {
         <title>프로필 - Dog List</title>
         <meta name="description" content="사용자의 프로필을 업데이트하고, 사진을 업로드하며, 이메일과 비밀번호를 변경할 수 있는 페이지입니다." />
         <meta name="keywords" content="프로필, 강아지, 개 품종, Dog List, 사용자 정보" />
+
+        {/* 이 페이지에 특화된 Open Graph Meta Tags */}
         <meta property="og:title" content="프로필 - Dog List" />
         <meta property="og:description" content="사용자의 프로필을 업데이트하고, 사진을 업로드하며, 이메일과 비밀번호를 변경할 수 있는 페이지입니다." />
         <meta property="og:image" content={photoURL || pawImage.src} />
         <meta property="og:url" content="https://www.doglist.info/profile" />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="profile" />  {/* 페이지 성격에 맞게 og:type을 "profile"로 설정 */}
+
+        {/* JSON-LD 구조화된 데이터: 이 페이지에 특화된 데이터 */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person", 
+            "name": displayName || "사용자",
+          "url": "https://www.doglist.info/profile",
+          "image": photoURL || pawImage.src,
+          "email": email
+    })}
+        </script>
         <link rel="canonical" href="https://www.doglist.info/profile" />
       </Head>
       <ProfileImage src={photoURL || pawImage.src} alt="Profile" width={150} height={150} />
