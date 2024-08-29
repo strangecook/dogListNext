@@ -18,67 +18,16 @@ import {
 } from '../../components/BreedName/BreedDetailStyles';
 import { Breed } from '../../types/Breed';
 import Head from 'next/head'; // Head 컴포넌트 추가
+import { GetServerSideProps } from 'next'; // GetServerSideProps 추가
 
-const BreedDetail: React.FC = () => {
-  const router = useRouter();
-  const { breedName } = router.query;
-  const selectedBreed = useStore(state => state.selectedBreed) as Breed | null;
-  const setSelectedBreed = useStore(state => state.setSelectedBreed);
-  const [images, setImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], error: string | null }> = ({ selectedBreed, images, error }) => {
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchBreedData = async () => {
-      const breedsData = getBreedsData();
-      if (!breedsData) {
-        try {
-          const newBreedsData = await fetchAndStoreBreeds();
-          const breed = newBreedsData[breedName?.toString().toLowerCase() || ''];
-          if (breed) {
-            setSelectedBreed(breed);
-          } else {
-            setError('해당 품종 데이터를 찾을 수 없습니다.');
-          }
-        } catch (error) {
-          setError('데이터를 불러오는 데 문제가 발생했습니다.');
-        }
-      } else {
-        const breed = breedsData[breedName?.toString().toLowerCase() || ''];
-        if (breed) {
-          setSelectedBreed(breed);
-        } else {
-          setError('해당 품종 데이터를 찾을 수 없습니다.');
-        }
-      }
-    };
-
-    if (breedName) {
-      fetchBreedData();
-    }
-  }, [breedName, setSelectedBreed]);
 
   useEffect(() => {
     if (selectedBreed) {
       localStorage.setItem('selectedBreed', JSON.stringify(selectedBreed));
     }
   }, [selectedBreed]);
-
-  const fetchImages = useCallback(async () => {
-    if (selectedBreed) {
-      setLoading(true);
-      const imageUrls = await fetchImagesFromStorage(selectedBreed.englishName);
-      setImages(imageUrls);
-      setLoading(false);
-    }
-  }, [selectedBreed]);
-
-  useEffect(() => {
-    if (selectedBreed) {
-      fetchImages();
-    }
-  }, [selectedBreed, fetchImages]);
 
   useEffect(() => {
     if (images.length > 0) {
@@ -117,22 +66,22 @@ const BreedDetail: React.FC = () => {
         <meta property="og:title" content={`${selectedBreed?.englishName || '강아지'} - Dog List`} />
         <meta property="og:description" content={`${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`} />
         <meta property="og:image" content={images[0] || "/mainImage.avif"} />
-        <meta property="og:url" content={`https://www.doglist.info/breed/${breedName}`} />
+        <meta property="og:url" content={`https://www.doglist.info/breed/${selectedBreed.englishName.toLowerCase()}`} />
         <meta property="og:type" content="article" />
-        <link rel="canonical" href={`https://www.doglist.info/breed/${breedName}`} />
+        <link rel="canonical" href={`https://www.doglist.info/breed/${selectedBreed.englishName.toLowerCase()}`} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
             "name": `${selectedBreed?.englishName || '강아지'} - Dog List`,
-            "url": `https://www.doglist.info/breed/${breedName}`,
+            "url": `https://www.doglist.info/breed/${selectedBreed.englishName.toLowerCase()}`,
             "description": `${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`,
             "breedName": selectedBreed?.englishName || "unknown"
           })}
         </script>
       </Head>
       <DetailContainer>
-        {loading || !allImagesLoaded ? (
+        {!allImagesLoaded ? (
           <LoaderDiv>
             <Loader />
           </LoaderDiv>
@@ -204,5 +153,39 @@ const renderBars = (breed: Breed) => (
     <BarItem emoji="💧" label="침 흘림 수준" level={breed.droolingLevel} reverse="true" />
   </>
 );
+
+// 서버사이드 렌더링 함수 추가
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { breedName } = context.query;
+  let selectedBreed: Breed | null = null;
+  let images: string[] = [];
+  let error: string | null = null;
+
+  try {
+    const breedsData = getBreedsData();
+    if (!breedsData) {
+      const newBreedsData = await fetchAndStoreBreeds();
+      selectedBreed = newBreedsData[breedName?.toString().toLowerCase() || ''] || null;
+    } else {
+      selectedBreed = breedsData[breedName?.toString().toLowerCase() || ''] || null;
+    }
+
+    if (selectedBreed) {
+      images = await fetchImagesFromStorage(selectedBreed.englishName);
+    } else {
+      error = '해당 품종 데이터를 찾을 수 없습니다.';
+    }
+  } catch (err) {
+    error = '데이터를 불러오는 데 문제가 발생했습니다.';
+  }
+
+  return {
+    props: {
+      selectedBreed,
+      images,
+      error,
+    },
+  };
+};
 
 export default BreedDetail;
