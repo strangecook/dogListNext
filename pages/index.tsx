@@ -25,6 +25,7 @@ const Home: React.FC<HomeProps> = ({ initialBreedsData }) => {
         <title>Dog List - 완벽한 개 품종 찾기</title>
         <meta name="description" content="다양한 강아지 품종에 대한 신뢰할 수 있는 정보 제공. 품종 특성, 관리 방법, 가족에게 맞는 반려견 찾기 팁 등 최신 정보를 확인하세요." />
         <meta name="keywords" content="개, 개 품종, 개 리스트, 애완동물, 동물" />
+        <link rel="canonical" href="https://www.doglist.info/" />
 
         {/* Open Graph Meta Tags */}
         <meta property="og:title" content="Dog List - 완벽한 개 품종 찾기" />
