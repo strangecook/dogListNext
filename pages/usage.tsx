@@ -46,15 +46,15 @@ const Usage: React.FC = () => {
     <UsageContainer>
       <Head>
         {/* 이 페이지에 특화된 타이틀 */}
-        <title>Dog List 사용 설명</title>
+        <title>강아지위키 사용 설명</title>
 
         {/* 이 페이지에 특화된 메타데이터 */}
-        <meta name="description" content="Dog List는 다양한 강아지 품종에 대한 신뢰할 수 있는 정보를 제공합니다. 강아지 품종 찾기 및 관리 방법을 확인해보세요." />
-        <meta name="keywords" content="강아지, 개 품종, 애완동물, Dog List, 반려견, 강아지 관리" />
+        <meta name="description" content="강아지위키는 다양한 강아지 품종에 대한 신뢰할 수 있는 정보를 제공합니다. 강아지 품종 찾기 및 관리 방법을 확인해보세요." />
+        <meta name="keywords" content="강아지, 개 품종, 애완동물, 강아지위키, 반려견, 강아지 관리" />
 
         {/* Open Graph Meta Tags (MyApp.tsx에서 설정된 메타데이터가 아닌 페이지에 특화된 부분만 포함) */}
-        <meta property="og:title" content="Dog List 사용 설명" />
-        <meta property="og:description" content="Dog List는 다양한 강아지 품종에 대한 신뢰할 수 있는 정보를 제공합니다. 강아지 품종 찾기 및 관리 방법을 확인해보세요." />
+        <meta property="og:title" content="강아지위키 사용 설명" />
+        <meta property="og:description" content="강아지위키는 다양한 강아지 품종에 대한 신뢰할 수 있는 정보를 제공합니다. 강아지 품종 찾기 및 관리 방법을 확인해보세요." />
         <meta property="og:image" content="/mainImage.avif" />
         <meta property="og:url" content="https://www.doglist.info/usage" />
 
@@ -63,8 +63,8 @@ const Usage: React.FC = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "Dog List 사용 설명",
-            "description": "Dog List는 다양한 강아지 품종에 대한 신뢰할 수 있는 정보를 제공합니다. 강아지 품종 찾기 및 관리 방법을 확인해보세요.",
+            "name": "강아지위키 사용 설명",
+            "description": "강아지위키는 다양한 강아지 품종에 대한 신뢰할 수 있는 정보를 제공합니다. 강아지 품종 찾기 및 관리 방법을 확인해보세요.",
             "url": "https://www.doglist.info/usage"
           })}
         </script>

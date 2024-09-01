@@ -1,7 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
-import useStore from '../../store/useStore';
 import BarItem from '../../components/BreedName/BarItem';
 import { fetchImagesFromStorage, fetchAndStoreBreeds, getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
 import { sliderSettings } from '../../components/BreedName/SliderComponents';
@@ -60,11 +58,11 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
   return (
     <>
       <Head>
-        <title>{selectedBreed?.englishName || '강아지'} - Dog List</title>
-        <meta name="description" content={`${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`} />
-        <meta name="keywords" content={`${selectedBreed?.englishName || '강아지'}, 개 품종, Dog List, 강아지 정보`} />
-        <meta property="og:title" content={`${selectedBreed?.englishName || '강아지'} - Dog List`} />
-        <meta property="og:description" content={`${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`} />
+        <title>{selectedBreed?.koreanName || '강아지'} - 강아지위키</title>
+        <meta name="description" content={`${selectedBreed?.koreanName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`} />
+        <meta name="keywords" content={`${selectedBreed?.koreanName || '강아지'}, 개 품종, 강아지위키, 강아지 정보`} />
+        <meta property="og:title" content={`${selectedBreed?.koreanName || '강아지'} - 강아지위키`} />
+        <meta property="og:description" content={`${selectedBreed?.koreanName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`} />
         <meta property="og:image" content={images[0] || "/mainImage.avif"} />
         <meta property="og:url" content={`https://www.doglist.info/breed/${selectedBreed.englishName.toLowerCase()}`} />
         <meta property="og:type" content="article" />
@@ -73,10 +71,10 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": `${selectedBreed?.englishName || '강아지'} - Dog List`,
+            "name": `${selectedBreed?.koreanName || '강아지'} - 강아지위키`,
             "url": `https://www.doglist.info/breed/${selectedBreed.englishName.toLowerCase()}`,
-            "description": `${selectedBreed?.englishName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`,
-            "breedName": selectedBreed?.englishName || "unknown"
+            "description": `${selectedBreed?.koreanName || '강아지'} 품종에 대한 자세한 정보. 성격, 훈련 방법, 건강 관리 등.`,
+            "breedName": selectedBreed?.koreanName || "unknown"
           })}
         </script>
       </Head>

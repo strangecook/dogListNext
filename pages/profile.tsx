@@ -216,12 +216,12 @@ const Profile: React.FC = () => {
   return (
     <ProfileContainer>
       <Head>
-        <title>프로필 - Dog List</title>
+        <title>프로필 - 강아지위키</title>
         <meta name="description" content="사용자의 프로필을 업데이트하고, 사진을 업로드하며, 이메일과 비밀번호를 변경할 수 있는 페이지입니다." />
-        <meta name="keywords" content="프로필, 강아지, 개 품종, Dog List, 사용자 정보" />
+        <meta name="keywords" content="프로필, 강아지, 개 품종, 강아지위키, 사용자 정보" />
 
         {/* 이 페이지에 특화된 Open Graph Meta Tags */}
-        <meta property="og:title" content="프로필 - Dog List" />
+        <meta property="og:title" content="프로필 - 강아지위키" />
         <meta property="og:description" content="사용자의 프로필을 업데이트하고, 사진을 업로드하며, 이메일과 비밀번호를 변경할 수 있는 페이지입니다." />
         <meta property="og:image" content={photoURL || pawImage.src} />
         <meta property="og:url" content="https://www.doglist.info/profile" />

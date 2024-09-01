@@ -71,7 +71,7 @@ const LoginNavi: React.FC = () => {
             <Image className='MainImage' src={pawImage} alt="Paw Icon" width={50} height={50} />
           </span>
         </Link>
-        <Link href="/" className="navTitle">Dog List</Link>
+        <Link href="/" className="navTitle">강아지위키</Link>
       </div>
       <div className='naviDivCenter'>
         <Link href="/" className={`navLink ${router.pathname === '/' ? 'active' : ''}`}>홈</Link>
