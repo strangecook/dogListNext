@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         {/* 페이지에서 기본적으로 필요한 Open Graph 및 Twitter Card 메타데이터 */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Dog List - 완벽한 개 품종 찾기" />
+        <meta name="twitter:title" content="강아지위키 - 완벽한 개 품종 찾기" />
         <meta name="twitter:image" content="/mainwebImage.webp" />
         <meta name="twitter:site" content="@YourTwitterHandle" />
       </Head>

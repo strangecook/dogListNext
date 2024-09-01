@@ -114,13 +114,13 @@ export default function Login() {
   return (
     <LoginCover>
       <Head>
-        <title>로그인 - Dog List</title>
-        <meta name="description" content="Dog List에 로그인하여 다양한 강아지 품종에 대한 정보를 확인하세요." />
-        <meta name="keywords" content="로그인, Dog List, 강아지 정보" />
+        <title>로그인 - 강아지위키</title>
+        <meta name="description" content="강아지위키에 로그인하여 다양한 강아지 품종에 대한 정보를 확인하세요." />
+        <meta name="keywords" content="로그인, 강아지위키, 강아지 정보" />
 
         {/* 이 페이지에 특화된 Open Graph Meta Tags */}
-        <meta property="og:title" content="로그인 - Dog List" />
-        <meta property="og:description" content="Dog List에 로그인하여 다양한 강아지 품종에 대한 정보를 확인하세요." />
+        <meta property="og:title" content="로그인 - 강아지위키" />
+        <meta property="og:description" content="강아지위키에 로그인하여 다양한 강아지 품종에 대한 정보를 확인하세요." />
         <meta property="og:image" content="/mainImage.avif" />
         <meta property="og:url" content="https://www.doglist.info/login" />
         <meta property="og:type" content="website" />
@@ -131,9 +131,9 @@ export default function Login() {
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "로그인 - Dog List",
+      "name": "로그인 - 강아지위키",
       "url": "https://www.doglist.info/login",
-      "description": "Dog List에 로그인하여 다양한 강아지 품종에 대한 정보를 확인하세요."
+      "description": "강아지위키에 로그인하여 다양한 강아지 품종에 대한 정보를 확인하세요."
     }
     `}
         </script>

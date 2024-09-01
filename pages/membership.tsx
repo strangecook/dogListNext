@@ -66,13 +66,13 @@ const Membership: NextPage = () => {
   return (
     <MembershipContainer>
       <Head>
-        <title>멤버십 - Dog List</title>
-        <meta name="description" content="Dog List 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다." />
-        <meta name="keywords" content="멤버십, 강아지, 개 품종, Dog List, 초기멤버, 제작자 기부" />
+        <title>멤버십 - 강아지위키</title>
+        <meta name="description" content="강아지위키 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다." />
+        <meta name="keywords" content="멤버십, 강아지, 개 품종, 강아지위키, 초기멤버, 제작자 기부" />
 
         {/* 이 페이지에 특화된 Open Graph Meta Tags */}
-        <meta property="og:title" content="멤버십 - Dog List" />
-        <meta property="og:description" content="Dog List 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다." />
+        <meta property="og:title" content="멤버십 - 강아지위키" />
+        <meta property="og:description" content="강아지위키 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다." />
         <meta property="og:image" content="/mainImage.avif" />
         <meta property="og:url" content="https://www.doglist.info/membership" />
         <meta property="og:type" content="website" />
@@ -82,8 +82,8 @@ const Membership: NextPage = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "멤버십 - Dog List",
-            "description": "Dog List 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다.",
+            "name": "멤버십 - 강아지위키",
+            "description": "강아지위키 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다.",
             "url": "https://www.doglist.info/membership"
           })}
         </script>

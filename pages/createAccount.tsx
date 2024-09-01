@@ -75,13 +75,13 @@ export default function CreateAccount() {
   return (
     <Wrapper>
       <Head>
-        <title>계정 생성 - Dog List</title>
-        <meta name="description" content="Dog List에서 새로운 계정을 생성하세요. 쉽고 빠른 계정 생성으로 다양한 강아지 품종에 대한 정보를 제공받을 수 있습니다." />
-        <meta name="keywords" content="계정 생성, Dog List, 회원가입, 강아지 정보" />
+        <title>계정 생성 - 강아지위키</title>
+        <meta name="description" content="강아지위키에서 새로운 계정을 생성하세요. 쉽고 빠른 계정 생성으로 다양한 강아지 품종에 대한 정보를 제공받을 수 있습니다." />
+        <meta name="keywords" content="계정 생성, 강아지위키, 회원가입, 강아지 정보" />
 
         {/* 이 페이지에 특화된 Open Graph Meta Tags */}
-        <meta property="og:title" content="계정 생성 - Dog List" />
-        <meta property="og:description" content="Dog List에서 새로운 계정을 생성하세요. 쉽고 빠른 계정 생성으로 다양한 강아지 품종에 대한 정보를 제공받을 수 있습니다." />
+        <meta property="og:title" content="계정 생성 - 강아지위키" />
+        <meta property="og:description" content="강아지위키에서 새로운 계정을 생성하세요. 쉽고 빠른 계정 생성으로 다양한 강아지 품종에 대한 정보를 제공받을 수 있습니다." />
         <meta property="og:image" content="/mainImage.avif" />
         <meta property="og:url" content="https://www.doglist.info/createAccount" />
         <meta property="og:type" content="website" />
@@ -92,9 +92,9 @@ export default function CreateAccount() {
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "계정 생성 - Dog List",
+      "name": "계정 생성 - 강아지위키",
       "url": "https://www.doglist.info/createAccount",
-      "description": "Dog List에서 새로운 계정을 생성하세요. 쉽고 빠른 계정 생성으로 다양한 강아지 품종에 대한 정보를 제공받을 수 있습니다."
+      "description": "강아지위키에서 새로운 계정을 생성하세요. 쉽고 빠른 계정 생성으로 다양한 강아지 품종에 대한 정보를 제공받을 수 있습니다."
     }
     `}
         </script>

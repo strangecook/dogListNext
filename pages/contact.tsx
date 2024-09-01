@@ -134,13 +134,13 @@ const Contact: React.FC = () => {
   return (
     <ContactContainer>
       <Head>
-        <title>개발자 문의 - Dog List</title>
-        <meta name="description" content="Dog List의 개발자에게 문의하거나 피드백을 제공할 수 있습니다. 다양한 카테고리에서 문제를 선택하고 메시지를 남겨주세요." />
-        <meta name="keywords" content="강아지, 개 품종, Dog List, 개발자 문의, 피드백, 문제 해결" />
+        <title>개발자 문의 - 강아지위키</title>
+        <meta name="description" content="강아지위키의 개발자에게 문의하거나 피드백을 제공할 수 있습니다. 다양한 카테고리에서 문제를 선택하고 메시지를 남겨주세요." />
+        <meta name="keywords" content="강아지, 개 품종, 강아지위키, 개발자 문의, 피드백, 문제 해결" />
 
         {/* 이 페이지에 특화된 Open Graph Meta Tags */}
-        <meta property="og:title" content="개발자 문의 - Dog List" />
-        <meta property="og:description" content="Dog List의 개발자에게 문의하거나 피드백을 제공할 수 있습니다. 다양한 카테고리에서 문제를 선택하고 메시지를 남겨주세요." />
+        <meta property="og:title" content="개발자 문의 - 강아지위키" />
+        <meta property="og:description" content="강아지위키의 개발자에게 문의하거나 피드백을 제공할 수 있습니다. 다양한 카테고리에서 문제를 선택하고 메시지를 남겨주세요." />
         <meta property="og:image" content="/mainImage.avif" />
         <meta property="og:url" content="https://www.doglist.info/contact" />
         <meta property="og:type" content="website" />
@@ -151,8 +151,8 @@ const Contact: React.FC = () => {
     {
       "@context": "https://schema.org",
       "@type": "ContactPage",
-      "name": "개발자 문의 - Dog List",
-      "description": "Dog List의 개발자에게 문의하거나 피드백을 제공할 수 있습니다. 다양한 카테고리에서 문제를 선택하고 메시지를 남겨주세요.",
+      "name": "개발자 문의 - 강아지위키",
+      "description": "강아지위키의 개발자에게 문의하거나 피드백을 제공할 수 있습니다. 다양한 카테고리에서 문제를 선택하고 메시지를 남겨주세요.",
       "url": "https://www.doglist.info/contact"
     }
     `}
