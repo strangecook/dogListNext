@@ -359,7 +359,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
             <BarContainer>
               <Emoji>👶</Emoji>
               <Text>가족과의 친화도</Text>
-              <InfoIcon $tooltip={`이 값은 강아지가 가족과의 애정 수준을 평가한 값입니다. 높은 값일수록 강아지가 가족과 잘 어울리는 경향이 있습니다.`}>ℹ️</InfoIcon>
+              <InfoIcon $tooltip={`높은 값일수록 가족과 잘 어울립니다.`}>ℹ️</InfoIcon>
             </BarContainer>
             <BarWrapper>
               <Bar width={`${averageChildFriendly * 20}%`} />
@@ -369,7 +369,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
             <BarContainer>
               <Emoji>🐕</Emoji>
               <Text>친화력</Text>
-              <InfoIcon $tooltip={`이 값은 강아지가 다른 반려견과 얼마나 잘 어울리는지 평가한 값입니다. 높은 값일수록 강아지가 다른 반려견들과 잘 어울리는 경향이 있습니다.`}>ℹ️</InfoIcon>
+              <InfoIcon $tooltip={`높은 값일수록 강아지가 다른 반려견들과 잘 어울립니다.`}>ℹ️</InfoIcon>
             </BarContainer>
             <BarWrapper>
               <Bar width={`${averageDogFriendly * 20}%`} />
@@ -379,7 +379,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
             <BarContainer>
               <Emoji>🎓</Emoji>
               <Text>훈련 가능성</Text>
-              <InfoIcon $tooltip={`이 값은 강아지의 훈련 가능성을 평가한 값입니다. 높은 값일수록 강아지가 훈련하기 쉬운 경향이 있습니다.`}>ℹ️</InfoIcon>
+              <InfoIcon $tooltip={`높은 값일수록 강아지를 훈련하기 쉽습니다.`}>ℹ️</InfoIcon>
             </BarContainer>
             <BarWrapper>
               <Bar width={`${averageTrainability * 20}%`} />
@@ -389,7 +389,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
             <BarContainer>
               <Emoji>⚡</Emoji>
               <Text>에너지 수준</Text>
-              <InfoIcon $tooltip={`이 값은 강아지의 에너지 수준을 평가한 값입니다. 높은 값일수록 강아지가 에너지가 넘치는 경향이 있습니다.`}>ℹ️</InfoIcon>
+              <InfoIcon $tooltip={`높은 값일수록 강아지가 에너지가 넘칩니다.`}>ℹ️</InfoIcon>
             </BarContainer>
             <BarWrapper>
               <Bar width={`${averageEnergy * 20}%`} />
@@ -399,7 +399,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
             <BarContainer>
               <Emoji>🪮</Emoji>
               <Text>털 관리 및 빠짐</Text>
-              <InfoIcon $tooltip={`이 값은 강아지의 털 관리 필요성 및 털 빠짐 정도를 합산한 후 평균을 구한 것입니다. 높은 값일수록 강아지의 털 관리가 더 많이 필요하고, 털이 많이 빠지는 경향이 있습니다.`}>ℹ️</InfoIcon>
+              <InfoIcon $tooltip={`높은 값일수록 강아지 털 관리가 필요합니다.`}>ℹ️</InfoIcon>
             </BarContainer>
             <BarWrapper>
               <Bar width={`${averageGroomingLevel * 20}%`} $reverse="true" />
