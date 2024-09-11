@@ -232,33 +232,8 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
     window.scrollTo({ top: 850, behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    // Google AdSense 광고 스크립트 동적으로 추가
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9810617727266867";
-    script.crossOrigin = "anonymous";
-    document.body.appendChild(script);
-
-    // 광고 초기화 시, 중복되지 않도록 확인
-    script.onload = () => {
-      if ((window as any).adsbygoogle && (window as any).adsbygoogle.loaded !== true) {
-        (window as any).adsbygoogle.loaded = true;
-        (window as any).adsbygoogle.push({});
-      }
-    };
-  }, []);
-
   return (
     <Container>
-      <div style={{ width: '100%', height: '150px', backgroundColor: '#f0f0f0', textAlign: 'center', padding: '20px', marginTop: '10px', marginBottom: '30px' }}>
-      <ins className="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-client="ca-pub-9810617727266867"
-        data-ad-slot="1720396577"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      </div>
       <FilterInfoContainer>
         <FilterInfo>
           현재 필터:{" "}
