@@ -40,6 +40,7 @@ export default class MyDocument extends Document {
           <meta property="og:type" content="website" />
           <meta name="google-adsense-account" content="ca-pub-9810617727266867" />
           <meta name="naver-site-verification" content="087283ca812e07b2081a3d51ff3dc06deae3e1e3" />
+          <meta name="google-site-verification" content="DSWbXnrg2mBMSC5JCo1EtZjOkN85UjV4Vup4MjKAoPQ" />
         </Head>
         <body>
           <Main />
