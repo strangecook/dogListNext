@@ -41,6 +41,15 @@ export default class MyDocument extends Document {
           <meta name="google-adsense-account" content="ca-pub-9810617727266867" />
           <meta name="naver-site-verification" content="087283ca812e07b2081a3d51ff3dc06deae3e1e3" />
           <meta name="google-site-verification" content="DSWbXnrg2mBMSC5JCo1EtZjOkN85UjV4Vup4MjKAoPQ" />
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <script>
+            {`
+              (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-9810617727266867",
+                enable_page_level_ads: true
+              });
+            `}
+          </script>
         </Head>
         <body>
           <Main />

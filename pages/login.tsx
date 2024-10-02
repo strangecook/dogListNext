@@ -89,8 +89,9 @@ export default function Login() {
 
       await setDoc(doc(db, "usernames", nickname), { uid: user.uid });
 
-      console.log("User login successful, navigating to home...");
-      router.push("/");
+      console.log("Redirecting to home...");
+      await router.push("/");
+      console.log("Redirection completed.");
     } catch (e) {
       if (e instanceof FirebaseError) {
         const errorCode = e.code;
