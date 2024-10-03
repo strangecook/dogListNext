@@ -1,6 +1,6 @@
 // src/components/CustomModal.tsx
 
-import React from 'react';
+import { useState } from 'react'
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -76,17 +76,18 @@ const CustomModalContainer = styled.div`
   max-height: 75vh;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<{ loading: boolean }>`  // loading 상태를 prop으로 받음
   display: inline-block;
   padding: 10px 20px;
   margin-top: 20px;
-  background-color: #4caf50;
-  color: #fff;
+  background-color: ${(props) => (props.loading ? '#ccc' : '#4caf50')};  // 로딩 중이면 회색
+  color: ${(props) => (props.loading ? '#666' : '#fff')};  // 로딩 중이면 텍스트 색상도 변경
   text-decoration: none;
   border-radius: 5px;
   text-align: center;
+  width: 100%;
   &:hover {
-    background-color: #388e3c;
+    background-color: ${(props) => (props.loading ? '#ccc' : '#388e3c')};  // 로딩 중이면 hover 색상도 동일
   }
 `;
 
@@ -107,10 +108,12 @@ interface CustomModalProps {
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, breed }) => {
+  const [loading, setLoading] = useState(false);  
   const setSelectedBreed = useStore(state => state.setSelectedBreed);
 
   const handleDetailButtonClick = () => {
     setSelectedBreed(breed);
+    setLoading(true);
   };
 
   return (
@@ -251,9 +254,13 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, breed
           <ListItem>체중: {breed.weight}</ListItem>
         </ul>
         <p>{breed.description}</p>
-        <StyledLink href={`/breeds/${breed.englishName.toLowerCase()}`} onClick={handleDetailButtonClick}>
-          자세한 정보 보러가기
-        </StyledLink>
+        <StyledLink
+          href={`/breeds/${breed.englishName.toLowerCase()}`}
+          onClick={handleDetailButtonClick}
+          loading={loading}  // loading 상태를 StyledLink로 전달
+        >
+        {loading ? '로딩 중...' : '자세한 정보 보러가기'}
+      </StyledLink>
       </CustomModalContainer>
     </Modal>
   );
