@@ -119,3 +119,70 @@ export const BarSection = styled.div`
   margin: 10px 0;
   padding: 0 5px;
 `;
+
+export const CoatTypeWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3열 그리드 */
+  gap: 10px;
+  font-family: 'Nanum Gothic', sans-serif;
+`;
+
+export const CoatTypeItem = styled.div<{ selected: boolean }>`
+  padding: 15px;
+  border: 2px solid ${(props) => (props.selected ? '#0056b3' : '#ddd')};
+  color: ${(props) => (props.selected ? '#0056b3' : '#ccc')};
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: ${(props) => (props.selected ? '#e6f0ff' : '#fff')};
+  text-align: center;
+  font-size: 1em;
+  font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => (props.selected ? '#dce9ff' : '#f9f9f9')};
+  }
+`;
+
+// 털 타입 목록을 보여줄 제목
+export const CoatTypeTitle = styled.h3`
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 10px;
+`;
+
+// 털 타입에 대한 설명 스타일링
+export const CoatTypeDescription = styled.p`
+  font-size: 1em;
+  color: #555;
+  margin-top: 20px;
+`;
+
+// 털 타입 목록을 상수로 정의
+export const coatTypes = [
+  '뻣뻣한 털',
+  '무모',
+  '매끈한 털',
+  '거친 털',
+  '꼬인 털',
+  '이중 털',
+  '곱슬 털',
+  '물결 털',
+  '비단 털'
+] as const; // 'as const'로 배열을 리터럴 타입으로 설정
+
+// CoatType 타입 정의 (위의 coatTypes 값들을 자동으로 타입으로 만듦)
+type CoatType = typeof coatTypes[number];
+
+// 털 타입에 대한 설명 데이터
+export const coatTypeDescriptions: Record<CoatType, string> = {
+  '뻣뻣한 털': "뻣뻣하고 거친 질감의 털로 주기적인 그루밍이 필요하며, 대부분의 경우 털 빠짐이 적습니다.",
+  '무모': "털이 거의 없거나 없는 강아지로, 피부 관리가 매우 중요합니다.",
+  '매끈한 털': "매끈하고 짧은 털로 관리가 쉬우며 털 빠짐이 적습니다.",
+  '거친 털': "거칠고 길이가 긴 털로, 주기적인 그루밍과 빗질이 필요합니다.",
+  '꼬인 털': "꼬인 형태의 털로 관리가 복잡하며, 빗질보다는 털 가닥을 형성하는 관리가 필요합니다.",
+  '이중 털': "이중 털로, 속털과 겉털이 따로 있으며, 계절별로 털갈이가 많이 발생합니다.",
+  '곱슬 털': "곱슬거리는 형태의 털로, 주기적인 빗질과 그루밍이 필요합니다.",
+  '물결 털': "물결 모양의 털로, 관리가 필요하며 때때로 털 빠짐이 있을 수 있습니다.",
+  '비단 털': "매우 부드럽고 비단처럼 얇은 털로 주기적인 그루밍이 요구됩니다."
+};

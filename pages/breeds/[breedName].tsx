@@ -12,7 +12,13 @@ import {
   SingleImageContainer,
   LoaderDiv,
   Loader,
-  BarSection
+  BarSection,
+  CoatTypeWrapper,
+  CoatTypeItem,
+  CoatTypeTitle,
+  CoatTypeDescription,
+  coatTypes,
+  coatTypeDescriptions,
 } from '../../components/BreedName/BreedDetailStyles';
 import { Breed } from '../../types/Breed';
 import Head from 'next/head'; // Head 컴포넌트 추가
@@ -102,6 +108,17 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
         )}
         <Section>
           <SectionTitle>기본 정보</SectionTitle>
+          <CoatTypeTitle>털 종류</CoatTypeTitle>
+          <CoatTypeWrapper>
+            {coatTypes.map((type) => (
+              <CoatTypeItem
+                key={type}
+                selected={selectedBreed.coatType === type}  // 선택된 털 타입만 강조
+              >
+                {type}
+              </CoatTypeItem>
+            ))}
+          </CoatTypeWrapper>
           <ul>
             <li><strong>품종 그룹: </strong>{selectedBreed.breedGroup}</li>
             <li><strong>털 길이: </strong>{selectedBreed.coatLength}</li>
