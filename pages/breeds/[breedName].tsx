@@ -19,6 +19,16 @@ import {
   CoatTypeDescription,
   coatTypes,
   coatTypeDescriptions,
+  BreedGroupWrapper,
+  BreedGroupItem,
+  CoatLengthWrapper,
+  CoatLengthItem,
+  CoatLengthVisualizer,
+  breedGroupDescriptions,
+  GroupDescriptionContainer,
+  GroupDescriptionTitle,
+  GroupDescriptionText,
+  coatLengthDescriptions,
 } from '../../components/BreedName/BreedDetailStyles';
 import { Breed } from '../../types/Breed';
 import Head from 'next/head'; // Head 컴포넌트 추가
@@ -107,18 +117,81 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           )
         )}
         <Section>
-          <SectionTitle>기본 정보</SectionTitle>
+          <SectionTitle> {selectedBreed?.koreanName} 기본 정보</SectionTitle>
+          {/* 털 종류 */}
           <CoatTypeTitle>털 종류</CoatTypeTitle>
           <CoatTypeWrapper>
             {coatTypes.map((type) => (
               <CoatTypeItem
                 key={type}
-                selected={selectedBreed.coatType === type}  // 선택된 털 타입만 강조
+                selected={selectedBreed.coatType.includes(type)}   // 선택된 털 타입 강조
               >
                 {type}
               </CoatTypeItem>
             ))}
           </CoatTypeWrapper>
+          {/* 선택된 털 종류 설명 렌더링 */}
+          {selectedBreed.coatType && (
+            <GroupDescriptionContainer>
+              <GroupDescriptionTitle>털 종류 설명</GroupDescriptionTitle>
+              {coatTypes.filter((type) => selectedBreed.coatType.includes(type)).map((type) => (
+                <GroupDescriptionText key={type}>
+                  {coatTypeDescriptions[type]}
+                </GroupDescriptionText>
+              ))}
+            </GroupDescriptionContainer>
+          )}
+
+
+
+          {/* 털 길이 */}
+          <SectionTitle>털 길이 (cm)</SectionTitle>
+          <CoatLengthWrapper>
+            {[{ name: '짧은', cm: 1 }, { name: '중간', cm: 5 }, { name: '긴', cm: 10 }].map((length) => (
+              <div style={{ margin: "10px" }} key={length.name}>
+                <CoatLengthItem selected={selectedBreed.coatLength === length.name}>
+                  {length.name}
+                </CoatLengthItem>
+                <CoatLengthVisualizer lengthCm={length.cm} />
+              </div>
+            ))}
+          </CoatLengthWrapper>
+          {selectedBreed.coatLength && (
+            <GroupDescriptionContainer>
+              <GroupDescriptionTitle>털 길이 설명</GroupDescriptionTitle>
+              <GroupDescriptionText>{coatLengthDescriptions[selectedBreed.coatLength]} 현재 사이트에서 보여지는 바 길이는 실제 강아지 털 길이와 일치합니다.</GroupDescriptionText>
+            </GroupDescriptionContainer>
+          )}
+
+
+          {/* 품종 그룹 */}
+          <SectionTitle>품종 그룹</SectionTitle>
+          <BreedGroupWrapper>
+            {[
+              '허딩',
+              '하운드',
+              '워킹',
+              '테리어',
+              '토이',
+              '스포팅',
+              '논스포팅',
+              '스피츠',
+            ].map((group) => (
+              <BreedGroupItem
+                key={group}
+                selected={selectedBreed.breedGroup === group}  // 선택된 품종 그룹 강조
+              >
+                {group}
+              </BreedGroupItem>
+            ))}
+          </BreedGroupWrapper>
+          {/* 선택된 그룹 설명 렌더링 */}
+          {selectedBreed.breedGroup && (
+            <GroupDescriptionContainer>
+              <GroupDescriptionTitle>품종 그룹 설명</GroupDescriptionTitle>
+              <GroupDescriptionText>{breedGroupDescriptions[selectedBreed.breedGroup]}</GroupDescriptionText>
+            </GroupDescriptionContainer>
+          )}
           <ul>
             <li><strong>품종 그룹: </strong>{selectedBreed.breedGroup}</li>
             <li><strong>털 길이: </strong>{selectedBreed.coatLength}</li>
