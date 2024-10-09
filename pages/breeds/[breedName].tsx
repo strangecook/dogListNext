@@ -29,6 +29,10 @@ import {
   GroupDescriptionText,
   coatLengthDescriptions,
   Divider,
+  StyledSection,
+  StyledText,
+  StyledStrongText,
+  StyledGroupDescriptionTitle,
 } from '../../components/BreedName/BreedDetailStyles';
 import { Breed } from '../../types/Breed';
 import Head from 'next/head'; // Head 컴포넌트 추가
@@ -219,7 +223,7 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
                     {coatLengthDescriptions[length.name]}
                   </GroupDescriptionText>
                 ))}
-                화면에 표시된 털 길이(1cm, 5cm, 10cm)는 실제 강아지의 털 길이와 비슷하게 표현되었으며, 화면에서 보이는 길이는 정확히 그 수치에 맞게 시각화되었습니다.
+              화면에 표시된 털 길이(1cm, 5cm, 10cm)는 실제 강아지의 털 길이와 비슷하게 표현되었으며, 화면에서 보이는 길이는 정확히 그 수치에 맞게 시각화되었습니다.
             </GroupDescriptionContainer>
           )}
 
@@ -236,19 +240,27 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
 
         <Divider />
 
-        <Section>
-          <GroupDescriptionTitle>추가 정보</GroupDescriptionTitle>
-          <p><strong>운동: </strong>{selectedBreed.exercise}</p>
-          <p><strong>영양: </strong>{selectedBreed.nutrition}</p>
-          <p><strong>훈련: </strong>{selectedBreed.training}</p>
-        </Section>
+        <StyledSection>
+          <StyledGroupDescriptionTitle>추가 정보</StyledGroupDescriptionTitle>
+          <StyledText>
+            <StyledStrongText>운동: </StyledStrongText>{selectedBreed.exercise}
+          </StyledText>
+          <Divider />
+          <StyledText>
+            <StyledStrongText>영양: </StyledStrongText>{selectedBreed.nutrition}
+          </StyledText>
+          <Divider />
+          <StyledText>
+            <StyledStrongText>훈련: </StyledStrongText>{selectedBreed.training}
+          </StyledText>
+        </StyledSection>
 
         <Divider />
 
-        <Section>
-          <GroupDescriptionTitle>설명</GroupDescriptionTitle>
-          <p>{selectedBreed.description}</p>
-        </Section>
+        <StyledSection>
+          <StyledGroupDescriptionTitle>추가 설명</StyledGroupDescriptionTitle>
+          <StyledText>{selectedBreed.description}</StyledText>
+        </StyledSection>
       </DetailContainer>
     </>
   );

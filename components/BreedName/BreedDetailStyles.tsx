@@ -294,3 +294,29 @@ export const Divider = styled.div`
   border-bottom: 1px solid #ddd;
   margin: 20px 0;
 `;
+
+export const StyledGroupDescriptionTitle = styled.h3`
+  font-size: 1.5em; /* 제목의 크기를 좀 더 크게 */
+  margin-bottom: 12px; /* 제목과 내용 사이에 여백 */
+  color: #333; /* 좀 더 진한 글씨 색상 */
+`;
+
+export const StyledSection = styled.section`
+  margin-bottom: 20px; /* 각 섹션 간의 여백 */
+  line-height: 1.6;    /* 텍스트의 줄 간격 */
+`;
+
+// 텍스트 스타일 정의
+export const StyledText = styled.p`
+  font-size: 1em; /* 기본 텍스트 크기 */
+  margin-bottom: 12px; /* 문단 사이 여백 */
+  color: #555; /* 부드러운 글씨 색상 */
+  letter-spacing: 0.5px; /* 글자 간격 조정 */
+  line-height: 1.8; /* 행간을 넉넉히 */
+`;
+
+// 강조 텍스트 (strong) 스타일 정의
+export const StyledStrongText = styled.strong`
+  font-weight: bold;
+  color: #000; /* 강조된 글씨 색상 */
+`;
