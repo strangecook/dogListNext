@@ -244,6 +244,11 @@ export const CoatLengthVisualizer = styled.div<{ selected: boolean, lengthCm: nu
   &:hover {
     background-color: ${(props) => (props.selected ? '#FF5722' : '#d88f00')}; /* 선택되었을 때 짙은 주황색, 선택되지 않았을 때 따뜻한 주황색 */
   }
+
+  @media (max-width: 768px) {
+    // 모바일에서 10cm만 예외 처리하여 100% 너비로 설정
+    width: ${(props) => (props.lengthCm === 10 ? '100%' : `${props.lengthCm * 37.8}px`)};
+  }
 `;
 
 export const breedGroupDescriptions: { [key: string]: string } = {
