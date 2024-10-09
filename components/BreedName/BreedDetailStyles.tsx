@@ -287,3 +287,8 @@ export const coatLengthDescriptions: { [key: string]: string } = {
   '중간': '중간 길이의 털을 가진 견종은 적당한 그루밍이 필요하며 털 빠짐이 어느 정도 있을 수 있습니다.',
   '긴': '긴 털을 가진 견종은 정기적인 그루밍이 필수이며 털 관리가 매우 중요합니다. 실내외 활동 모두 적합합니다.',
 };
+
+export const Divider = styled.div`
+  border-bottom: 1px solid #ddd;
+  margin: 20px 0;
+`;
