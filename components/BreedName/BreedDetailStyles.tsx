@@ -230,22 +230,19 @@ width: 66px;
   }
 `;
 
-export const CoatLengthVisualizer = styled.div<{ lengthCm: number }>`
+export const CoatLengthVisualizer = styled.div<{ selected: boolean, lengthCm: number }>`
   width: ${(props) => props.lengthCm * 37.8}px;
-  height: 10px;  // 털 길이에 따라 높이도 변경
-  background: linear-gradient(
-    to bottom,
-    #f0a500 0%,
-    #f4d03f ${(props) => props.lengthCm * 10}%,
-    #ffcc00 100%
-  );  // 그라데이션으로 털 색상 변화 적용
+  height: 10px;
+  background: ${(props) => (props.selected ? 
+    '#FF9800' :  /* 선택 시 밝은 주황색 */
+    '#f5f5f5')};  /* 선택되지 않았을 때 기본 색상 */
   background-size: cover;
   border-radius: 10px;
   margin: 10px 0;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: #d88f00;
+    background-color: ${(props) => (props.selected ? '#FF5722' : '#d88f00')}; /* 선택되었을 때 짙은 주황색, 선택되지 않았을 때 따뜻한 주황색 */
   }
 `;
 

@@ -188,21 +188,41 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           {/* 털 길이 */}
           <GroupDescriptionTitle>털 길이 (cm)</GroupDescriptionTitle>
           <CoatLengthWrapper>
-            {[{ name: '짧은', cm: 1 }, { name: '중간', cm: 5 }, { name: '긴', cm: 10 }].map((length) => (
+            {[
+              { name: '짧은', cm: 1 },
+              { name: '중간', cm: 5 },
+              { name: '긴', cm: 10 },
+            ].map((length) => (
               <div style={{ margin: "10px" }} key={length.name}>
-                <CoatLengthItem selected={selectedBreed.coatLength === length.name}>
+                <CoatLengthItem selected={selectedBreed.coatLength.includes(length.name)}>
                   {length.name}
                 </CoatLengthItem>
-                <CoatLengthVisualizer lengthCm={length.cm} />
+                <CoatLengthVisualizer
+                  selected={selectedBreed.coatLength.includes(length.name)}
+                  lengthCm={length.cm}
+                />
               </div>
             ))}
           </CoatLengthWrapper>
+
           {selectedBreed.coatLength && (
             <GroupDescriptionContainer>
               <GroupDescriptionTitle>털 길이 설명</GroupDescriptionTitle>
-              <GroupDescriptionText>{coatLengthDescriptions[selectedBreed.coatLength]} 현재 사이트에서 보여지는 바 길이는 실제 강아지 털 길이와 일치합니다.</GroupDescriptionText>
+              {[
+                { name: '짧은', cm: 1 },
+                { name: '중간', cm: 5 },
+                { name: '긴', cm: 10 },
+              ]
+                .filter((length) => selectedBreed.coatLength.includes(length.name))
+                .map((length) => (
+                  <GroupDescriptionText key={length.name}>
+                    {coatLengthDescriptions[length.name]}
+                  </GroupDescriptionText>
+                ))}
+                화면에 표시된 털 길이(1cm, 5cm, 10cm)는 실제 강아지의 털 길이와 비슷하게 표현되었으며, 화면에서 보이는 길이는 정확히 그 수치에 맞게 시각화되었습니다.
             </GroupDescriptionContainer>
           )}
+
 
           <Divider />
 
