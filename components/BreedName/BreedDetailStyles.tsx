@@ -214,7 +214,7 @@ export const CoatLengthWrapper = styled.div`
 `;
 
 export const CoatLengthItem = styled.div<{ selected: boolean }>`
-width: 66px;
+  width: 66px;
   padding: 8px 16px;
   border-radius: 20px;
   margin-right: 10px;
@@ -224,6 +224,7 @@ width: 66px;
   font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
   cursor: pointer;
   transition: all 0.3s ease;
+  text-align: center;  /* 텍스트 가운데 정렬 */
 
   &:hover {
     background-color: ${(props) => (props.selected ? '#388E3C' : '#e0e0e0')};
@@ -243,6 +244,11 @@ export const CoatLengthVisualizer = styled.div<{ selected: boolean, lengthCm: nu
 
   &:hover {
     background-color: ${(props) => (props.selected ? '#FF5722' : '#d88f00')}; /* 선택되었을 때 짙은 주황색, 선택되지 않았을 때 따뜻한 주황색 */
+  }
+
+  @media (max-width: 768px) {
+    // 모바일에서 10cm만 예외 처리하여 100% 너비로 설정
+    width: ${(props) => (props.lengthCm === 10 ? '100%' : `${props.lengthCm * 37.8}px`)};
   }
 `;
 
@@ -288,4 +294,101 @@ export const coatLengthDescriptions: { [key: string]: string } = {
 export const Divider = styled.div`
   border-bottom: 1px solid #ddd;
   margin: 20px 0;
+`;
+
+export const StyledGroupDescriptionTitle = styled.h3`
+  font-size: 1.5em; /* 제목의 크기를 좀 더 크게 */
+  margin-bottom: 12px; /* 제목과 내용 사이에 여백 */
+  color: #333; /* 좀 더 진한 글씨 색상 */
+`;
+
+export const StyledSection = styled.section`
+  margin-bottom: 20px; /* 각 섹션 간의 여백 */
+  line-height: 1.6;    /* 텍스트의 줄 간격 */
+`;
+
+// 텍스트 스타일 정의
+export const StyledText = styled.p`
+  font-size: 1em; /* 기본 텍스트 크기 */
+  margin-bottom: 12px; /* 문단 사이 여백 */
+  color: #555; /* 부드러운 글씨 색상 */
+  letter-spacing: 0.5px; /* 글자 간격 조정 */
+  line-height: 1.8; /* 행간을 넉넉히 */
+`;
+
+// 강조 텍스트 (strong) 스타일 정의
+export const StyledStrongText = styled.strong`
+  font-weight: bold;
+  color: #000; /* 강조된 글씨 색상 */
+`;
+
+export const TooltipContainer = styled.div`
+  position: relative;
+`;
+
+export const TooltipButton = styled.button`
+  background-color: #4caf50;
+  color: white; /* 텍스트 색상을 흰색으로 */
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+
+  &:hover {
+    background-color: #388e3c; /* hover 상태에서 더 진한 초록색 */
+  }
+`;
+
+export const TooltipContent = styled.div`
+  position: absolute;
+  right: 100%; /* 툴팁이 버튼의 왼쪽에 위치하도록 설정 */
+  top: 0;
+  margin-right: 10px; /* 버튼과 툴팁 사이의 간격 */
+  background-color: #f9f9f9;
+  padding: 10px 4px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 250px;
+  border-radius: 4px;
+`;
+export const GroupTitle = styled.h4`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+export const GroupDescription = styled.p`
+  font-size: 14px;
+  margin-top: 5px;
+`;
+// 설명 컨테이너 스타일
+export const DescriptionContainer = styled.div`
+  margin: 25px 0; /* 설명 컨테이너의 위아래 간격을 넉넉하게 설정 */
+  padding: 15px; /* 패딩을 좀 더 추가하여 내부 간격 확보 */
+  background-color: #f9f9f9;
+  border-left: 4px solid #4caf50;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`;
+
+// 설명 제목 스타일
+export const DescriptionTitle = styled.h3`
+  font-size: 1.2em;
+  color: #2c3e50; /* 짙은 색상으로 강조 */
+  margin-bottom: 10px; /* 제목과 다음 텍스트 사이 간격을 넓힘 */
+`;
+
+// 소개 텍스트 스타일
+export const DescriptionIntroText = styled.p`
+  font-size: 1em;
+  color: #34495e; /* 소개 텍스트를 짙은 파란 회색으로 설정 */
+  margin-bottom: 15px; /* 소개 텍스트와 점수 설명 텍스트 간 간격을 늘림 */
+`;
+
+// 점수 설명 텍스트 스타일
+export const DescriptionScoreText = styled.p`
+  font-size: 1em;
+  color: #2980b9; /* 밝은 푸른색 */
+  margin-bottom: 15px; /* 각 점수 설명 사이 간격을 넉넉하게 설정 */
 `;

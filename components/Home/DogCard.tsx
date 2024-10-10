@@ -258,15 +258,17 @@ const FixedImageContainer = styled(ImageContainer)`
   border-radius: 8px;
 `;
 
-const DetailButton = styled(Link)`
+const DetailButton = styled(Link) <{ isLoading: boolean }>`
   display: inline-block;
   width: 100%;
   margin: 3px auto;
-  background-color: #4caf50;
+  background-color: ${({ isLoading }) => (isLoading ? '#A9A9A9' : '#4caf50')}; // 로딩 중이면 회색
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
   text-align: center;
+  pointer-events: ${({ isLoading }) => (isLoading ? 'none' : 'auto')}; // 로딩 중이면 클릭 불가
+  transition: background-color 0.3s ease;
 `;
 
 const StyledImage = styled(Image)`
@@ -293,6 +295,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const setSelectedBreed = useStore(state => state.setSelectedBreed);
+  const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false); // 로딩 상태 관리
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -322,6 +325,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
 
   const handleDetailButtonClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation();
+    setIsLoadingDetail(true); // 로딩 상태 시작
     setSelectedBreed(breed);
   };
 
@@ -342,7 +346,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
         {loading ? (
           <LoaderContainer>
             <ClipLoader color="#4caf50" size={75} />
-        </LoaderContainer>
+          </LoaderContainer>
         ) : (
           imageUrl && (
             <StyledImage
@@ -415,8 +419,12 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
             showContent &&
             <BarSection>
               <BarContainer>
-                <DetailButton href={`/breeds/${breed.englishName.toLowerCase()}`} onClick={handleDetailButtonClick}>
-                    자세한 정보
+                <DetailButton
+                  href={`/breeds/${breed.englishName.toLowerCase()}`}
+                  onClick={handleDetailButtonClick}
+                  isLoading={isLoadingDetail}
+                >
+                  {isLoadingDetail ? '로딩 중...' : '자세한 정보'}
                 </DetailButton>
               </BarContainer>
             </BarSection>
