@@ -362,3 +362,33 @@ export const GroupDescription = styled.p`
   font-size: 14px;
   margin-top: 5px;
 `;
+// 설명 컨테이너 스타일
+export const DescriptionContainer = styled.div`
+  margin: 25px 0; /* 설명 컨테이너의 위아래 간격을 넉넉하게 설정 */
+  padding: 15px; /* 패딩을 좀 더 추가하여 내부 간격 확보 */
+  background-color: #f9f9f9;
+  border-left: 4px solid #4caf50;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`;
+
+// 설명 제목 스타일
+export const DescriptionTitle = styled.h3`
+  font-size: 1.2em;
+  color: #2c3e50; /* 짙은 색상으로 강조 */
+  margin-bottom: 10px; /* 제목과 다음 텍스트 사이 간격을 넓힘 */
+`;
+
+// 소개 텍스트 스타일
+export const DescriptionIntroText = styled.p`
+  font-size: 1em;
+  color: #34495e; /* 소개 텍스트를 짙은 파란 회색으로 설정 */
+  margin-bottom: 15px; /* 소개 텍스트와 점수 설명 텍스트 간 간격을 늘림 */
+`;
+
+// 점수 설명 텍스트 스타일
+export const DescriptionScoreText = styled.p`
+  font-size: 1em;
+  color: #2980b9; /* 밝은 푸른색 */
+  margin-bottom: 15px; /* 각 점수 설명 사이 간격을 넉넉하게 설정 */
+`;
