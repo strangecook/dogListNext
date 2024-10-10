@@ -214,7 +214,7 @@ export const CoatLengthWrapper = styled.div`
 `;
 
 export const CoatLengthItem = styled.div<{ selected: boolean }>`
-width: 66px;
+  width: 66px;
   padding: 8px 16px;
   border-radius: 20px;
   margin-right: 10px;
@@ -224,6 +224,7 @@ width: 66px;
   font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
   cursor: pointer;
   transition: all 0.3s ease;
+  text-align: center;  /* 텍스트 가운데 정렬 */
 
   &:hover {
     background-color: ${(props) => (props.selected ? '#388E3C' : '#e0e0e0')};

@@ -57,16 +57,6 @@ const toggleCoatLengthDescriptions = () => {
   setShowAllCoatLengthDescriptions((prevState) => !prevState);
 };
 
-// 마우스 오버 핸들링
-const handleCoatLengthMouseEnter = (length: string) => {
-  setHoveredCoatLength(length);
-};
-
-const handleCoatLengthMouseLeave = () => {
-  setHoveredCoatLength(null);
-};
-
-
   // 설명 전체를 토글하는 함수
   const toggleCoatDescriptions = () => {
     setShowAllCoatDescriptions((prevState) => !prevState);
@@ -337,8 +327,6 @@ const handleCoatLengthMouseLeave = () => {
     )}
   </TooltipContainer>
 </div>
-
-
           <CoatLengthWrapper>
             {[
               { name: '짧은', cm: 1 },
