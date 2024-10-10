@@ -47,6 +47,21 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false); // 클릭 상태 관리
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
+  const [hoveredCoatType, setHoveredCoatType] = useState<string | null>(null); // 현재 마우스가 올라간 털 종류
+  const [showAllCoatDescriptions, setShowAllCoatDescriptions] = useState(false);
+
+  // 설명 전체를 토글하는 함수
+  const toggleCoatDescriptions = () => {
+    setShowAllCoatDescriptions((prevState) => !prevState);
+  };
+
+  const handleCoatMouseEnter = (type: string) => {
+    setHoveredCoatType(type);
+  };
+
+  const handleCoatMouseLeave = () => {
+    setHoveredCoatType(null);
+  };
 
   const handleMouseEnter = (group: string) => {
     setHoveredGroup(group);
@@ -222,17 +237,51 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           <Divider />
 
           {/* 털 종류 */}
-          <CoatTypeTitle>털 종류</CoatTypeTitle>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <CoatTypeTitle>털 종류</CoatTypeTitle>
+
+            {/* 더보기 버튼 추가 */}
+            <TooltipContainer>
+              <TooltipButton onClick={toggleCoatDescriptions}>
+                {showAllCoatDescriptions ? '간단히' : '더보기'}
+              </TooltipButton>
+              {showAllCoatDescriptions && (
+                <TooltipContent>
+                  <Slider {...sliderSettings}>
+                    {Object.keys(coatTypeDescriptions).map((type) => (
+                      <div key={type} style={{ marginBottom: '10px' }}>
+                        <GroupTitle>{type}</GroupTitle>
+                        <GroupDescription>{coatTypeDescriptions[type]}</GroupDescription>
+                      </div>
+                    ))}
+                  </Slider>
+                </TooltipContent>
+              )}
+            </TooltipContainer>
+          </div>
+
           <CoatTypeWrapper>
             {coatTypes.map((type) => (
-              <CoatTypeItem
-                key={type}
-                selected={selectedBreed.coatType.includes(type)}   // 선택된 털 타입 강조
-              >
-                {type}
-              </CoatTypeItem>
+              <div style={{ position: 'relative' }} key={type}>
+                <CoatTypeItem
+                  selected={selectedBreed.coatType.includes(type)}   // 선택된 털 타입 강조
+                  onMouseEnter={() => handleCoatMouseEnter(type)}  // 마우스 오버 이벤트
+                  onMouseLeave={handleCoatMouseLeave}  // 마우스 떠나는 이벤트
+                >
+                  {type}
+                </CoatTypeItem>
+
+                {/* 마우스를 올렸을 때 툴팁 표시 */}
+                {hoveredCoatType === type && (
+                  <TooltipContent style={{ position: 'absolute', left: '100%', top: '0', marginLeft: '10px' }}>
+                    <GroupTitle>{type}</GroupTitle>
+                    <GroupDescription>{coatTypeDescriptions[type]}</GroupDescription>
+                  </TooltipContent>
+                )}
+              </div>
             ))}
           </CoatTypeWrapper>
+
           {/* 선택된 털 종류 설명 렌더링 */}
           {selectedBreed.coatType && (
             <GroupDescriptionContainer>
