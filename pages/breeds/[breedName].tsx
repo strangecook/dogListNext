@@ -49,6 +49,23 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const [hoveredCoatType, setHoveredCoatType] = useState<string | null>(null); // 현재 마우스가 올라간 털 종류
   const [showAllCoatDescriptions, setShowAllCoatDescriptions] = useState(false);
+  const [hoveredCoatLength, setHoveredCoatLength] = useState<string | null>(null);
+const [showAllCoatLengthDescriptions, setShowAllCoatLengthDescriptions] = useState(false);
+
+// 설명 전체를 토글하는 함수
+const toggleCoatLengthDescriptions = () => {
+  setShowAllCoatLengthDescriptions((prevState) => !prevState);
+};
+
+// 마우스 오버 핸들링
+const handleCoatLengthMouseEnter = (length: string) => {
+  setHoveredCoatLength(length);
+};
+
+const handleCoatLengthMouseLeave = () => {
+  setHoveredCoatLength(null);
+};
+
 
   // 설명 전체를 토글하는 함수
   const toggleCoatDescriptions = () => {
@@ -297,7 +314,31 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           <Divider />
 
           {/* 털 길이 */}
-          <GroupDescriptionTitle>털 길이 (cm)</GroupDescriptionTitle>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+  <GroupDescriptionTitle>털 길이 (cm)</GroupDescriptionTitle>
+
+  {/* 더보기 버튼 추가 */}
+  <TooltipContainer>
+    <TooltipButton onClick={toggleCoatLengthDescriptions}>
+      {showAllCoatLengthDescriptions ? '간단히' : '더보기'}
+    </TooltipButton>
+
+    {showAllCoatLengthDescriptions && (
+      <TooltipContent>
+        <Slider {...sliderSettings}>
+          {Object.keys(coatLengthDescriptions).map((length) => (
+            <div key={length} style={{ marginBottom: '10px' }}>
+              <GroupTitle>{length}</GroupTitle>
+              <GroupDescription>{coatLengthDescriptions[length]}</GroupDescription>
+            </div>
+          ))}
+        </Slider>
+      </TooltipContent>
+    )}
+  </TooltipContainer>
+</div>
+
+
           <CoatLengthWrapper>
             {[
               { name: '짧은', cm: 1 },
