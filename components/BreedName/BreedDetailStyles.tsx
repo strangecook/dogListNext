@@ -320,3 +320,44 @@ export const StyledStrongText = styled.strong`
   font-weight: bold;
   color: #000; /* 강조된 글씨 색상 */
 `;
+
+export const TooltipContainer = styled.div`
+  position: relative;
+`;
+
+export const TooltipButton = styled.button`
+  background-color: #4caf50;
+  color: white; /* 텍스트 색상을 흰색으로 */
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+
+  &:hover {
+    background-color: #388e3c; /* hover 상태에서 더 진한 초록색 */
+  }
+`;
+
+export const TooltipContent = styled.div`
+  position: absolute;
+  right: 100%; /* 툴팁이 버튼의 왼쪽에 위치하도록 설정 */
+  top: 0;
+  margin-right: 10px; /* 버튼과 툴팁 사이의 간격 */
+  background-color: #f9f9f9;
+  padding: 10px 4px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 250px;
+  border-radius: 4px;
+`;
+export const GroupTitle = styled.h4`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+export const GroupDescription = styled.p`
+  font-size: 14px;
+  margin-top: 5px;
+`;

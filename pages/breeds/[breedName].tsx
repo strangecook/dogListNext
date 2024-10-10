@@ -33,6 +33,11 @@ import {
   StyledText,
   StyledStrongText,
   StyledGroupDescriptionTitle,
+  TooltipContainer,
+  TooltipButton,
+  TooltipContent,
+  GroupTitle,
+  GroupDescription,
 } from '../../components/BreedName/BreedDetailStyles';
 import { Breed } from '../../types/Breed';
 import Head from 'next/head'; // Head 컴포넌트 추가
@@ -40,6 +45,11 @@ import { GetServerSideProps } from 'next'; // GetServerSideProps 추가
 
 const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], error: string | null }> = ({ selectedBreed, images, error }) => {
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false); // 클릭 상태 관리
+
+  const toggleTooltip = () => {
+    setShowTooltip((prevState) => !prevState); // 클릭할 때마다 토글
+  };
 
   useEffect(() => {
     if (selectedBreed) {
@@ -135,7 +145,30 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           <Divider />
 
           {/* 품종 그룹 */}
-          <GroupDescriptionTitle>품종 그룹</GroupDescriptionTitle>
+          {/* 품종 그룹 타이틀 및 더보기 버튼 */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <GroupDescriptionTitle>품종 그룹</GroupDescriptionTitle>
+
+            <TooltipContainer>
+              <TooltipButton onClick={toggleTooltip}>
+                {showTooltip ? '간단히' : '더보기'}
+              </TooltipButton>
+
+              {/* 클릭할 때 옆에 설명 표시 */}
+              {showTooltip && (
+                <TooltipContent>
+                  <Slider {...sliderSettings}>
+                    {Object.keys(breedGroupDescriptions).map((group) => (
+                      <div key={group} style={{ marginBottom: '10px' }}>
+                        <GroupTitle>{group}</GroupTitle>
+                        <GroupDescription>{breedGroupDescriptions[group]}</GroupDescription>
+                      </div>
+                    ))}
+                  </Slider>
+                </TooltipContent>
+              )}
+            </TooltipContainer>
+          </div>
           <BreedGroupWrapper>
             {
               [
