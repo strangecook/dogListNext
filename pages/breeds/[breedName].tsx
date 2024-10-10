@@ -46,6 +46,15 @@ import { GetServerSideProps } from 'next'; // GetServerSideProps 추가
 const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], error: string | null }> = ({ selectedBreed, images, error }) => {
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false); // 클릭 상태 관리
+  const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
+
+  const handleMouseEnter = (group: string) => {
+    setHoveredGroup(group);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredGroup(null);
+  };
 
   const toggleTooltip = () => {
     setShowTooltip((prevState) => !prevState); // 클릭할 때마다 토글
@@ -170,28 +179,38 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
             </TooltipContainer>
           </div>
           <BreedGroupWrapper>
-            {
-              [
-                '허딩',
-                '하운드',
-                '워킹',
-                '테리어',
-                '토이',
-                '스포팅',
-                '논스포팅',
-                '스피츠',
-              ].map((group) => {
-                return (
+            {[
+              '허딩',
+              '하운드',
+              '워킹',
+              '테리어',
+              '토이',
+              '스포팅',
+              '논스포팅',
+              '스피츠',
+            ].map((group) => {
+              return (
+                <div style={{ position: 'relative' }} key={group}>
                   <BreedGroupItem
-                    key={group}
-                    selected={!!(selectedBreed.breedGroup && selectedBreed.breedGroup.includes(group))}  // includes 결과를 불리언 값으로 변환
+                    selected={!!(selectedBreed.breedGroup && selectedBreed.breedGroup.includes(group))}
+                    onMouseEnter={() => handleMouseEnter(group)}  // 마우스 오버 이벤트
+                    onMouseLeave={handleMouseLeave}  // 마우스 떠나는 이벤트
                   >
                     {group}
                   </BreedGroupItem>
-                );
-              })
-            }
+
+                  {/* 마우스를 올렸을 때 툴팁 표시 */}
+                  {hoveredGroup === group && (
+                    <TooltipContent style={{ position: 'absolute', left: '100%', top: '0' }}>
+                      <GroupTitle>{group}</GroupTitle>
+                      <GroupDescription>{breedGroupDescriptions[group]}</GroupDescription>
+                    </TooltipContent>
+                  )}
+                </div>
+              );
+            })}
           </BreedGroupWrapper>
+
           {/* 선택된 그룹 설명 렌더링 */}
           {trimmedBreedGroup && Object.keys(breedGroupDescriptions).includes(trimmedBreedGroup) && (
             <GroupDescriptionContainer>
