@@ -75,6 +75,8 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
     return <DetailContainer>해당 강아지의 정보를 찾을 수 없습니다.</DetailContainer>;
   }
 
+  const trimmedBreedGroup = selectedBreed.breedGroup?.trim();
+
   return (
     <>
       <Head>
@@ -135,29 +137,33 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           {/* 품종 그룹 */}
           <GroupDescriptionTitle>품종 그룹</GroupDescriptionTitle>
           <BreedGroupWrapper>
-            {[
-              '허딩',
-              '하운드',
-              '워킹',
-              '테리어',
-              '토이',
-              '스포팅',
-              '논스포팅',
-              '스피츠',
-            ].map((group) => (
-              <BreedGroupItem
-                key={group}
-                selected={selectedBreed.breedGroup === group}  // 선택된 품종 그룹 강조
-              >
-                {group}
-              </BreedGroupItem>
-            ))}
+            {
+              [
+                '허딩',
+                '하운드',
+                '워킹',
+                '테리어',
+                '토이',
+                '스포팅',
+                '논스포팅',
+                '스피츠',
+              ].map((group) => {
+                return (
+                  <BreedGroupItem
+                    key={group}
+                    selected={!!(selectedBreed.breedGroup && selectedBreed.breedGroup.includes(group))}  // includes 결과를 불리언 값으로 변환
+                  >
+                    {group}
+                  </BreedGroupItem>
+                );
+              })
+            }
           </BreedGroupWrapper>
           {/* 선택된 그룹 설명 렌더링 */}
-          {selectedBreed.breedGroup && (
+          {trimmedBreedGroup && Object.keys(breedGroupDescriptions).includes(trimmedBreedGroup) && (
             <GroupDescriptionContainer>
               <GroupDescriptionTitle>품종 그룹 설명</GroupDescriptionTitle>
-              <GroupDescriptionText>{breedGroupDescriptions[selectedBreed.breedGroup]}</GroupDescriptionText>
+              <GroupDescriptionText>{breedGroupDescriptions[trimmedBreedGroup]}</GroupDescriptionText>
             </GroupDescriptionContainer>
           )}
 
