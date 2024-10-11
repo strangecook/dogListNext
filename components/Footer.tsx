@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 // 푸터 컨테이너 스타일
 const FooterContainer = styled.footer`
-  background-color: #2c3e50;
+  background-color: #272527;
   color: #ecf0f1;
   padding: 40px 20px;
   text-align: center;
