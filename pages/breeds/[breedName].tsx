@@ -231,7 +231,7 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
               return (
                 <div style={{ position: 'relative' }} key={group}>
                   <BreedGroupItem
-                    selected={!!(selectedBreed.breedGroup && selectedBreed.breedGroup.includes(group))}
+                    selected={selectedBreed.breedGroup?.trim() === group}  // trim() 사용하여 공백 제거 후 일치 여부 확인
                     onMouseEnter={!isMobile ? () => handleMouseEnter(group) : undefined}  // 모바일이 아닐 때만 툴팁 활성화
                     onMouseLeave={!isMobile ? handleMouseLeave : undefined}  // 모바일이 아닐 때만 툴팁 비활성화
                   >
@@ -250,12 +250,13 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
           </BreedGroupWrapper>
 
           {/* 선택된 그룹 설명 렌더링 */}
-          {trimmedBreedGroup && Object.keys(breedGroupDescriptions).includes(trimmedBreedGroup) && (
-            <GroupDescriptionContainer>
-              <GroupDescriptionTitle>품종 그룹 설명</GroupDescriptionTitle>
-              <GroupDescriptionText>{breedGroupDescriptions[trimmedBreedGroup]}</GroupDescriptionText>
-            </GroupDescriptionContainer>
-          )}
+          {trimmedBreedGroup &&
+            Object.keys(breedGroupDescriptions).some((group) => group.trim() === trimmedBreedGroup) && (
+              <GroupDescriptionContainer>
+                <GroupDescriptionTitle>품종 그룹 설명</GroupDescriptionTitle>
+                <GroupDescriptionText>{breedGroupDescriptions[trimmedBreedGroup]}</GroupDescriptionText>
+              </GroupDescriptionContainer>
+            )}
 
           <Divider />
 
