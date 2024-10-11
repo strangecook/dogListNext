@@ -351,7 +351,7 @@ export const TooltipContent = styled.div`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   width: 250px;
-  border-radius: 4px;
+  border-radius: 20px;
 `;
 export const GroupTitle = styled.h4`
   font-size: 16px;

@@ -3,7 +3,7 @@ import { TooltipButton, TooltipContent, TooltipContainer, DescriptionContainer, 
 import BarItem from './BarItem';
 
 // 재사용 가능한 설명 컴포넌트
-const ExpandableDescription: React.FC<{ emoji: any, title: string, introText: string, level: number, descriptions: string[] }> = ({ emoji, title, introText, level, descriptions }) => {
+const ExpandableDescription: React.FC<{ emoji: any, title: string, introText: string, level: number, descriptions: string[], reverse?: string }> = ({ emoji, title, introText, level, descriptions, reverse = "false" }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   // 툴팁 토글 함수
@@ -30,7 +30,7 @@ const ExpandableDescription: React.FC<{ emoji: any, title: string, introText: st
           )}
         </TooltipContainer>
       </div>
-      <BarItem emoji={emoji} label={title} level={level} />
+      <BarItem emoji={emoji} label={title} level={level} reverse={reverse} />
       {/* 간단한 설명 텍스트 */}
       <DescriptionIntroText>{introText}</DescriptionIntroText>
 
