@@ -39,6 +39,7 @@ import {
   GroupDescription,
 } from '../../components/BreedName/BreedDetailStyles';
 import ExpandableDescription from '../../components/BreedName/ExpandableDescription';
+import BarItem from '../../components/BreedName/BarItem';
 import { Breed } from '../../types/Breed';
 import Head from 'next/head'; // Head 컴포넌트 추가
 import { GetServerSideProps } from 'next'; // GetServerSideProps 추가
@@ -50,6 +51,7 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
   const [hoveredCoatType, setHoveredCoatType] = useState<string | null>(null); // 현재 마우스가 올라간 털 종류
   const [showAllCoatDescriptions, setShowAllCoatDescriptions] = useState(false);
   const [showAllCoatLengthDescriptions, setShowAllCoatLengthDescriptions] = useState(false);
+  const [showAllExpandableDescriptionDescriptions, setShowAllExpandableDescriptionDescriptions] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -68,6 +70,10 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
       window.removeEventListener('resize', checkMobile);
     };
   }, []);
+  // 설명 전체를 토글하는 함수
+  const toggleshowAllExpandableDescriptionDescriptions = () => {
+    setShowAllExpandableDescriptionDescriptions((prevState) => !prevState);
+  };
 
   // 설명 전체를 토글하는 함수
   const toggleCoatLengthDescriptions = () => {
@@ -384,7 +390,35 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
 
         </Section>
         <Section>
-          <GroupDescriptionTitle>성격 및 훈련</GroupDescriptionTitle>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <GroupDescriptionTitle>성격 및 훈련</GroupDescriptionTitle>
+            {/* 더보기 버튼 추가 */}
+            <TooltipContainer>
+              <TooltipButton onClick={toggleshowAllExpandableDescriptionDescriptions}>
+                {showAllExpandableDescriptionDescriptions ? '간단히' : '더보기'}
+              </TooltipButton>
+              {showAllExpandableDescriptionDescriptions && (
+                <TooltipContent>
+                  <>
+                    <BarItem emoji="🌟" label="적응력" level={selectedBreed.adaptabilityLevel} />
+                    <BarItem emoji="❤️" label="가족과의 애정" level={selectedBreed.affectionWithFamily} />
+                    <BarItem emoji="🐕" label="다른 개와의 친화력" level={selectedBreed.goodWithOtherDogs} />
+                    <BarItem emoji="👶" label="아이와의 친화력" level={selectedBreed.goodWithYoungChildren} />
+                    <BarItem emoji="🐾" label="타인에 대한 개방성" level={selectedBreed.opennessToStrangers} />
+                    <BarItem emoji="🛡️" label="보호 본능" level={selectedBreed.guardProtectiveInstinct} />
+                    <BarItem emoji="⚡" label="에너지 수준" level={selectedBreed.energyLevel} />
+                    <BarItem emoji="🎮" label="장난기" level={selectedBreed.playfulnessLevel} />
+                    <BarItem emoji="🧠" label="정신적 자극 필요도" level={selectedBreed.needsMentalStimulation} />
+                    <BarItem emoji="🎓" label="훈련 가능성" level={selectedBreed.trainabilityLevel} />
+                    <BarItem emoji="🪮" label="털 빠짐 정도" level={selectedBreed.sheddingLevel} reverse="true" />
+                    <BarItem emoji="🧼" label="그루밍 필요도" level={selectedBreed.groomingLevel} reverse="true" />
+                    <BarItem emoji="🗣️" label="짖는 수준" level={selectedBreed.barkingLevel} reverse="true" />
+                    <BarItem emoji="💧" label="침 흘림 수준" level={selectedBreed.droolingLevel} reverse="true" />
+                  </>
+                </TooltipContent>
+              )}
+            </TooltipContainer>
+          </div>
           <BarSection>
             {renderBars(selectedBreed)}
           </BarSection>
