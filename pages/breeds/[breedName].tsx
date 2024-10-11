@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
-import BarItem from '../../components/BreedName/BarItem';
 import { fetchImagesFromStorage, fetchAndStoreBreeds, getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
 import { sliderSettings } from '../../components/BreedName/SliderComponents';
 import {
@@ -38,10 +37,6 @@ import {
   TooltipContent,
   GroupTitle,
   GroupDescription,
-  DescriptionContainer,
-  DescriptionTitle,
-  DescriptionIntroText,
-  DescriptionScoreText,
 } from '../../components/BreedName/BreedDetailStyles';
 import ExpandableDescription from '../../components/BreedName/ExpandableDescription';
 import { Breed } from '../../types/Breed';
@@ -55,6 +50,24 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
   const [hoveredCoatType, setHoveredCoatType] = useState<string | null>(null); // 현재 마우스가 올라간 털 종류
   const [showAllCoatDescriptions, setShowAllCoatDescriptions] = useState(false);
   const [showAllCoatLengthDescriptions, setShowAllCoatLengthDescriptions] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // 모바일 여부를 감지하는 함수
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768); // 화면 너비가 768px 이하이면 모바일로 간주
+    };
+
+    checkMobile(); // 초기 로드 시 한 번 실행
+
+    // 윈도우 리사이즈 시 모바일 감지
+    window.addEventListener('resize', checkMobile);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
 
   // 설명 전체를 토글하는 함수
   const toggleCoatLengthDescriptions = () => {
@@ -219,14 +232,13 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
                 <div style={{ position: 'relative' }} key={group}>
                   <BreedGroupItem
                     selected={!!(selectedBreed.breedGroup && selectedBreed.breedGroup.includes(group))}
-                    onMouseEnter={() => handleMouseEnter(group)}  // 마우스 오버 이벤트
-                    onMouseLeave={handleMouseLeave}  // 마우스 떠나는 이벤트
+                    onMouseEnter={!isMobile ? () => handleMouseEnter(group) : undefined}  // 모바일이 아닐 때만 툴팁 활성화
+                    onMouseLeave={!isMobile ? handleMouseLeave : undefined}  // 모바일이 아닐 때만 툴팁 비활성화
                   >
                     {group}
                   </BreedGroupItem>
 
-                  {/* 마우스를 올렸을 때 툴팁 표시 */}
-                  {hoveredGroup === group && (
+                  {!isMobile && hoveredGroup === group && (  // 모바일이 아닐 때만 툴팁 표시
                     <TooltipContent style={{ position: 'absolute', left: '100%', top: '0' }}>
                       <GroupTitle>{group}</GroupTitle>
                       <GroupDescription>{breedGroupDescriptions[group]}</GroupDescription>
@@ -275,15 +287,14 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
             {coatTypes.map((type) => (
               <div style={{ position: 'relative' }} key={type}>
                 <CoatTypeItem
-                  selected={selectedBreed.coatType.includes(type)}   // 선택된 털 타입 강조
-                  onMouseEnter={() => handleCoatMouseEnter(type)}  // 마우스 오버 이벤트
-                  onMouseLeave={handleCoatMouseLeave}  // 마우스 떠나는 이벤트
+                  selected={selectedBreed.coatType.includes(type)}
+                  onMouseEnter={!isMobile ? () => handleCoatMouseEnter(type) : undefined}  // 모바일이 아닐 때만 툴팁 활성화
+                  onMouseLeave={!isMobile ? handleCoatMouseLeave : undefined}  // 모바일이 아닐 때만 툴팁 비활성화
                 >
                   {type}
                 </CoatTypeItem>
 
-                {/* 마우스를 올렸을 때 툴팁 표시 */}
-                {hoveredCoatType === type && (
+                {!isMobile && hoveredCoatType === type && (  // 모바일이 아닐 때만 툴팁 표시
                   <TooltipContent style={{ position: 'absolute', left: '100%', top: '0', marginLeft: '10px' }}>
                     <GroupTitle>{type}</GroupTitle>
                     <GroupDescription>{coatTypeDescriptions[type]}</GroupDescription>
@@ -316,7 +327,7 @@ const BreedDetail: React.FC<{ selectedBreed: Breed | null, images: string[], err
               <TooltipButton onClick={toggleCoatLengthDescriptions}>
                 {showAllCoatLengthDescriptions ? '간단히' : '더보기'}
               </TooltipButton>
-              
+
               {showAllCoatLengthDescriptions && (
                 <TooltipContent>
                   <Slider {...sliderSettings}>
@@ -571,6 +582,7 @@ const renderBars = (breed: Breed) => (
         '4점 - 자주 털이 빠집니다.',
         '5점 - 매우 자주 털이 빠집니다.'
       ]}
+      reverse="true"
     />
 
     {/* 그루밍 필요도 */}
@@ -586,6 +598,7 @@ const renderBars = (breed: Breed) => (
         '4점 - 자주 그루밍이 필요합니다.',
         '5점 - 매우 자주 그루밍이 필요합니다.'
       ]}
+      reverse="true"
     />
 
     {/* 짖는 수준 */}
@@ -601,6 +614,7 @@ const renderBars = (breed: Breed) => (
         '4점 - 자주 짖으며, 다양한 상황에서 짖습니다.',
         '5점 - 매우 자주 짖으며, 지속적으로 짖습니다.'
       ]}
+      reverse="true"
     />
 
     {/* 침 흘림 수준 */}
@@ -616,6 +630,7 @@ const renderBars = (breed: Breed) => (
         '4점 - 자주 침을 흘립니다.',
         '5점 - 매우 자주 침을 흘립니다.'
       ]}
+      reverse="true"
     />
   </>
 );
