@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { DescriptionCover, CombinedImageContainer, Context, Notification, StyledImage } from './styles/DescriptionpageCss';
+import { DescriptionCover, CombinedImageContainer, Context, Notification } from './styles/DescriptionpageCss';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import dogLogoImage from '../../public/mainwebImage.webp';
