@@ -23,6 +23,7 @@ interface Preferences {
   coatLength: string;
   barkingPreference: string;
   playfulnessPreference: string;
+  trainingExperience: string;
 }
 
 interface DogPreferencesProps {
@@ -53,6 +54,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
     coatLength: '',
     barkingPreference: '',
     playfulnessPreference: '',
+    trainingExperience: '',
   });
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -417,6 +419,66 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
             오랜 시간 참을 수 있다
           </label>
         </CheckboxContainer>
+
+        <QuestionGroup />
+
+        <Label>강아지를 훈련시킨 경험이 얼마나 있습니까?</Label>
+        <CheckboxContainer>
+          <label>
+            <input
+              type="radio"
+              name="trainingExperience"
+              value="전혀 없다"
+              onChange={handleRadioChange}
+            />
+            전혀 없다
+          </label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <label>
+            <input
+              type="radio"
+              name="trainingExperience"
+              value="기본적인 훈련만 시켜본 적이 있다"
+              onChange={handleRadioChange}
+            />
+            기본적인 훈련만 시켜본 적이 있다
+          </label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <label>
+            <input
+              type="radio"
+              name="trainingExperience"
+              value="몇 가지 명령어를 가르쳐본 적이 있다"
+              onChange={handleRadioChange}
+            />
+            몇 가지 명령어를 가르쳐본 적이 있다
+          </label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <label>
+            <input
+              type="radio"
+              name="trainingExperience"
+              value="정기적으로 훈련을 시켜본 경험이 있다"
+              onChange={handleRadioChange}
+            />
+            정기적으로 훈련을 시켜본 경험이 있다
+          </label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <label>
+            <input
+              type="radio"
+              name="trainingExperience"
+              value="전문적인 훈련 경험이 있다"
+              onChange={handleRadioChange}
+            />
+            전문적인 훈련 경험이 있다
+          </label>
+        </CheckboxContainer>
+
 
         <QuestionGroup />
 
