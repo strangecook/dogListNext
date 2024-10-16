@@ -50,6 +50,10 @@ export const CheckboxContainer = styled.div`
   @media (max-width: 768px) {
     margin-bottom: 8px;
   }
+  label {
+    cursor: pointer; /* 포인터 커서 추가 */
+  }
+
 `;
 
 // 공통으로 사용할 레이블 스타일
