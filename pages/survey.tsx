@@ -14,8 +14,13 @@ const SurveyIntro: React.FC = () => {
   };
 
   const handleNextStep = () => {
-    setStep((prevStep) => prevStep + 1); // 다음 단계로 이동
+    setStep((prevStep) => Math.min(prevStep + 1, 3)); // 마지막 단계를 넘지 않도록
   };
+
+  const handlePreviousStep = () => {
+    setStep((prevStep) => Math.max(prevStep - 1, 0)); // 첫 번째 단계 아래로 내려가지 않도록
+  };
+
 
   return (
     <SurveyContainer step={step}>
@@ -30,16 +35,15 @@ const SurveyIntro: React.FC = () => {
         </IntroContainer>
       )}
 
-      {step === 1 && <UserInformation onNext={handleNextStep} />} {/* 유저 정보 페이지 */}
-      {step === 2 && <UserLifestyle onNext={handleNextStep} />} {/* 유저 생활 패턴 페이지 */}
-      {step === 3 && <DogPreferences onNext={handleNextStep} />} {/* 강아지 선호 페이지 */}
+{step === 1 && <UserInformation onNext={handleNextStep} onPrevious={handlePreviousStep} />} {/* 유저 정보 페이지 */}
+      {step === 2 && <UserLifestyle onNext={handleNextStep} onPrevious={handlePreviousStep} />} {/* 유저 생활 패턴 페이지 */}
+      {step === 3 && <DogPreferences onNext={handleNextStep} onPrevious={handlePreviousStep} />} {/* 강아지 선호 페이지 */}
     </SurveyContainer>
   );
 };
 
 // 스타일 정의
 const SurveyContainer = styled.div<{ step: number }>`
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,6 +52,7 @@ const SurveyContainer = styled.div<{ step: number }>`
       ? `url(${dogLogoImage.src}) no-repeat center center`
       : '#E2EEE0'};
   background-size: cover;
+  min-height: ${(props) => (props.step === 0 ? '100vh' : 'auto')}; /* 처음 페이지만 100vh 적용 */
 
   // 모바일 화면에서는 첫 단계(인트로)에서 다른 배경 이미지로 변경
   @media (max-width: 768px) {
@@ -56,6 +61,7 @@ const SurveyContainer = styled.div<{ step: number }>`
         ? `url(${dogMediaImage.src}) no-repeat center center`
         : '#E2EEE0'};
     background-size: cover;
+    min-height: ${(props) => (props.step === 0 ? '100vh' : 'auto')}; /* 모바일에서도 첫 페이지만 100vh 적용 */
   }
 `;
 
