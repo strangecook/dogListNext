@@ -93,3 +93,7 @@ export const FormTitle = styled.h2`
     font-size: 18px;
   }
 `;
+
+export const QuestionGroup = styled.div`
+  margin-bottom: 20px; // 각 질문 그룹 간에 20px 간격을 추가
+`;
