@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormContainer, NavigationButton, Label, ButtonContainer, FormTitle, Blocked, CheckboxContainer } from './commonStyles'; // 공통 스타일을 가져옴
+import { FormContainer, NavigationButton, Label, ButtonContainer, FormTitle, Blocked, CheckboxContainer, QuestionGroup } from './commonStyles'; // 공통 스타일을 가져옴
 
 interface Preferences {
   dogSize: string[];
@@ -101,7 +101,133 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>아니오</label>
         </CheckboxContainer>
-
+        <QuestionGroup/>
+        {/* 강아지를 입양하거나 구입할 수 있는 예산 */}
+        <Label>강아지를 입양하거나 구입할 수 있는 예산이 얼마입니까?</Label>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="budgetForAdoption"
+            value="10만 원 미만"
+            onChange={handleCheckboxChange}
+          />
+          <label>10만 원 미만</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="budgetForAdoption"
+            value="10만 원 ~ 50만 원"
+            onChange={handleCheckboxChange}
+          />
+          <label>10만 원 ~ 50만 원</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="budgetForAdoption"
+            value="50만 원 ~ 100만 원"
+            onChange={handleCheckboxChange}
+          />
+          <label>50만 원 ~ 100만 원</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="budgetForAdoption"
+            value="100만 원 이상"
+            onChange={handleCheckboxChange}
+          />
+          <label>100만 원 이상</label>
+        </CheckboxContainer>
+        <QuestionGroup/>
+        {/* 매달 강아지의 사료, 병원비, 용품비 지출 가능 금액 */}
+        <Label>매달 강아지의 사료, 병원비, 용품비 등을 지출할 수 있는 금액은 얼마입니까?</Label>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="monthlyExpense"
+            value="5만 원 이하"
+            onChange={handleCheckboxChange}
+          />
+          <label>5만 원 이하</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="monthlyExpense"
+            value="5만 원 ~ 10만 원"
+            onChange={handleCheckboxChange}
+          />
+          <label>5만 원 ~ 10만 원</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="monthlyExpense"
+            value="10만 원 ~ 20만 원"
+            onChange={handleCheckboxChange}
+          />
+          <label>10만 원 ~ 20만 원</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="monthlyExpense"
+            value="20만 원 이상"
+            onChange={handleCheckboxChange}
+          />
+          <label>20만 원 이상</label>
+        </CheckboxContainer>
+        <QuestionGroup/>
+        {/* 강아지가 얼마나 주인을 따르길 원하십니까 */}
+        <Label>강아지가 얼마나 주인을 따르길 원하십니까?</Label>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="obedienceLevel"
+            value="독립적인 성향을 원한다"
+            onChange={handleCheckboxChange}
+          />
+          <label>독립적인 성향을 원한다</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="obedienceLevel"
+            value="가끔은 독립적이고 가끔은 따랐으면 좋겠다"
+            onChange={handleCheckboxChange}
+          />
+          <label>가끔은 독립적이고 가끔은 따랐으면 좋겠다</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="obedienceLevel"
+            value="주인을 잘 따르면서도 독립적인 성향을 가졌으면 좋겠다"
+            onChange={handleCheckboxChange}
+          />
+          <label>주인을 잘 따르면서도 독립적인 성향을 가졌으면 좋겠다</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="obedienceLevel"
+            value="주인을 거의 항상 따르길 원한다"
+            onChange={handleCheckboxChange}
+          />
+          <label>주인을 거의 항상 따르길 원한다</label>
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <input
+            type="checkbox"
+            name="obedienceLevel"
+            value="주인에게 강하게 의존하며 항상 따르길 원한다"
+            onChange={handleCheckboxChange}
+          />
+          <label>주인에게 강하게 의존하며 항상 따르길 원한다</label>
+        </CheckboxContainer>
+        <QuestionGroup/>
         <Label>강아지가 낯선 사람을 얼마나 경계하길 원하십니까?</Label>
         <CheckboxContainer>
           <input
@@ -130,7 +256,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>낯선 사람에게 강하게 경계심을 가졌으면 좋겠다</label>
         </CheckboxContainer>
-
+        <QuestionGroup/>
         <Label>강아지와 얼마나 자주 소통을 하고 싶은가요?</Label>
         <CheckboxContainer>
           <input
@@ -168,7 +294,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>자주 상호작용하며, 많이 시간을 보낼 수 있다</label>
         </CheckboxContainer>
-
+        <QuestionGroup/>
         <Label>강아지가 훈련에 얼마나 빠르게 적응하길 원하십니까?</Label>
         <CheckboxContainer>
           <input
@@ -197,7 +323,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>빠르게 배웠으면 좋겠다</label>
         </CheckboxContainer>
-
+        <QuestionGroup/>
         <Label>훈련 도중 인내심을 얼마나 유지할 수 있습니까?</Label>
         <CheckboxContainer>
           <input
@@ -235,6 +361,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>오랜 시간 참을 수 있다</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지와의 상호작용에서 무엇을 더 중요하게 생각하십니까?</Label>
         <CheckboxContainer>
@@ -264,6 +391,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>독립적인 성향을 존중</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>털 알레르기가 있거나 알레르기 걱정이 되십니까?</Label>
         <CheckboxContainer>
@@ -284,6 +412,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>아니오</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지가 침을 많이 흘린다면, 얼마나 신경 쓰일 것 같습니까?</Label>
         <CheckboxContainer>
@@ -313,6 +442,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>자주 닦아야 한다면 불편할 것 같다</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지의 털 빠짐을 얼마나 감당할 수 있습니까?</Label>
         <CheckboxContainer>
@@ -342,6 +472,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>털 빠짐이 적은 강아지를 원한다</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지를 얼마나 자주 목욕시킬 의향이 있습니까?</Label>
         <CheckboxContainer>
@@ -380,6 +511,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>가능하면 자주 하지 않기를 원한다</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지의 털을 얼마나 자주 손질할 의향이 있으십니까?</Label>
         <CheckboxContainer>
@@ -418,6 +550,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>털 관리가 적게 필요했으면 좋겠다</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지의 털 유형 중 어떤 것을 선호하십니까?</Label>
         <CheckboxContainer>
@@ -447,6 +580,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>털이 거의 없는 무모견</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지의 털 길이 중 어느 것을 선호하십니까?</Label>
         <CheckboxContainer>
@@ -476,6 +610,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>긴 털</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>어떤 크기의 강아지를 선호하십니까?</Label>
         <CheckboxContainer>
@@ -505,6 +640,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>대형견</label>
         </CheckboxContainer>
+        <QuestionGroup/>
 
         <Label>강아지가 언제 짖으면 좋겠나요?</Label>
         <CheckboxContainer>
@@ -534,7 +670,8 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           />
           <label>다양한 상황에서 짖는다</label>
         </CheckboxContainer>
-
+        <QuestionGroup/>
+        
         <Label>강아지의 장난기 수준을 얼마나 원하십니까?</Label>
         <CheckboxContainer>
           <input
