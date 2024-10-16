@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormContainer, NavigationButton, Label, ButtonContainer, FormTitle, Blocked, CheckboxContainer, QuestionGroup } from './commonStyles'; // 공통 스타일을 가져옴
 
 interface Preferences {
@@ -69,6 +69,12 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
       }));
     }
   };
+
+      // 페이지가 렌더링될 때마다 스크롤을 최상단으로 이동
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+    
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -671,7 +677,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
           <label>다양한 상황에서 짖는다</label>
         </CheckboxContainer>
         <QuestionGroup/>
-        
+
         <Label>강아지의 장난기 수준을 얼마나 원하십니까?</Label>
         <CheckboxContainer>
           <input

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormContainer, NavigationButton, Label, CheckboxContainer, ButtonContainer, FormTitle, Blocked, QuestionGroup } from './commonStyles'; // 공통 스타일 가져옴
 
 interface Lifestyle {
@@ -46,6 +46,12 @@ const UserLifestyle: React.FC<UserLifestyleProps> = ({ onNext, onPrevious }) => 
       }
     });
   };
+
+    // 페이지가 렌더링될 때마다 스크롤을 최상단으로 이동
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
