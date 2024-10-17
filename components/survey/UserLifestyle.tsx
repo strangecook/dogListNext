@@ -1,36 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { FormContainer, NavigationButton, Label, CheckboxContainer, ButtonContainer, FormTitle, Blocked, QuestionGroup } from './commonStyles'; // 공통 스타일 가져옴
-
-interface Lifestyle {
-  familyTime: string; // 가족과 보내는 시간
-  aloneTime: string; // 혼자 있는 시간
-  aloneTimeSolution: string; // 혼자 있는 시간 대처 방안
-  cleaningFrequency: string; // 청소 빈도
-  walkingPark: string; // 산책할 수 있는 공원 여부
-  walkingFrequency: string; // 산책 빈도
-  cookingPreference: string; // 요리 선호도
-}
+import { SurveyData } from './SurveyDataType';
 
 interface UserLifestyleProps {
-  onNext: () => void;
-  onPrevious: () => void;
+  onNext: () => void; // 다음 단계로 이동하는 함수
+  onPrevious: () => void; // 이전 단계로 돌아가는 함수
+  userInfo: SurveyData;
+  setUserInfo: React.Dispatch<React.SetStateAction<SurveyData>>;
 }
-
-const UserLifestyle: React.FC<UserLifestyleProps> = ({ onNext, onPrevious }) => {
-  const [lifestyle, setLifestyle] = useState<Lifestyle>({
-    familyTime: '',
-    aloneTime: '',
-    aloneTimeSolution: '',
-    cleaningFrequency: '',
-    walkingPark: '',
-    walkingFrequency: '',
-    cookingPreference: '',
-  });
+const UserLifestyle: React.FC<UserLifestyleProps> = ({ onNext, onPrevious, userInfo, setUserInfo }) => {
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLifestyle({
-      ...lifestyle,
+    setUserInfo({
+      ...userInfo,
       [name]: value,
     });
   };
@@ -42,7 +25,7 @@ const UserLifestyle: React.FC<UserLifestyleProps> = ({ onNext, onPrevious }) => 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('유저 생활 패턴 제출:', lifestyle);
+    console.log('유저 생활 패턴 제출:', userInfo);
     onNext();
   };
 

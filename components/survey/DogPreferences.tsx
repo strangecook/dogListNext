@@ -1,66 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { FormContainer, NavigationButton, Label, ButtonContainer, FormTitle, Blocked, CheckboxContainer, QuestionGroup } from './commonStyles'; // 공통 스타일을 가져옴
-
-interface Preferences {
-  dogSize: string;
-  coatType: string;
-  playfulnessLevel: string;
-  budget: string;
-  monthlyExpenses: string;
-  loyalty: string;
-  strangerCaution: string;
-  interactionFrequency: string;
-  trainingSpeed: string;
-  patienceLevel: string;
-  firstTimeOwner: string;
-  interactionImportance: string;
-  allergyConcern: string;
-  droolingConcern: string;
-  sheddingTolerance: string;
-  bathingFrequency: string;
-  groomingFrequency: string;
-  coatPreference: string;
-  coatLength: string;
-  barkingPreference: string;
-  playfulnessPreference: string;
-  trainingExperience: string;
-}
+import { SurveyData } from './SurveyDataType';
 
 interface DogPreferencesProps {
-  onNext: () => void;
-  onPrevious: () => void;
+  onNext: () => void; // 다음 단계로 이동하는 함수
+  onPrevious: () => void; // 이전 단계로 돌아가는 함수
+  userInfo: SurveyData;
+  setUserInfo: React.Dispatch<React.SetStateAction<SurveyData>>;
 }
 
-const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) => {
-  const [preferences, setPreferences] = useState<Preferences>({
-    dogSize: '',
-    coatType: '',
-    playfulnessLevel: '',
-    budget: '',
-    monthlyExpenses: '',
-    loyalty: '',
-    strangerCaution: '',
-    interactionFrequency: '',
-    trainingSpeed: '',
-    patienceLevel: '',
-    firstTimeOwner: '',
-    interactionImportance: '',
-    allergyConcern: '',
-    droolingConcern: '',
-    sheddingTolerance: '',
-    bathingFrequency: '',
-    groomingFrequency: '',
-    coatPreference: '',
-    coatLength: '',
-    barkingPreference: '',
-    playfulnessPreference: '',
-    trainingExperience: '',
-  });
+const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious, userInfo, setUserInfo }) => {
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPreferences({
-      ...preferences,
+    setUserInfo({
+      ...userInfo,
       [name]: value,
     });
   };
@@ -72,7 +26,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious }) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('강아지 선호 사항 제출:', preferences);
+    console.log('강아지 선호 사항 제출:', userInfo);
     onNext(); // 다음 단계로 이동
   };
 

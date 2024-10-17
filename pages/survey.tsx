@@ -5,9 +5,50 @@ import UserLifestyle from '../components/survey/UserLifestyle'; // 유저 생활
 import DogPreferences from '../components/survey/DogPreferences'; // 강아지 선호 페이지
 import dogLogoImage from '../public/mainwebImage.webp'; // 데스크탑 배경 이미지
 import dogMediaImage from '../public/mediaImage.webp'; // 모바일 배경 이미지
+import { SurveyData } from '../components/survey/SurveyDataType';
 
 const SurveyIntro: React.FC = () => {
   const [step, setStep] = useState<number>(0); // 0: 시작, 1: 유저 정보, 2: 유저 생활 패턴, 3: 강아지 선호
+  const [userInfo, setUserInfo] = useState<SurveyData>({
+    age: '', 
+    incomeSource: '',
+    housingType: '',
+    indoorSpace: '',
+    movingPossibility: '',
+    petDiscussion: '',
+    familyDiscussion: '',
+    hasChildren: '',
+    otherPets: '',
+    otherDogs: '',
+    neighborHasPets: '',
+    familyTime: '',
+    aloneTime: '',
+    aloneTimeSolution: '',
+    cleaningFrequency: '',
+    walkingPark: '',
+    walkingFrequency: '',
+    cookingPreference: '',
+    monthlyExpenses: '',
+    loyalty: '',
+    strangerCaution: '',
+    interactionFrequency: '',
+    trainingSpeed: '',
+    patienceLevel: '',
+    firstTimeOwner: '',
+    interactionImportance: '',
+    allergyConcern: '',
+    droolingConcern: '',
+    sheddingTolerance: '',
+    bathingFrequency: '',
+    groomingFrequency: '',
+    coatPreference: '',
+    coatLength: '',
+    barkingPreference: '',
+    playfulnessPreference: '',
+    trainingExperience: '',
+    dogSize: '', 
+    coatType: '',
+  });
 
   const handleStartClick = () => {
     setStep(1); // 첫 번째 단계로 이동 (유저 정보)
@@ -35,9 +76,30 @@ const SurveyIntro: React.FC = () => {
         </IntroContainer>
       )}
 
-{step === 1 && <UserInformation onNext={handleNextStep} onPrevious={handlePreviousStep} />} {/* 유저 정보 페이지 */}
-      {step === 2 && <UserLifestyle onNext={handleNextStep} onPrevious={handlePreviousStep} />} {/* 유저 생활 패턴 페이지 */}
-      {step === 3 && <DogPreferences onNext={handleNextStep} onPrevious={handlePreviousStep} />} {/* 강아지 선호 페이지 */}
+{step === 1 && (
+  <UserInformation 
+    onNext={handleNextStep} 
+    onPrevious={handlePreviousStep} 
+    userInfo={userInfo} 
+    setUserInfo={setUserInfo}
+  />
+)}
+   {/* 유저 정보 페이지 */}
+   {step === 2 && (
+  <UserLifestyle 
+    onNext={handleNextStep} 
+    onPrevious={handlePreviousStep} 
+    userInfo={userInfo} 
+    setUserInfo={setUserInfo}
+  />
+)} {/* 유저 생활 패턴 페이지 */}
+      {step === 3 && 
+      <DogPreferences 
+      onNext={handleNextStep} 
+      onPrevious={handlePreviousStep} 
+      userInfo={userInfo} 
+      setUserInfo={setUserInfo}
+      />} {/* 강아지 선호 페이지 */}
     </SurveyContainer>
   );
 };

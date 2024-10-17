@@ -1,46 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { FormContainer, NavigationButton, CheckboxContainer, Label, ButtonContainer, Blocked, FormTitle, QuestionGroup } from './commonStyles'; // 공통 스타일 가져오기
-
-interface UserInfo {
-  [key: string]: string[]; // 유저 정보는 문자열 배열로 저장됨
-  age: string[]; // 나이
-  incomeSource: string[]; // 수입원
-  housingType: string[]; // 주거 형태
-  indoorSpace: string[];
-  movingPossibility: string[]; // 이사 가능성
-  petDiscussion: string[]; // 이웃/집주인과 강아지를 키우는 것에 대한 논의
-  familyDiscussion: string[]; // 가족과 강아지를 키우는 것에 대한 논의
-  hasChildren: string[]; // 자녀 여부
-  otherPets: string[]; // 다른 반려동물 여부
-  otherDogs: string[]; // 다른 강아지 여부
-  neighborHasPets: string[]; // 이웃이 반려동물을 키우는지 여부
-}
+import { SurveyData } from './SurveyDataType';
 
 interface UserInformationProps {
   onNext: () => void; // 다음 단계로 이동하는 함수
   onPrevious: () => void; // 이전 단계로 돌아가는 함수
+  userInfo: SurveyData;
+  setUserInfo: React.Dispatch<React.SetStateAction<SurveyData>>;
 }
 
-const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious }) => {
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    age: [], // 나이 선택 초기값
-    incomeSource: [], // 수입원 선택 초기값
-    housingType: [], // 주거 형태 선택 초기값
-    indoorSpace: [],
-    movingPossibility: [], // 이사 가능성 선택 초기값
-    petDiscussion: [], // 이웃/집주인 논의 초기값
-    familyDiscussion: [], // 가족 논의 초기값
-    hasChildren: [], // 자녀 여부 초기값
-    otherPets: [], // 다른 반려동물 여부 초기값
-    otherDogs: [], // 다른 강아지 여부 초기값
-    neighborHasPets: [], // 이웃의 반려동물 여부 초기값
-  });
+const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, userInfo, setUserInfo }) => {
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo({
       ...userInfo,
-      [name]: [value], // 라디오 버튼은 선택된 하나의 값만 배열에 넣음
+      [name]: value, // 라디오 버튼은 선택된 하나의 값만 배열에 넣음
     });
   };
 
