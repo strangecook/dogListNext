@@ -50,10 +50,20 @@ export const CheckboxContainer = styled.div`
   @media (max-width: 768px) {
     margin-bottom: 8px;
   }
+
   label {
     cursor: pointer; /* 포인터 커서 추가 */
   }
 
+  /* 라디오 버튼이 체크되었을 때 라벨에 스타일 적용 */
+  input[type="radio"]:checked + label {
+    font-weight: bold; /* 글자를 굵게 */
+    color: #4caf50; /* 라벨 색상을 초록색으로 변경 */
+  }
+
+  input[type="radio"] {
+    margin-right: 8px; /* 라디오 버튼과 라벨 간 간격 */
+  }
 `;
 
 // 공통으로 사용할 레이블 스타일
