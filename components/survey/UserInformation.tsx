@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FormContainer, NavigationButton, CheckboxContainer, Label, ButtonContainer, Blocked, FormTitle, QuestionGroup } from './commonStyles'; // 공통 스타일 가져오기
+import { FormContainer, NavigationButton, CheckboxContainer, Label, ButtonContainer, Blocked, FormTitle } from './commonStyles'; // 공통 스타일 가져오기
 import { SurveyData } from './SurveyDataType';
+import { QuestionGroup } from './QuestionGroup';
 
 interface UserInformationProps {
   onNext: () => void; // 다음 단계로 이동하는 함수
@@ -35,77 +36,21 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
       <form onSubmit={handleSubmit}>
         <Blocked />
         <FormTitle>유저 정보</FormTitle>
-        <QuestionGroup>
 
-          <Label>나이가 몇 세이신가요?</Label>
-          <CheckboxContainer>
-            <label>
-              <input
-                type="radio"
-                name="age"
-                value="10대"
-                onChange={handleRadioChange}
-              />
-              10대
-            </label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <label>
-              <input
-                type="radio"
-                name="age"
-                value="20대"
-                onChange={handleRadioChange}
-              />
-              20대
-            </label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <label>
-              <input
-                type="radio"
-                name="age"
-                value="30대"
-                onChange={handleRadioChange}
-              />
-              30대
-            </label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <label>
-              <input
-                type="radio"
-                name="age"
-                value="40대"
-                onChange={handleRadioChange}
-              />
-              40대
-            </label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <label>
-              <input
-                type="radio"
-                name="age"
-                value="50대"
-                onChange={handleRadioChange}
-              />
-              50대
-            </label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <label>
-              <input
-                type="radio"
-                name="age"
-                value="60대"
-                onChange={handleRadioChange}
-              />
-              60대이상
-            </label>
-          </CheckboxContainer>
-
-        </QuestionGroup>
+        <QuestionGroup
+          question="나이가 몇 세이신가요?"
+          name="age"
+          options={[
+            { label: '10대', value: '10대' },
+            { label: '20대', value: '20대' },
+            { label: '30대', value: '30대' },
+            { label: '40대', value: '40대' },
+            { label: '50대', value: '50대' },
+            { label: '60대 이상', value: '60대' },
+          ]}
+          selectedValue={userInfo.age}
+          onChange={handleRadioChange}
+        />
 
         <Label>정기적인 수입이 있습니까?</Label>
         <CheckboxContainer>
@@ -153,7 +98,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>현재 살고 있는 곳은 어떤 유형의 주거 형태입니까?</Label>
         <CheckboxContainer>
@@ -190,7 +134,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>강아지가 안전하게 활동할 수 있는 실내 공간이 있습니까?</Label>
         <CheckboxContainer>
@@ -227,7 +170,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>1~2년 내에 이사할 가능성이 있습니까?</Label>
         <CheckboxContainer>
@@ -264,7 +206,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>이웃이나 집주인과 강아지를 키우는 것에 대한 이야기가 되었나요?</Label>
         <CheckboxContainer>
@@ -301,7 +242,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>가족과 강아지를 키우는 것에 대한 이야기가 되었나요?</Label>
         <CheckboxContainer>
@@ -338,7 +278,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>자녀가 있습니까?</Label>
         <CheckboxContainer>
@@ -364,7 +303,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>다른 반려동물을 키우고 있습니까?</Label>
         <CheckboxContainer>
@@ -390,7 +328,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
           </label>
         </CheckboxContainer>
 
-        <QuestionGroup />
 
         <Label>다른 강아지를 키우고 있습니까?</Label>
         <CheckboxContainer>
@@ -437,8 +374,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
             아니오
           </label>
         </CheckboxContainer>
-
-        <QuestionGroup />
 
         <Label>현재 거주 중인 곳에 다른 반려동물을 키우는 이웃이 있습니까?</Label>
         <CheckboxContainer>
