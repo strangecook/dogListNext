@@ -21,7 +21,10 @@ const SurveyIntro: React.FC = () => {
     otherPets: '',
     otherDogs: '',
     neighborHasPets: '',
+    dogSpentTime: '',
     familyTime: '',
+    noiseLevel:'',
+    musicPreference:'',
     aloneTime: '',
     aloneTimeSolution: '',
     cleaningFrequency: '',
@@ -29,7 +32,9 @@ const SurveyIntro: React.FC = () => {
     walkingFrequency: '',
     cookingPreference: '',
     monthlyExpenses: '',
-    loyalty: '',
+    budgetForAdoption: '',
+    monthlyExpense: '',
+    obedienceLevel: '',
     strangerCaution: '',
     interactionFrequency: '',
     trainingSpeed: '',
@@ -47,7 +52,6 @@ const SurveyIntro: React.FC = () => {
     playfulnessPreference: '',
     trainingExperience: '',
     dogSize: '', 
-    coatType: '',
   });
 
   const handleStartClick = () => {

@@ -13,8 +13,11 @@ export interface SurveyData {
     neighborHasPets: string;
   
     // Lifestyle
+    dogSpentTime: string;
     familyTime: string;
+    noiseLevel: string;
     aloneTime: string;
+    musicPreference: string;
     aloneTimeSolution: string;
     cleaningFrequency: string;
     walkingPark: string;
@@ -23,9 +26,10 @@ export interface SurveyData {
   
     // Dog Preferences
     dogSize: string;
-    coatType: string;
     monthlyExpenses: string;
-    loyalty: string;
+    budgetForAdoption: string;
+    monthlyExpense: string;
+    obedienceLevel: string;
     strangerCaution: string;
     interactionFrequency: string;
     trainingSpeed: string;
