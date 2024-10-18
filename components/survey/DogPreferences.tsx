@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FormContainer, NavigationButton, ButtonContainer, FormTitle, Blocked } from './commonStyles'; // 공통 스타일을 가져옴
 import { SurveyData } from './SurveyDataType';
 import { QuestionGroup } from './QuestionGroup';
+import { calculateScore } from './UserTest';
 
 interface DogPreferencesProps {
   onNext: () => void; // 다음 단계로 이동하는 함수
@@ -27,6 +28,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious, use
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log( "실험하기" ,calculateScore(userInfo))
     console.log('강아지 선호 사항 제출:', userInfo);
     onNext(); // 다음 단계로 이동
   };
