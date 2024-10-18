@@ -43,26 +43,32 @@ export const NavigationButton = styled.button`
   }
 `;
 
-// 공통으로 사용할 체크박스 컨테이너 스타일
-export const CheckboxContainer = styled.div`
+
+interface CheckboxContainerProps {
+  checked: boolean;
+}
+
+export const CheckboxContainer = styled.div<CheckboxContainerProps>`
   margin-bottom: 10px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 8px;
-  }
-
+  
   label {
-    cursor: pointer; /* 포인터 커서 추가 */
-  }
-
-  /* 라디오 버튼이 체크되었을 때 라벨에 스타일 적용 */
-  input[type="radio"]:checked + label {
-    font-weight: bold; /* 글자를 굵게 */
-    color: #4caf50; /* 라벨 색상을 초록색으로 변경 */
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: ${({ checked }) => (checked ? '#DFF0D8' : 'transparent')}; /* 체크되면 초록 배경 */
+    font-weight: ${({ checked }) => (checked ? 'bold' : 'normal')}; /* 체크된 라벨 굵게 */
+    color: ${({ checked }) => (checked ? '#4caf50' : 'inherit')}; /* 체크되면 글자 초록색 */
+    border: ${({ checked }) => (checked ? '2px solid #4caf50' : '1px solid #ccc')}; /* 체크되면 초록 테두리 */
+    transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
   }
 
   input[type="radio"] {
-    margin-right: 8px; /* 라디오 버튼과 라벨 간 간격 */
+    margin-right: 8px;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 8px;
   }
 `;
 
@@ -106,8 +112,4 @@ export const FormTitle = styled.h2`
   @media (max-width: 768px) {
     font-size: 18px;
   }
-`;
-
-export const QuestionGroup = styled.div`
-  margin-bottom: 20px; // 각 질문 그룹 간에 20px 간격을 추가
 `;
