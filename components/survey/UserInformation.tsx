@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { FormContainer, NavigationButton, CheckboxContainer, Label, ButtonContainer, Blocked, FormTitle } from './commonStyles'; // 공통 스타일 가져오기
+import React, { useEffect } from 'react';
+import { FormContainer, NavigationButton, ButtonContainer, Blocked, FormTitle } from './commonStyles'; // 공통 스타일 가져오기
 import { SurveyData } from './SurveyDataType';
 import { QuestionGroup } from './QuestionGroup';
+import { calculateScore } from './UserTest';
 
 interface UserInformationProps {
   onNext: () => void; // 다음 단계로 이동하는 함수
@@ -27,6 +28,7 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("test", calculateScore(userInfo))
     console.log('유저 정보 제출:', userInfo); // 제출된 유저 정보를 콘솔에 출력
     onNext(); // 다음 단계로 이동
   };
