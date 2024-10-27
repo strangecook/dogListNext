@@ -3,6 +3,7 @@ import { FormContainer, NavigationButton, ButtonContainer, FormTitle, Blocked } 
 import { SurveyData } from './SurveyDataType';
 import { QuestionGroup } from './QuestionGroup';
 import { calculateScore } from './UserTest';
+import { recommendDogBasedOnUserInput } from './recommendDogBasedOnUserInput';
 
 interface DogPreferencesProps {
   onNext: () => void; // 다음 단계로 이동하는 함수
@@ -28,8 +29,9 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious, use
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log( "실험하기" ,calculateScore(userInfo))
     console.log('강아지 선호 사항 제출:', userInfo);
+    console.log( "실험하기" ,calculateScore(userInfo))
+    console.log( "추천강아지" ,recommendDogBasedOnUserInput(userInfo));
     onNext(); // 다음 단계로 이동
   };
 
@@ -95,7 +97,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious, use
           options={[
             { label: '거의 경계하지 않길 원한다', value: '거의 경계하지 않길 원한다' },
             { label: '적당히 경계심을 가졌으면 좋겠다', value: '적당히 경계심을 가졌으면 좋겠다' },
-            { label: '낯선 사람에게 강하게 경계심을 가졌으면 좋겠다', value: '낯선 사람에게 강하게 경계심을 가졌으면 좋겠다' },
+            { label: '낯선 사람에게 경계심을 가졌으면 좋겠다', value: '낯선 사람에게 경계심을 가졌으면 좋겠다' },
           ]}
           selectedValue={userInfo.strangerCaution}
           onChange={handleRadioChange}
