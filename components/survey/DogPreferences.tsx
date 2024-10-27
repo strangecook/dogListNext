@@ -3,7 +3,7 @@ import { FormContainer, NavigationButton, ButtonContainer, FormTitle, Blocked } 
 import { SurveyData } from './SurveyDataType';
 import { QuestionGroup } from './QuestionGroup';
 import { calculateScore } from './UserTest';
-import { recommendDogBasedOnUserInput } from './recommendDogBasedOnUserInput';
+import { recommendDogsBasedOnUserInput } from './recommendDogBasedOnUserInput';
 
 interface DogPreferencesProps {
   onNext: () => void; // 다음 단계로 이동하는 함수
@@ -31,7 +31,7 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious, use
     e.preventDefault();
     console.log('강아지 선호 사항 제출:', userInfo);
     console.log( "실험하기" ,calculateScore(userInfo))
-    console.log( "추천강아지" ,recommendDogBasedOnUserInput(userInfo));
+    console.log( "추천강아지" ,recommendDogsBasedOnUserInput(userInfo));
     onNext(); // 다음 단계로 이동
   };
 

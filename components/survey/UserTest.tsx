@@ -18,10 +18,10 @@ interface ControlSettings {
 const controlSettings: ControlSettings = {
   // 1. 나이가 몇 세이신가요?
   age: {
-    '10대': { energyLevel: 1, affectionTowardsFamily: 0, trainability: 0 },
-    '20대': { energyLevel: 1.5, affectionTowardsFamily: 0.5, trainability: 1 },
+    '10대': { energyLevel: 0.5, affectionTowardsFamily: 0, trainability: 0 },
+    '20대': { energyLevel: 1, affectionTowardsFamily: 0.5, trainability: 1 },
     '30대': { energyLevel: -0.5, affectionTowardsFamily: 1, trainability: 0.5 },
-    '40대': { energyLevel: -2, affectionTowardsFamily: 2, trainability: 0.5 },
+    '40대': { energyLevel: -1.5, affectionTowardsFamily: 2, trainability: 0.5 },
     '50대': { energyLevel: -2, affectionTowardsFamily: 2, trainability: -0.5 },
     '60대': { energyLevel: -3, affectionTowardsFamily: 3, trainability: -2 }
   },
@@ -181,7 +181,7 @@ const controlSettings: ControlSettings = {
 
   // 19. 강아지를 산책시킬 수 있는 공원이나 산책로가 집 근처에 있습니까?
   walkingPark: {
-    '매우 가깝다': { energyLevel: 1.5, opennessToStrangers: 0.5 },
+    '매우 가깝다': { energyLevel: 1, opennessToStrangers: 0.5 },
     '적당히 가깝다': { energyLevel: 0.5, opennessToStrangers: 0.25 },
     '멀리 있다': { energyLevel: -0.5 },
     '없다': { energyLevel: -1 }
@@ -210,8 +210,8 @@ const controlSettings: ControlSettings = {
   cookingPreference: {
     '매우 좋아함': {
       adaptability: 0.25,             // 소폭의 적응성 증가
-      mentalStimulationNeed: 0.1,     // 소폭의 호기심 증가
-      opennessToStrangers: 0.1        // 소폭의 외부 자극 반응 증가
+      mentalStimulationNeed: 0.25,     // 소폭의 호기심 증가
+      opennessToStrangers: 0.25        // 소폭의 외부 자극 반응 증가
     },
     '가끔 함': {
       adaptability: 0,                // 기본 적응성 유지
@@ -220,13 +220,13 @@ const controlSettings: ControlSettings = {
     },
     '별로 하지 않음': {
       adaptability: -0.25,            // 소폭의 적응성 감소
-      mentalStimulationNeed: -0.1,    // 소폭의 호기심 감소
-      opennessToStrangers: -0.1       // 소폭의 외부 자극 반응 감소
+      mentalStimulationNeed: -0.25,    // 소폭의 호기심 감소
+      opennessToStrangers: -0.25       // 소폭의 외부 자극 반응 감소
     },
     '거의 하지 않음': {
       adaptability: -0.5,             // 적응성 소폭 감소
-      mentalStimulationNeed: -0.2,    // 호기심 소폭 감소
-      opennessToStrangers: -0.2       // 외부 자극 반응 소폭 감소
+      mentalStimulationNeed: -0.5,    // 호기심 소폭 감소
+      opennessToStrangers: -0.5       // 외부 자극 반응 소폭 감소
     }
   },
 
@@ -541,10 +541,25 @@ export const calculateScore = (
 
 // 기본 점수표
 const baseScores: DogOwnerEvaluation = {
-  ownerRate: 0, energyLevel: 3, affectionTowardsFamily: 3, trainability: 3,
-  smallDogScore: 0, mediumDogScore: 0, largeDogScore: 0, extraLargeDogScore: 0,
-  suitableForChildren: 3, goodWithOtherPets: 3, mentalStimulationNeed: 3,
-  barkingLevel: 3, adaptability: 3, guardInstinct: 3, coatType: '', coatLength: '',
-  sheddingLevel: 3, groomingNeed: 3, droolingLevel: 3, opennessToStrangers: 3,
-  playfulnessLevel: 3
+  ownerRate: 0,               // 주인의 점수, 강아지를 돌보는 책임감을 나타내며 초기 점수는 0
+  coatType: '',               // 강아지의 털 유형 (긴 털, 짧은 털 등), 문자열로 초기화
+  coatLength: '',             // 강아지의 털 길이 (길다, 짧다 등), 문자열로 초기화
+  smallDogScore: 0,           // 소형견 선호 점수, 소형견에 대한 초기 점수는 0
+  mediumDogScore: 0,          // 중형견 선호 점수, 중형견에 대한 초기 점수는 0
+  largeDogScore: 0,           // 대형견 선호 점수, 대형견에 대한 초기 점수는 0
+  extraLargeDogScore: 0,      // 초대형견 선호 점수, 초대형견에 대한 초기 점수는 0
+  adaptability: 3,            // 적응성, 새로운 환경에 적응할 수 있는 능력의 초기 점수
+  affectionTowardsFamily: 3,  // 가족에 대한 애정, 가족과의 애착 수준을 나타내는 초기 점수
+  barkingLevel: 2.5,            // 짖음 수준, 강아지의 짖는 경향을 나타내는 초기 점수
+  droolingLevel: 2.5,           // 침 흘림 수준, 강아지가 침을 흘리는 정도의 초기 점수
+  energyLevel: 2.5,             // 에너지 수준, 강아지의 활동적 성향을 나타내는 초기 점수
+  groomingNeed: 2,            // 미용 필요성, 강아지의 털 관리 요구를 나타내는 초기 점수
+  guardInstinct: 3,           // 경계 본능, 강아지의 보호 본능을 나타내는 초기 점수
+  goodWithOtherPets: 2.5,       // 다른 반려동물과의 친화성, 다른 동물들과의 적합성을 나타내는 초기 점수
+  mentalStimulationNeed: 3,   // 정신적 자극 필요성, 강아지가 정신적 자극을 얼마나 필요로 하는지 나타내는 초기 점수
+  opennessToStrangers: 3,     // 낯선 사람에 대한 개방성, 강아지가 외부인에게 얼마나 개방적인지를 나타내는 초기 점수
+  playfulnessLevel: 3,        // 장난기, 강아지의 놀이 성향을 나타내는 초기 점수
+  suitableForChildren: 2,     // 어린이와의 적합성, 강아지가 어린이와 얼마나 잘 어울리는지를 나타내는 초기 점수
+  sheddingLevel: 2,           // 털 빠짐 수준, 강아지가 털을 얼마나 흘리는지를 나타내는 초기 점수 
+  trainability: 3,            // 훈련 가능성, 강아지가 훈련에 얼마나 잘 적응하는지를 나타내는 초기 점수 
 };
