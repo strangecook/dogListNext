@@ -37,26 +37,26 @@ const controlSettings: ControlSettings = {
   // 3. 현재 살고 있는 곳은 어떤 유형의 주거 형태입니까?
   housingType: {
     '아파트 또는 고층 빌라': {
-      smallDogScore: 5,
-      mediumDogScore: 3,
-      largeDogScore: 1,
-      extraLargeDogScore: 1,
+      smallDogScore: 3,
+      mediumDogScore: 1,
+      largeDogScore: -1,
+      extraLargeDogScore: -2,
       barkingLevel: -1,
       energyLevel: -1
     },
     '주택 (마당이 있는 경우)': {
-      smallDogScore: 4,
-      mediumDogScore: 5,
-      largeDogScore: 5,
-      extraLargeDogScore: 4,
+      smallDogScore: 2,
+      mediumDogScore: 3,
+      largeDogScore: 3,
+      extraLargeDogScore: 2,
       barkingLevel: 1,
       energyLevel: 1
     },
     '원룸/오피스텔': {
-      smallDogScore: 5,
-      mediumDogScore: 2.5,
-      largeDogScore: 1,
-      extraLargeDogScore: 1,
+      smallDogScore: 3,
+      mediumDogScore: 1,
+      largeDogScore: -1,
+      extraLargeDogScore: -2,
       barkingLevel: -1,
       energyLevel: -1
     }
@@ -65,13 +65,13 @@ const controlSettings: ControlSettings = {
   // 4. 강아지가 안전하게 활동할 수 있는 실내 공간이 있습니까?
   indoorSpace: {
     '넓은 공간이 충분히 있다': {
-      smallDogScore: 3, mediumDogScore: 3, largeDogScore: 4, extraLargeDogScore: 2, energyLevel: 1.5
+      smallDogScore: 1.5, mediumDogScore: 2.5, largeDogScore: 2, extraLargeDogScore: 2, energyLevel: 1.5
     },
     '어느 정도 공간이 있다': {
-      smallDogScore: 3, mediumDogScore: 2, largeDogScore: 2, extraLargeDogScore: 1, energyLevel: 0.5
+      smallDogScore: 2, mediumDogScore: 1.5, largeDogScore: 1, extraLargeDogScore: 0, energyLevel: 0.5
     },
     '공간이 부족하다': {
-      smallDogScore: 3, mediumDogScore: 2, largeDogScore: 1, extraLargeDogScore: 1, energyLevel: -0.5
+      smallDogScore: 2, mediumDogScore: 0.5, largeDogScore: -1, extraLargeDogScore: -2, energyLevel: -0.5
     }
   },
 
@@ -110,9 +110,9 @@ const controlSettings: ControlSettings = {
 
   // 10. 다른 강아지를 키우고 있습니까?
   otherDogs: {
-    '예, 소형견': { smallDogScore: 2, ownerRate: 1 },
-    '예, 중형견': { mediumDogScore: 2, ownerRate: 1 },
-    '예, 대형견': { largeDogScore: 2, ownerRate: 1 },
+    '예, 소형견': { smallDogScore: 2, mediumDogScore: 1, largeDogScore: -1, extraLargeDogScore: -2 , ownerRate: 1 },
+    '예, 중형견': { smallDogScore: 1, mediumDogScore: 2, largeDogScore: 1, extraLargeDogScore: -0.5 , ownerRate: 1 },
+    '예, 대형견': { smallDogScore: -1, mediumDogScore: 1, largeDogScore: 2, extraLargeDogScore: 1 , ownerRate: 1 },
     '아니오': { smallDogScore: 0, mediumDogScore: 0, largeDogScore: 0, ownerRate: 0 }
   },
 
@@ -233,6 +233,10 @@ const controlSettings: ControlSettings = {
   // 22. 강아지를 처음 키우시나요?
   firstTimeOwner: {
     '예': {
+      smallDogScore: 1,         // 소형견에 대한 선호 증가
+      mediumDogScore: 0.5,      // 중형견에 대한 약간의 선호 증가
+      largeDogScore: -1.5,        // 대형견에 대한 낮은 점수
+      extraLargeDogScore: -2,   // 초대형견에 대한 매우 낮은 점수
       trainability: -2,         // 훈련 경험이 적어 훈련 가능성 감소
       ownerRate: -0.5,          // 책임감 평가에서 약간 낮은 점수
       adaptability: -0.5,       // 적응성에 소폭 영향
@@ -240,6 +244,10 @@ const controlSettings: ControlSettings = {
       affectionTowardsFamily: -0.25 // 가족과의 관계 형성이 느려질 수 있음
     },
     '아니오': {
+      smallDogScore: 0,         // 소형견에 대한 중립적 점수
+      mediumDogScore: 1,        // 중형견에 대한 높은 점수
+      largeDogScore: 1,         // 대형견에 대한 약간의 선호 증가
+      extraLargeDogScore: 0.5,  // 초대형견에 대한 선호 증가
       trainability: 1,          // 훈련 경험이 있어 훈련 가능성 증가
       ownerRate: 0.5,           // 책임감 평가에서 약간 높은 점수
       adaptability: 0.5,        // 적응성 증가
@@ -475,26 +483,37 @@ coatPreference: {
     sheddingLevel: -1       // 매우 낮은 털 빠짐
   }
 },
-// 37. 어떤 크기의 강아지를 선호하십니까?
+
+  // 37. 털 길이 반영
+  coatLength: {
+    '짧은 털': { groomingNeed: -1 },
+    '중간 길이의 털': { groomingNeed: 0 },
+    '긴 털': { groomingNeed: 1 }
+  },
+
+// 38. 어떤 크기의 강아지를 선호하십니까?
 dogSize: {
   '소형견': {
     smallDogScore: 2,       // 소형견에 대한 높은 선호도
     mediumDogScore: 0,      // 중립적 선호
-    largeDogScore: -1       // 대형견에 대한 낮은 선호도
+    largeDogScore: -1,       // 대형견에 대한 낮은 선호도
+    extraLargeDogScore: -2
   },
   '중형견': {
     smallDogScore: 0,       // 소형견에 대한 중립적 선호
     mediumDogScore: 2,      // 중형견에 대한 높은 선호도
-    largeDogScore: 0        // 대형견에 대한 중립적 선호
+    largeDogScore: 0,        // 대형견에 대한 중립적 선호
+    extraLargeDogScore: -1
   },
   '대형견': {
     smallDogScore: -1,      // 소형견에 대한 낮은 선호도
     mediumDogScore: 0,      // 중형견에 대한 중립적 선호
-    largeDogScore: 2        // 대형견에 대한 높은 선호도
+    largeDogScore: 2,        // 대형견에 대한 높은 선호도
+    extraLargeDogScore: 1
   }
 },
 
-// 38. 강아지가 언제 짖으면 좋겠나요?
+// 39. 강아지가 언제 짖으면 좋겠나요?
 barkingPreference: {
   '필요한 경우에만 짖는다': {
     barkingLevel: -2,        // 짖음이 적은 강아지 선호
@@ -508,6 +527,13 @@ barkingPreference: {
     barkingLevel: 2,         // 짖음이 많은 강아지 선호
     guardInstinct: 1         // 경계 본능이 높은 강아지 선호
   }
+},
+// 40. 장난기 테스트
+
+playfulnessPreference: {
+  '장난기가 많아 자주 놀고 싶다': { playfulnessLevel: 1.5 },
+  '적당히 장난기가 있다': { playfulnessLevel: 0.5 },
+  '조용하고 장난기가 적다': { playfulnessLevel: -1 }
 },
 
 };
