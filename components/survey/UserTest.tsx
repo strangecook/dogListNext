@@ -576,12 +576,12 @@ const baseScores: DogOwnerEvaluation = {
   extraLargeDogScore: 0,      // 초대형견 선호 점수, 초대형견에 대한 초기 점수는 0
   adaptability: 3,            // 적응성, 새로운 환경에 적응할 수 있는 능력의 초기 점수
   affectionTowardsFamily: 3,  // 가족에 대한 애정, 가족과의 애착 수준을 나타내는 초기 점수
-  barkingLevel: 2.5,            // 짖음 수준, 강아지의 짖는 경향을 나타내는 초기 점수
-  droolingLevel: 2.5,           // 침 흘림 수준, 강아지가 침을 흘리는 정도의 초기 점수
-  energyLevel: 2.5,             // 에너지 수준, 강아지의 활동적 성향을 나타내는 초기 점수
+  barkingLevel: 2.5,          // 짖음 수준, 강아지의 짖는 경향을 나타내는 초기 점수
+  droolingLevel: 2.5,         // 침 흘림 수준, 강아지가 침을 흘리는 정도의 초기 점수
+  energyLevel: 2.5,           // 에너지 수준, 강아지의 활동적 성향을 나타내는 초기 점수
   groomingNeed: 2,            // 미용 필요성, 강아지의 털 관리 요구를 나타내는 초기 점수
   guardInstinct: 3,           // 경계 본능, 강아지의 보호 본능을 나타내는 초기 점수
-  goodWithOtherPets: 2.5,       // 다른 반려동물과의 친화성, 다른 동물들과의 적합성을 나타내는 초기 점수
+  goodWithOtherPets: 2.5,     // 다른 반려동물과의 친화성, 다른 동물들과의 적합성을 나타내는 초기 점수
   mentalStimulationNeed: 3,   // 정신적 자극 필요성, 강아지가 정신적 자극을 얼마나 필요로 하는지 나타내는 초기 점수
   opennessToStrangers: 3,     // 낯선 사람에 대한 개방성, 강아지가 외부인에게 얼마나 개방적인지를 나타내는 초기 점수
   playfulnessLevel: 3,        // 장난기, 강아지의 놀이 성향을 나타내는 초기 점수

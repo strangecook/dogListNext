@@ -69,7 +69,7 @@ const findBestMatchingDogs = (userScores: DogOwnerEvaluation, topN: number = 3):
     });
 
     // 각 강아지의 차이 출력
-    console.log(`강아지: ${breed.koreanName}, 차이: ${difference}`);
+    // console.log(`강아지: ${breed.koreanName}, 차이: ${difference}`);
 
     return { breed, difference };
   });
