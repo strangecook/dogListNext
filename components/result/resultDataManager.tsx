@@ -35,6 +35,8 @@ export const fetchImagesFromStorage = async (breedName: string): Promise<string[
 };
 
 export const mapDogDataToUserScores = (dogData: any): DogOwnerEvaluation => {
+
+    console.log("dogData", dogData)
   const fieldMapping: Record<string, string> = {
     adaptability: 'adaptabilityLevel',
     affectionTowardsFamily: 'affectionWithFamily',
