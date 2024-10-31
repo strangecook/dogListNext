@@ -10,6 +10,9 @@ import { SurveyData } from '../../components/survey/SurveyDataType';
 import styled from 'styled-components';
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from '../../components/firebase';
+import Slider from 'react-slick';
+import { ClipLoader } from 'react-spinners';
+import { sliderSettings } from '../../components/BreedName/SliderComponents';
 
 const db = getFirestore();
 const auth = getAuth();
@@ -79,6 +82,37 @@ const DogImage = styled.img`
   margin-bottom: 20px;
   border-radius: 10px;
 `;
+
+export const Image = styled.img`
+  max-width: 100%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+`;
+
+export const SliderContainer = styled.div`
+  .slick-slide img {
+    display: block;
+    margin: auto;
+  }
+`;
+
+export const SingleImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+`;
+
+export const LoaderDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+`;
+
 
 // 필드 매핑 테이블
 const fieldMapping: Record<string, string> = {
@@ -157,7 +191,7 @@ const SurveyResult: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [recommendedDogs, setRecommendedDogs] = useState<any[]>([]);
   const [selectedDog, setSelectedDog] = useState<any | null>(null);
-  const [dogImage, setDogImage] = useState<string | null>(null); // 이미지 URL 상태 추가
+  const [images, setImages] = useState<string[]>([]); // 이미지 배열 상태 추가
   const router = useRouter();
   const { surveyId } = router.query;
 
@@ -223,15 +257,14 @@ const SurveyResult: React.FC = () => {
   }, [user, surveyId]);
 
   useEffect(() => {
-    const fetchDogImage = async () => {
+    // 선택된 강아지의 이미지를 가져옴
+    const fetchDogImages = async () => {
       if (selectedDog) {
-        const images = await fetchImagesFromStorage(selectedDog.englishName);
-        if (images && images.length > 0) {
-          setDogImage(images[0]);
-        }
+        const fetchedImages = await fetchImagesFromStorage(selectedDog.englishName);
+        setImages(fetchedImages || []);
       }
     };
-    fetchDogImage();
+    fetchDogImages();
   }, [selectedDog]);
 
   if (loading) return <p>로딩 중...</p>;
@@ -248,8 +281,8 @@ const SurveyResult: React.FC = () => {
         <ChartRow key={scoreKey}>
           <Label>{fieldMapping[scoreKey] || scoreKey}</Label>
           <BarWrapper>
-            <UserBar width={userScore * 10} />
-            <DogBar width={dogScore * 10} style={{ opacity: 0.6 }} />
+            <UserBar width={userScore * 20} />
+            <DogBar width={dogScore * 20} style={{ opacity: 0.6 }} />
           </BarWrapper>
         </ChartRow>
       );
@@ -259,7 +292,25 @@ const SurveyResult: React.FC = () => {
   return (
     <DetailContainer>
       <h2>강아지와의 점수 비교</h2>
-      {dogImage && <DogImage src={dogImage} alt={`${selectedDog?.koreanName} 이미지`} />}
+      {!images.length ? (
+        <LoaderDiv>
+          <ClipLoader />
+        </LoaderDiv>
+      ) : images.length > 1 ? (
+        <SliderContainer>
+          <Slider {...sliderSettings}>
+            {images.map((url, index) => (
+              <div key={index}>
+                <Image src={url} alt={`${selectedDog.englishName} 이미지 ${index + 1}`} />
+              </div>
+            ))}
+          </Slider>
+        </SliderContainer>
+      ) : (
+        <SingleImageContainer>
+          <Image src={images[0]} alt={`${selectedDog.englishName} 이미지`} />
+        </SingleImageContainer>
+      )}
       <ChartContainer>{renderComparisonChart()}</ChartContainer>
     </DetailContainer>
   );
