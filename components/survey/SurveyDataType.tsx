@@ -46,4 +46,9 @@ export interface SurveyData {
     barkingPreference: string;
     playfulnessPreference: string;
     trainingExperience: string;
+
+      // 새 항목 추가
+  priority1?: string;
+  priority2?: string;
+  priority3?: string;
   }

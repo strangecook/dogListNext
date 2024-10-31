@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import UserInformation from '../components/survey/UserInformation'; // 유저 정보 페이지
 import UserLifestyle from '../components/survey/UserLifestyle'; // 유저 생활 패턴 페이지
 import DogPreferences from '../components/survey/DogPreferences'; // 강아지 선호 페이지
+import DogPreferencePriority from '../components/survey/DogPreferencePriority';
 import dogLogoImage from '../public/mainwebImage.webp'; // 데스크탑 배경 이미지
 import dogMediaImage from '../public/mediaImage.webp'; // 모바일 배경 이미지
 import { SurveyData } from '../components/survey/SurveyDataType';
@@ -52,19 +53,15 @@ const SurveyIntro: React.FC = () => {
     playfulnessPreference: '',
     trainingExperience: '',
     dogSize: '', 
+      // 새 항목 추가
+  priority1: '',
+  priority2: '',
+  priority3: '',
   });
 
-  const handleStartClick = () => {
-    setStep(1); // 첫 번째 단계로 이동 (유저 정보)
-  };
-
-  const handleNextStep = () => {
-    setStep((prevStep) => Math.min(prevStep + 1, 3)); // 마지막 단계를 넘지 않도록
-  };
-
-  const handlePreviousStep = () => {
-    setStep((prevStep) => Math.max(prevStep - 1, 0)); // 첫 번째 단계 아래로 내려가지 않도록
-  };
+  const handleStartClick = () => setStep(1);
+  const handleNextStep = () => setStep((prevStep) => Math.min(prevStep + 1, 4));
+  const handlePreviousStep = () => setStep((prevStep) => Math.max(prevStep - 1, 0));
 
 
   return (
@@ -97,13 +94,22 @@ const SurveyIntro: React.FC = () => {
     setUserInfo={setUserInfo}
   />
 )} {/* 유저 생활 패턴 페이지 */}
-      {step === 3 && 
-      <DogPreferences 
-      onNext={handleNextStep} 
-      onPrevious={handlePreviousStep} 
-      userInfo={userInfo} 
-      setUserInfo={setUserInfo}
-      />} {/* 강아지 선호 페이지 */}
+     {step === 3 && (
+        <DogPreferences 
+          onNext={handleNextStep} 
+          onPrevious={handlePreviousStep} 
+          userInfo={userInfo} 
+          setUserInfo={setUserInfo}
+        />
+      )}
+      {step === 4 && (
+        <DogPreferencePriority 
+          onNext={handleNextStep} 
+          onPrevious={handlePreviousStep} 
+          userInfo={userInfo} 
+          setUserInfo={setUserInfo}
+        />
+      )}
     </SurveyContainer>
   );
 };

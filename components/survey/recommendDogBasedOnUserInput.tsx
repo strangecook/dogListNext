@@ -126,3 +126,4 @@ export const recommendDogsBasedOnUserInput = async (userInfoData: SurveyData) =>
 
   return bestDogs;
 };
+
