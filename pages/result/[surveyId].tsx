@@ -57,6 +57,19 @@ const LegendColor = styled.div<{ color: string }>`
   border-radius: 5px;
 `;
 
+const getScoreExplanation = (scoreKey: string, userScore: number) => {
+  switch (scoreKey) {
+    case 'adaptability':
+      return userScore > 3 ? '이 강아지는 다양한 환경에 잘 적응합니다.' : '이 강아지는 환경 변화에 민감할 수 있습니다.';
+    case 'energyLevel':
+      return userScore > 3 ? '활동적이며 많은 운동이 필요합니다.' : '조용하고 활동량이 적습니다.';
+    case 'trainability':
+      return userScore > 3 ? '훈련이 쉬운 편입니다.' : '훈련에 약간의 시간이 필요할 수 있습니다.';
+    default:
+      return '이 항목에 대한 설명은 준비 중입니다.';
+  }
+};
+
 // SurveyResult 컴포넌트
 const SurveyResult: React.FC = () => {
   const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
@@ -179,9 +192,9 @@ const SurveyResult: React.FC = () => {
               {showDogScore && <DogBar key={`${selectedDog?.englishName}-dog-${scoreKey}`} width={dogScore * 20} />}
             </BarWrapper>
             <Explanation>
-              사용자 점수: {userScore}
+              사용자 점수: {userScore}, 강아지 점수: {dogScore}
               <br />
-              강아지 점수: {dogScore}
+              {getScoreExplanation(scoreKey, userScore)}
             </Explanation>
           </ChartRow>
         );
