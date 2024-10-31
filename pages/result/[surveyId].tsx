@@ -2,44 +2,178 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { Bar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-
-// 차트 설정
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import { calculateScore } from '../../components/survey/UserTest';
+import { DogOwnerEvaluation } from '../../types/DogOwnerEvaluation';
+import { recommendDogsBasedOnUserInput } from '../../components/survey/recommendDogBasedOnUserInput';
+import { getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
+import { SurveyData } from '../../components/survey/SurveyDataType';
+import styled from 'styled-components';
+import { ref, getDownloadURL, listAll } from 'firebase/storage';
+import { storage } from '../../components/firebase';
 
 const db = getFirestore();
 const auth = getAuth();
 
-const SurveyResult = () => {
-  const [surveyData, setSurveyData] = useState<any>(null);
+// 차트 컴포넌트 스타일
+const DetailContainer = styled.div`
+  max-width: 800px;
+  margin: 80px auto 20px auto;
+  padding: 20px;
+  font-family: 'Nanum Gothic', sans-serif;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const ChartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const ChartRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Label = styled.div`
+  width: 150px;
+  text-align: right;
+  font-weight: bold;
+`;
+
+const BarWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  position: relative;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+`;
+
+const UserBar = styled.div<{ width: number }>`
+  width: ${({ width }) => width}%;
+  background-color: rgba(75, 192, 192, 0.6);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px 0 0 10px;
+`;
+
+const DogBar = styled.div<{ width: number }>`
+  width: ${({ width }) => width}%;
+  background-color: rgba(255, 99, 132, 0.6);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px 0 0 10px;
+`;
+
+const DogImage = styled.img`
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+`;
+
+// 필드 매핑 테이블
+const fieldMapping: Record<string, string> = {
+  adaptability: 'adaptabilityLevel',
+  affectionTowardsFamily: 'affectionWithFamily',
+  barkingLevel: 'barkingLevel',
+  droolingLevel: 'droolingLevel',
+  energyLevel: 'energyLevel',
+  groomingNeed: 'groomingLevel',
+  guardInstinct: 'guardProtectiveInstinct',
+  goodWithOtherPets: 'goodWithOtherDogs',
+  mentalStimulationNeed: 'needsMentalStimulation',
+  opennessToStrangers: 'opennessToStrangers',
+  playfulnessLevel: 'playfulnessLevel',
+  sheddingLevel: 'sheddingLevel',
+  suitableForChildren: 'goodWithYoungChildren',
+  trainability: 'trainabilityLevel',
+};
+
+// Fetch images from Firebase Storage
+const fetchImagesFromStorage = async (breedName: string): Promise<string[] | null> => {
+  try {
+    const formatBreedName = (breedName: string) => breedName.replace(/ /g, '_');
+    const formattedBreedName = formatBreedName(breedName);
+    const folderRef = ref(storage, `dog/${formattedBreedName}`);
+    const fileList = await listAll(folderRef);
+
+    if (fileList.items.length > 0) {
+      const imageUrls = await Promise.all(
+        fileList.items.map(async (itemRef) => {
+          const url = await getDownloadURL(itemRef);
+          return url;
+        })
+      );
+      return imageUrls;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error(`Error fetching images from Storage for breed ${breedName}:`, error);
+    return null;
+  }
+};
+
+// 강아지 데이터를 사용자 점수 형식으로 변환
+const mapDogDataToUserScores = (dogData: any): DogOwnerEvaluation => {
+  const mappedScores: DogOwnerEvaluation = {
+    ownerRate: 0,
+    coatType: dogData.coatType || '',
+    coatLength: dogData.coatLength || '',
+    smallDogScore: 0,
+    mediumDogScore: 0,
+    largeDogScore: 0,
+    extraLargeDogScore: 0,
+    adaptability: dogData[fieldMapping.adaptability] || 0,
+    affectionTowardsFamily: dogData[fieldMapping.affectionTowardsFamily] || 0,
+    barkingLevel: dogData[fieldMapping.barkingLevel] || 0,
+    droolingLevel: dogData[fieldMapping.droolingLevel] || 0,
+    energyLevel: dogData[fieldMapping.energyLevel] || 0,
+    groomingNeed: dogData[fieldMapping.groomingNeed] || 0,
+    guardInstinct: dogData[fieldMapping.guardInstinct] || 0,
+    goodWithOtherPets: dogData[fieldMapping.goodWithOtherPets] || 0,
+    mentalStimulationNeed: dogData[fieldMapping.mentalStimulationNeed] || 0,
+    opennessToStrangers: dogData[fieldMapping.opennessToStrangers] || 0,
+    playfulnessLevel: dogData[fieldMapping.playfulnessLevel] || 0,
+    sheddingLevel: dogData[fieldMapping.sheddingLevel] || 0,
+    suitableForChildren: dogData[fieldMapping.suitableForChildren] || 0,
+    trainability: dogData[fieldMapping.trainability] || 0,
+  };
+  return mappedScores;
+};
+
+const SurveyResult: React.FC = () => {
+  const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null); // 사용자 상태 추가
+  const [user, setUser] = useState<any>(null);
+  const [recommendedDogs, setRecommendedDogs] = useState<any[]>([]);
+  const [selectedDog, setSelectedDog] = useState<any | null>(null);
+  const [dogImage, setDogImage] = useState<string | null>(null); // 이미지 URL 상태 추가
   const router = useRouter();
   const { surveyId } = router.query;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser); // 사용자 상태를 설정
+        setUser(currentUser);
       } else {
-        router.push('/login'); // 인증되지 않으면 로그인 페이지로 이동
+        router.push('/login');
       }
     });
-
-    return () => unsubscribe(); // 정리(cleanup) 함수 추가
+    return () => unsubscribe();
   }, [router]);
 
   useEffect(() => {
-    if (!user || !surveyId) return; // 사용자 또는 설문 ID가 없으면 대기
+    if (!user || !surveyId) return;
 
     const fetchSurveyData = async () => {
       try {
@@ -47,7 +181,34 @@ const SurveyResult = () => {
         const surveyDoc = await getDoc(surveyRef);
 
         if (surveyDoc.exists()) {
-          setSurveyData(surveyDoc.data());
+          const data = surveyDoc.data() as SurveyData;
+
+          if (!data || Object.keys(data).length === 0) {
+            console.error('설문조사 데이터가 비어있습니다:', data);
+            return;
+          }
+
+          setSurveyData(data);
+
+          const calculatedScores: DogOwnerEvaluation = calculateScore(data);
+          const recommendedDogNames = await recommendDogsBasedOnUserInput(data);
+
+          const breedsData = getBreedsData();
+
+          if (breedsData) {
+            const dogs = recommendedDogNames
+              .map((name) => {
+                const dogData = breedsData[name.englishName.toLowerCase()];
+                return dogData ? { ...dogData, scores: mapDogDataToUserScores(dogData) } : null;
+              })
+              .filter(Boolean);
+
+              console.log("dogs", dogs)
+            setRecommendedDogs(dogs);
+            setSelectedDog(dogs[0]);
+          } else {
+            console.error('강아지 데이터를 찾을 수 없습니다.');
+          }
         } else {
           console.error('해당 설문조사 결과를 찾을 수 없습니다.');
         }
@@ -61,88 +222,46 @@ const SurveyResult = () => {
     fetchSurveyData();
   }, [user, surveyId]);
 
+  useEffect(() => {
+    const fetchDogImage = async () => {
+      if (selectedDog) {
+        const images = await fetchImagesFromStorage(selectedDog.englishName);
+        if (images && images.length > 0) {
+          setDogImage(images[0]);
+        }
+      }
+    };
+    fetchDogImage();
+  }, [selectedDog]);
+
   if (loading) return <p>로딩 중...</p>;
   if (!surveyData) return <p>설문 결과를 찾을 수 없습니다.</p>;
 
-  console.log("userScores", surveyData)
+  const userScores: DogOwnerEvaluation = calculateScore(surveyData);
 
-  // 차트 데이터 설정
-  const userScores = {
-    ownerRate: surveyData.ownerRate || 0,
-    smallDogScore: surveyData.smallDogScore || 0,
-    mediumDogScore: surveyData.mediumDogScore || 0,
-    largeDogScore: surveyData.largeDogScore || 0,
-    extraLargeDogScore: surveyData.extraLargeDogScore || 0,
-    adaptability: surveyData.adaptability || 0,
-    affectionTowardsFamily: surveyData.affectionTowardsFamily || 0,
-    barkingLevel: surveyData.barkingLevel || 0,
-    droolingLevel: surveyData.droolingLevel || 0,
-    energyLevel: surveyData.energyLevel || 0,
-    groomingNeed: surveyData.groomingNeed || 0,
-    guardInstinct: surveyData.guardInstinct || 0,
-    goodWithOtherPets: surveyData.goodWithOtherPets || 0,
-    mentalStimulationNeed: surveyData.mentalStimulationNeed || 0,
-    opennessToStrangers: surveyData.opennessToStrangers || 0,
-    playfulnessLevel: surveyData.playfulnessLevel || 0,
-    suitableForChildren: surveyData.suitableForChildren || 0,
-    sheddingLevel: surveyData.sheddingLevel || 0,
-    trainability: surveyData.trainability || 0,
-  };
+  const renderComparisonChart = () => {
+    return Object.keys(userScores).map((scoreKey) => {
+      const userScore = Number(userScores[scoreKey as keyof DogOwnerEvaluation] || 0);
+      const dogScore = Number(selectedDog?.scores[scoreKey as keyof DogOwnerEvaluation] || 0);
 
-  // 차트 데이터 구성
-  const chartData = {
-    labels: [
-      'Owner Rate',
-      'Small Dog Score',
-      'Medium Dog Score',
-      'Large Dog Score',
-      'Extra Large Dog Score',
-      'Adaptability',
-      'Affection Towards Family',
-      'Barking Level',
-      'Drooling Level',
-      'Energy Level',
-      'Grooming Need',
-      'Guard Instinct',
-      'Good with Other Pets',
-      'Mental Stimulation Need',
-      'Openness to Strangers',
-      'Playfulness Level',
-      'Suitable for Children',
-      'Shedding Level',
-      'Trainability',
-    ],
-    datasets: [
-      {
-        label: 'Score',
-        data: Object.values(userScores),
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      },
-    ],
+      return (
+        <ChartRow key={scoreKey}>
+          <Label>{fieldMapping[scoreKey] || scoreKey}</Label>
+          <BarWrapper>
+            <UserBar width={userScore * 10} />
+            <DogBar width={dogScore * 10} style={{ opacity: 0.6 }} />
+          </BarWrapper>
+        </ChartRow>
+      );
+    });
   };
 
   return (
-    <div>
-      <h1>설문조사 결과</h1>
-      <p>설문 ID: {surveyId}</p>
-      <Bar
-        data={chartData}
-        options={{
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: '강아지 선호도 점수',
-            },
-          },
-        }}
-      />
-    </div>
+    <DetailContainer>
+      <h2>강아지와의 점수 비교</h2>
+      {dogImage && <DogImage src={dogImage} alt={`${selectedDog?.koreanName} 이미지`} />}
+      <ChartContainer>{renderComparisonChart()}</ChartContainer>
+    </DetailContainer>
   );
 };
 
