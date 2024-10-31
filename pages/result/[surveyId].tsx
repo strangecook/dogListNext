@@ -26,7 +26,38 @@ import { sliderSettings } from '../../components/BreedName/SliderComponents';
 import { calculateScore } from '../../components/survey/UserTest';
 import { getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
 import { DogOwnerEvaluation } from '../../types/DogOwnerEvaluation';
+import styled from 'styled-components';
 
+// 설명 텍스트 스타일
+const Explanation = styled.div`
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 4px;
+  text-align: center;
+`;
+
+// 막대 그래프 색상 설명 스타일
+const Legend = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const LegendItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const LegendColor = styled.div<{ color: string }>`
+  width: 20px;
+  height: 20px;
+  background-color: ${({ color }) => color};
+  border-radius: 5px;
+`;
+
+// SurveyResult 컴포넌트
 const SurveyResult: React.FC = () => {
   const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,6 +66,8 @@ const SurveyResult: React.FC = () => {
   const [selectedDog, setSelectedDog] = useState<any | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [activeFilter, setActiveFilter] = useState("점수 기반");
+  const [showUserScore, setShowUserScore] = useState(true);  // 사용자 점수 표시 상태
+  const [showDogScore, setShowDogScore] = useState(true);    // 강아지 점수 표시 상태
   const router = useRouter();
   const { surveyId } = router.query;
 
@@ -49,6 +82,7 @@ const SurveyResult: React.FC = () => {
     return () => unsubscribe();
   }, [router]);
 
+  // 데이터 가져오기 및 설정
   useEffect(() => {
     if (!user || !surveyId) return;
 
@@ -56,7 +90,6 @@ const SurveyResult: React.FC = () => {
       try {
         const data = await fetchSurveyData(user.uid, surveyId as string);
         setSurveyData(data);
-
         const userScores: DogOwnerEvaluation = calculateScore(data);
         console.log("User scores (from calculateScore):", userScores);
 
@@ -67,9 +100,7 @@ const SurveyResult: React.FC = () => {
           const dogs = recommendedDogNames.map((name) => {
             const dogData = breedsData[name.englishName.toLowerCase()];
             if (dogData) {
-              const mappedDogData = { ...dogData, scores: mapDogDataToUserScores(dogData) };
-              console.log("Mapped dog data with user scores:", mappedDogData);
-              return mappedDogData;
+              return { ...dogData, scores: mapDogDataToUserScores(dogData) };
             }
             return null;
           }).filter(Boolean);
@@ -89,6 +120,7 @@ const SurveyResult: React.FC = () => {
     fetchData();
   }, [user, surveyId]);
 
+  // 강아지 이미지 가져오기
   useEffect(() => {
     const loadDogImages = async () => {
       if (selectedDog) {
@@ -99,13 +131,12 @@ const SurveyResult: React.FC = () => {
     loadDogImages();
   }, [selectedDog]);
 
+  // 그래프 렌더링 함수
   const renderComparisonChart = () => {
     if (!surveyData) return null;
 
     const userScores: DogOwnerEvaluation = calculateScore(surveyData);
-    console.log("Mapped user scores in renderComparisonChart:", userScores);
 
-    // 속성 이름을 한국어로 매핑
     const fieldLabels: Record<string, string> = {
       adaptability: "적응력",
       affectionTowardsFamily: "가족과의 친화도",
@@ -138,17 +169,20 @@ const SurveyResult: React.FC = () => {
       .map((scoreKey) => {
         const userScore = Number(userScores[scoreKey as keyof DogOwnerEvaluation] || 0);
         const dogScore = selectedDog?.scores?.[scoreKey] || 0;
-        const label = fieldLabels[scoreKey] || scoreKey; // 한국어 레이블이 없으면 기본 영어 키 사용
-
-        console.log(`Score Comparison - ${label}: User Score = ${userScore}, Dog Score = ${dogScore}`);
+        const label = fieldLabels[scoreKey] || scoreKey;
 
         return (
           <ChartRow key={scoreKey}>
             <Label>{label}</Label>
             <BarWrapper>
-              <UserBar width={userScore * 20} />
-              <DogBar width={dogScore * 20} />
+              {showUserScore && <UserBar key={`${selectedDog?.englishName}-user-${scoreKey}`} width={userScore * 20} />}
+              {showDogScore && <DogBar key={`${selectedDog?.englishName}-dog-${scoreKey}`} width={dogScore * 20} />}
             </BarWrapper>
+            <Explanation>
+              사용자 점수: {userScore}
+              <br />
+              강아지 점수: {dogScore}
+            </Explanation>
           </ChartRow>
         );
       });
@@ -195,6 +229,19 @@ const SurveyResult: React.FC = () => {
         <LoaderDiv><ClipLoader /></LoaderDiv>
       )}
 
+      {/* Legend with checkboxes */}
+      <Legend>
+        <LegendItem>
+          <LegendColor color="rgba(54, 162, 235, 0.7)" />
+          <span>사용자 점수</span>
+          <input type="checkbox" checked={showUserScore} onChange={() => setShowUserScore(!showUserScore)} />
+        </LegendItem>
+        <LegendItem>
+          <LegendColor color="rgba(255, 159, 64, 0.7)" />
+          <span>강아지 점수</span>
+          <input type="checkbox" checked={showDogScore} onChange={() => setShowDogScore(!showDogScore)} />
+        </LegendItem>
+      </Legend>
       <ChartContainer>{renderComparisonChart()}</ChartContainer>
     </DetailContainer>
   );

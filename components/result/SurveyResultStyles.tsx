@@ -1,5 +1,5 @@
 // SurveyResultStyles.ts
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const DetailContainer = styled.div`
   max-width: 800px;
@@ -70,24 +70,37 @@ export const BarWrapper = styled.div`
   background-color: #f0f0f0;
 `;
 
-export const UserBar = styled.div<{ width: number }>`
-  width: ${({ width }) => width}%;
-  background-color: rgba(75, 192, 192, 0.6);
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 10px 0 0 10px;
+const growWidth = keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: ${({ width }: { width: number }) => width}%;
+  }
 `;
 
-export const DogBar = styled.div<{ width: number }>`
+// UserBar - 파란색 계열로 설정, 애니메이션 추가
+export const UserBar = styled.div<{ width: number }>`
   width: ${({ width }) => width}%;
-  background-color: rgba(255, 99, 132, 0.6);
+  background-color: rgba(54, 162, 235, 0.7); // 파란색 계열
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 10px 0 0 10px;
+  border-radius: 10px;
+  animation: ${growWidth} 0.8s ease-out;
+`;
+
+// DogBar - 주황색 계열로 설정, 애니메이션 추가
+export const DogBar = styled.div<{ width: number }>`
+  width: ${({ width }) => width}%;
+  background-color: rgba(255, 159, 64, 0.7); // 주황색 계열
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  animation: ${growWidth} 0.8s ease-out;
 `;
 
 export const Image = styled.img`
