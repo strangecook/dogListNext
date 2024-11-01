@@ -48,7 +48,5 @@ export interface SurveyData {
     trainingExperience: string;
 
       // 새 항목 추가
-  priority1?: string;
-  priority2?: string;
-  priority3?: string;
+      selectedPreferences?: string[];
   }

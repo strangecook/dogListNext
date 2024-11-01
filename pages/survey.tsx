@@ -54,9 +54,7 @@ const SurveyIntro: React.FC = () => {
     trainingExperience: '',
     dogSize: '', 
       // 새 항목 추가
-  priority1: '',
-  priority2: '',
-  priority3: '',
+      selectedPreferences: [],
   });
 
   const handleStartClick = () => setStep(1);
