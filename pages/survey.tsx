@@ -53,17 +53,17 @@ const SurveyIntro: React.FC = () => {
     playfulnessPreference: '',
     trainingExperience: '',
     dogSize: '', 
-      // 새 항목 추가
-      selectedPreferences: [],
+    selectedPreferences: [],
   });
 
   const handleStartClick = () => setStep(1);
   const handleNextStep = () => setStep((prevStep) => Math.min(prevStep + 1, 4));
   const handlePreviousStep = () => setStep((prevStep) => Math.max(prevStep - 1, 0));
 
-
   return (
     <SurveyContainer step={step}>
+      {/* 프로그래스 바 */}
+      {step > 0 && <ProgressBar step={step} totalSteps={4} />}
       {step === 0 && (
         <IntroContainer>
           <Title>강아지 맞춤 설문조사</Title>
@@ -75,24 +75,23 @@ const SurveyIntro: React.FC = () => {
         </IntroContainer>
       )}
 
-{step === 1 && (
-  <UserInformation 
-    onNext={handleNextStep} 
-    onPrevious={handlePreviousStep} 
-    userInfo={userInfo} 
-    setUserInfo={setUserInfo}
-  />
-)}
-   {/* 유저 정보 페이지 */}
-   {step === 2 && (
-  <UserLifestyle 
-    onNext={handleNextStep} 
-    onPrevious={handlePreviousStep} 
-    userInfo={userInfo} 
-    setUserInfo={setUserInfo}
-  />
-)} {/* 유저 생활 패턴 페이지 */}
-     {step === 3 && (
+      {step === 1 && (
+        <UserInformation 
+          onNext={handleNextStep} 
+          onPrevious={handlePreviousStep} 
+          userInfo={userInfo} 
+          setUserInfo={setUserInfo}
+        />
+      )}
+      {step === 2 && (
+        <UserLifestyle 
+          onNext={handleNextStep} 
+          onPrevious={handlePreviousStep} 
+          userInfo={userInfo} 
+          setUserInfo={setUserInfo}
+        />
+      )}
+      {step === 3 && (
         <DogPreferences 
           onNext={handleNextStep} 
           onPrevious={handlePreviousStep} 
@@ -112,35 +111,89 @@ const SurveyIntro: React.FC = () => {
   );
 };
 
+// 프로그래스 바 컴포넌트
+const ProgressBar: React.FC<{ step: number; totalSteps: number }> = ({ step, totalSteps }) => {
+  const progressPercentage = ((step - 1) / (totalSteps - 1)) * 100;
+
+  return (
+    <ProgressBarContainer>
+      <ProgressFill style={{ width: `${progressPercentage}%` }} />
+      <ProgressText>{`Step ${step} of ${totalSteps}`}</ProgressText>
+    </ProgressBarContainer>
+  );
+};
+
 // 스타일 정의
 const SurveyContainer = styled.div<{ step: number }>`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center; /* Center content vertically */
   background: ${(props) =>
     props.step === 0
       ? `url(${dogLogoImage.src}) no-repeat center center`
       : '#E2EEE0'};
   background-size: cover;
-  min-height: ${(props) => (props.step === 0 ? '100vh' : 'auto')}; /* 처음 페이지만 100vh 적용 */
+  min-height: 100vh; /* Cover entire viewport */
+  width: 100vw; /* Ensure full-width */
+  margin: 0; /* Remove any default margin */
 
-  // 모바일 화면에서는 첫 단계(인트로)에서 다른 배경 이미지로 변경
   @media (max-width: 768px) {
     background: ${(props) =>
       props.step === 0
         ? `url(${dogMediaImage.src}) no-repeat center center`
         : '#E2EEE0'};
     background-size: cover;
-    min-height: ${(props) => (props.step === 0 ? '100vh' : 'auto')}; /* 모바일에서도 첫 페이지만 100vh 적용 */
+    min-height: 100vh;
   }
 `;
 
 const IntroContainer = styled.div`
   text-align: center;
   color: white;
+  padding: 20px; /* Add padding to center content better */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 768px) {
-    padding: 0 20px; /* 모바일에서 좌우 여백 추가 */
+    padding: 0 20px;
+  }
+`;
+
+const ProgressBarContainer = styled.div`
+  position: fixed;
+  top: 60px; /* 네비게이션 바 아래 */
+  width: 100%;
+  max-width: 800px;
+  background: #dcdcdc;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 10px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    top: 50px; /* 모바일에 맞춰 네비게이션 위치 조정 */
+  }
+`;
+
+const ProgressFill = styled.div`
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.3s ease;
+`;
+
+const ProgressText = styled.div`
+  text-align: center;
+  font-size: 12px;
+  color: #333;
+  padding: 5px 0;
+  position: relative;
+  top: -10px;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
   }
 `;
 
@@ -149,10 +202,9 @@ const Title = styled.h1`
   margin-bottom: 20px;
   -webkit-text-stroke-width: 1.5px;
   -webkit-text-stroke-color: black;
-
   @media (max-width: 768px) {
-    font-size: 28px; /* 모바일에서는 폰트 크기를 작게 조정 */
-    -webkit-text-stroke-width: 1px; /* 모바일에서는 글자 테두리를 약간 줄임 */
+    font-size: 28px;
+    -webkit-text-stroke-width: 1px;
   }
 `;
 
@@ -162,9 +214,8 @@ const Description = styled.p`
   margin-bottom: 30px;
   -webkit-text-stroke-width: 0.1px;
   -webkit-text-stroke-color: black;
-
   @media (max-width: 768px) {
-    font-size: 16px; /* 모바일에서는 글자 크기를 줄임 */
+    font-size: 16px;
   }
 `;
 
@@ -183,7 +234,7 @@ const StartButton = styled.button`
   }
 
   @media (max-width: 768px) {
-    font-size: 18px; /* 모바일에서는 버튼 크기를 약간 작게 조정 */
+    font-size: 18px;
   }
 `;
 
