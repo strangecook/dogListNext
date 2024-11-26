@@ -678,6 +678,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     const breedsData = getBreedsData();
+
     if (!breedsData) {
       const newBreedsData = await fetchAndStoreBreeds();
       selectedBreed = newBreedsData[breedName?.toString().toLowerCase() || ''] || null;
@@ -688,9 +689,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (selectedBreed) {
       images = await fetchImagesFromStorage(selectedBreed.englishName);
     } else {
+      console.error("Breed not found for:", breedName); // 품종 데이터가 없는 경우
       error = '해당 품종 데이터를 찾을 수 없습니다.';
     }
   } catch (err) {
+    console.error("Error fetching data:", err); // 에러 상세 정보 출력
     error = '데이터를 불러오는 데 문제가 발생했습니다.';
   }
 
@@ -702,5 +705,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
+
 
 export default BreedDetail;

@@ -549,14 +549,15 @@ export const calculateScore = (
   (Object.keys(userInfoData) as Array<keyof SurveyData>).forEach((key) => {
     const userValue = userInfoData[key]; // 설문조사 값 (예: '20대')
 
-    if (controlSettings[key] && controlSettings[key][userValue]) {
+    // userValue가 string 타입인지 확인
+    if (typeof userValue === 'string' && controlSettings[key] && controlSettings[key][userValue]) {
       const adjustments = controlSettings[key][userValue];
 
       // 해당 값에 대한 점수 조정 적용
       (Object.keys(adjustments) as Array<keyof Omit<DogOwnerEvaluation, 'coatType' | 'coatLength'>>).forEach((scoreKey) => {
         // 'number' 타입인 경우에만 += 연산을 수행
         if (typeof updatedScores[scoreKey] === 'number' && typeof adjustments[scoreKey] === 'number') {
-          updatedScores[scoreKey] += adjustments[scoreKey] || 0;
+          updatedScores[scoreKey] = (updatedScores[scoreKey] as number) + (adjustments[scoreKey] as number);
         }
       });
     }
@@ -564,6 +565,7 @@ export const calculateScore = (
 
   return updatedScores;
 };
+
 
 // 기본 점수표
 const baseScores: DogOwnerEvaluation = {

@@ -126,42 +126,42 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
         console.log("실험하기", calculateScore(userInfo));
         console.log("추천강아지", recommendDogsBasedOnUserInput(userInfo));
 
-        try {
-            const user = auth.currentUser;
-            console.log("user", user);
-            if (!user) {
-                console.error('사용자가 인증되지 않았습니다.');
-                return;
-            }
+        // try {
+        //     const user = auth.currentUser;
+        //     console.log("user", user);
+        //     if (!user) {
+        //         console.error('사용자가 인증되지 않았습니다.');
+        //         return;
+        //     }
 
-            const userId = user.uid;
-            const userSurveysRef = collection(doc(db, 'users', userId), 'surveys');
+        //     const userId = user.uid;
+        //     const userSurveysRef = collection(doc(db, 'users', userId), 'surveys');
 
-            // 현재 설문조사 문서 개수를 가져와서 번호 설정
-            const querySnapshot = await getDocs(userSurveysRef);
-            const currentSurveyCount = querySnapshot.size;
-            const newSurveyId = (currentSurveyCount + 1).toString(); // 단순 번호 ID
+        //     // 현재 설문조사 문서 개수를 가져와서 번호 설정
+        //     const querySnapshot = await getDocs(userSurveysRef);
+        //     const currentSurveyCount = querySnapshot.size;
+        //     const newSurveyId = (currentSurveyCount + 1).toString(); // 단순 번호 ID
 
-            // 새로운 설문 데이터를 병합하여 저장
-            await setDoc(
-                doc(userSurveysRef, newSurveyId),
-                {
-                    ...userInfo,
-                    selectedPreferences: selectedOptions, // 선택된 옵션 저장
-                    timestamp: new Date(),
-                },
-                { merge: true }
-            );
+        //     // 새로운 설문 데이터를 병합하여 저장
+        //     await setDoc(
+        //         doc(userSurveysRef, newSurveyId),
+        //         {
+        //             ...userInfo,
+        //             selectedPreferences: selectedOptions, // 선택된 옵션 저장
+        //             timestamp: new Date(),
+        //         },
+        //         { merge: true }
+        //     );
 
-            console.log(`설문조사 데이터가 ID ${newSurveyId}로 병합/저장되었습니다.`);
-            console.log('유저별 설문조사 데이터가 성공적으로 저장되었습니다.');
+        //     console.log(`설문조사 데이터가 ID ${newSurveyId}로 병합/저장되었습니다.`);
+        //     console.log('유저별 설문조사 데이터가 성공적으로 저장되었습니다.');
 
-            setTimeout(() => {
-                router.push(`result/${newSurveyId}`);
-            }, 3000);
-        } catch (error) {
-            console.error('데이터 저장 중 오류가 발생했습니다:', error);
-        }
+        //     setTimeout(() => {
+        //         router.push(`result/${newSurveyId}`);
+        //     }, 3000);
+        // } catch (error) {
+        //     console.error('데이터 저장 중 오류가 발생했습니다:', error);
+        // }
     };
 
     useEffect(() => {

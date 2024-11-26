@@ -8,10 +8,9 @@ const fetchBreedsFromFirestore = async (): Promise<Breed[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, 'dogs'));
     return querySnapshot.docs.map((doc: QueryDocumentSnapshot) => {
-      const data = doc.data() as any; // any 타입 사용
-      // Breed 타입으로 강제 캐스팅
+      const data = doc.data() as any;
       const breed: Breed = {
-        id: parseInt(doc.id, 10), // id를 number 타입으로 변환
+        id: parseInt(doc.id, 10),
         adaptabilityLevel: data.adaptabilityLevel,
         affectionWithFamily: data.affectionWithFamily,
         barkingLevel: data.barkingLevel,
@@ -86,6 +85,7 @@ const fetchImagesFromStorage = async (breedName: string): Promise<string[]> => {
       );
       return imageUrls;
     } else {
+      console.log(`No images found in storage for breed ${breedName}.`);
       return [];
     }
   } catch (error) {
@@ -94,17 +94,27 @@ const fetchImagesFromStorage = async (breedName: string): Promise<string[]> => {
   }
 };
 
-// breeds 데이터를 로컬 스토리지에 저장 (클라이언트 측에서만 실행)
 const fetchAndStoreBreeds = async (): Promise<Record<string, Breed>> => {
+  // 서버사이드 환경에서 캐시 사용하지 않음
+  if (typeof window !== 'undefined') {
+    const cachedData = localStorage.getItem('breedsData');
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+  }
+
+  // Firestore에서 데이터 가져오기
   const firestoreData = await fetchBreedsFromFirestore();
   const mergedData = mergeBreedsData(firestoreData);
+
   if (typeof window !== 'undefined') {
     localStorage.setItem('breedsData', JSON.stringify(mergedData));
   }
+
   return mergedData;
 };
 
-// 로컬 스토리지에서 breeds 데이터 가져오기 (클라이언트 측에서만 실행)
+
 const getBreedsData = (): Record<string, Breed> | null => {
   if (typeof window !== 'undefined') {
     const data = localStorage.getItem('breedsData');
