@@ -248,6 +248,52 @@ const filterDogsByUserPreferences = (breedsData: Breed[], surveyData: SurveyData
   return filteredDogs;
 };
 
+// 3번 방식: 인기순위와 점수를 조합하여 추천
+const findBestMatchingDogsWithPopularity = (
+  filteredBreeds: Breed[], // 필터링된 강아지 목록
+  userScores: DogOwnerEvaluation, // 사용자 점수
+  topN: number = 3 // 추천할 강아지 수
+): Breed[] => {
+  const withPopularity = filteredBreeds.filter((breed) => breed.popularity !== undefined);
+  const withoutPopularity = filteredBreeds.filter((breed) => breed.popularity === undefined);
+
+  // 인기순위가 있는 강아지들 정렬
+  const sortedByPopularity = withPopularity.sort((a, b) => a.popularity! - b.popularity!);
+
+  // 인기순위가 없는 강아지들의 점수 차이 계산
+  const scoredWithoutPopularity = withoutPopularity.map((breed) => {
+    let difference = 0;
+
+    Object.keys(attributeMapping).forEach((key) => {
+      const dogKey = attributeMapping[key as keyof DogOwnerEvaluation];
+      const userScoreValue = userScores[key as keyof DogOwnerEvaluation];
+      const breedScoreValue = dogKey ? breed[dogKey] : null;
+
+      if (typeof userScoreValue === 'number' && typeof breedScoreValue === 'number') {
+        difference += Math.abs(userScoreValue - breedScoreValue);
+      }
+    });
+
+    return { breed, difference };
+  });
+
+  // 점수 차이가 작은 순으로 정렬
+  const sortedByScore = scoredWithoutPopularity
+    .sort((a, b) => a.difference - b.difference)
+    .map((match) => match.breed);
+
+  // 인기순위 기반 + 점수 기반 병합
+  const combinedRecommendations = [...sortedByPopularity, ...sortedByScore].slice(0, topN);
+
+  console.log(
+    '3번 방식 (인기순위 + 점수) 추천 강아지:',
+    combinedRecommendations.map((dog) => dog.koreanName)
+  );
+
+  return combinedRecommendations;
+};
+
+
 
 // 사용자 입력 기반 강아지 추천 함수 (전체 통합)
 export const recommendDogsBasedOnUserInput = async (surveyData: SurveyData) => {
@@ -277,13 +323,16 @@ export const recommendDogsBasedOnUserInput = async (surveyData: SurveyData) => {
   // **3번 방식 실행**: 사용자 선호 조건 필터링
   const filteredDogsByPreferences = filterDogsByUserPreferences(Object.values(breedsData), surveyData);
 
+  // **3번 방식 수정**: 인기순위 + 점수 기반 추천
+  const bestMatchesFromFiltered = findBestMatchingDogsWithPopularity(filteredDogsByPreferences, userScores, 3);
+
   console.log('1번 방식 추천 강아지 (전체 대상):', bestDogs.map(dog => dog.koreanName));
   console.log('2번 방식 Top 100 추천 강아지:', top100Dogs.map(dog => dog.koreanName));
-  console.log('3번 방식 사용자 선호 강아지:', filteredDogsByPreferences.map(dog => dog.koreanName));
+  console.log('3번 방식 최종 추천 (인기순위 + 점수):', bestMatchesFromFiltered.map(dog => dog.koreanName));
 
   return {
     bestDogs,
     top100Dogs,
-    filteredDogsByPreferences, // 3번 방식 결과 추가
+    bestMatchesFromFiltered, // 3번 방식 최종 추천 결과 추가
   };
 };
