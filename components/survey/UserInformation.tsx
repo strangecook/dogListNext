@@ -127,7 +127,7 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
         />
 
         <QuestionGroup
-          question="자녀가 있습니까?"
+          question="어린 자녀가 있습니까?"
           name="hasChildren"
           options={[
             { label: '예, 어린 자녀가 있다', value: '예' },
