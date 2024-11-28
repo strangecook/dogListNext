@@ -99,25 +99,35 @@ const SurveyResult: React.FC = () => {
   useEffect(() => {
     if (!user || !surveyId) return;
 
+    type RecommendedDogName = {
+      englishName: string;
+      koreanName?: string;
+    };
+    
     const fetchData = async () => {
       try {
         const data = await fetchSurveyData(user.uid, surveyId as string);
         setSurveyData(data);
-        const userScores: DogOwnerEvaluation = calculateScore(data);
-        console.log("User scores (from calculateScore):", userScores);
-
-        const recommendedDogNames = await fetchRecommendedDogs(data);
+    
+        const recommendedDogNames: RecommendedDogName[] = await fetchRecommendedDogs(data);
+        console.log("Recommended Dog Names:", recommendedDogNames); // 확인
+    
         const breedsData = getBreedsData();
-
+        console.log("Breeds Data:", breedsData); // 확인
+    
         if (breedsData) {
-          const dogs = recommendedDogNames.map((name) => {
-            const dogData = breedsData[name.englishName.toLowerCase()];
-            if (dogData) {
-              return { ...dogData, scores: mapDogDataToUserScores(dogData) };
-            }
-            return null;
-          }).filter(Boolean);
-
+          const dogs = recommendedDogNames
+            .map((name) => {
+              const dogData = breedsData[name.englishName.toLowerCase()];
+              console.log(`Dog Data for ${name.englishName.toLowerCase()}:`, dogData); // 확인
+              if (dogData) {
+                return { ...dogData, scores: mapDogDataToUserScores(dogData) };
+              }
+              return null;
+            })
+            .filter(Boolean);
+    
+          console.log("Mapped Dogs:", dogs); // 최종 매핑된 데이터 확인
           setRecommendedDogs(dogs);
           setSelectedDog(dogs[0]);
         } else {
@@ -129,6 +139,7 @@ const SurveyResult: React.FC = () => {
         setLoading(false);
       }
     };
+    
 
     fetchData();
   }, [user, surveyId]);
