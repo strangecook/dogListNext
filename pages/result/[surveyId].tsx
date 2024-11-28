@@ -79,6 +79,7 @@ const SurveyResult: React.FC = () => {
   const [selectedDog, setSelectedDog] = useState<any | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [activeFilter, setActiveFilter] = useState("점수 기반");
+  const [mappedDogs, setMappedDogs] = useState<any[][]>([]); // 강아지 데이터 순서를 저장
   const [showUserScore, setShowUserScore] = useState(true);  // 사용자 점수 표시 상태
   const [showDogScore, setShowDogScore] = useState(true);    // 강아지 점수 표시 상태
   const router = useRouter();
@@ -99,68 +100,74 @@ const SurveyResult: React.FC = () => {
   useEffect(() => {
     if (!user || !surveyId) return;
 
-    type RecommendedDogName = {
-      englishName: string;
-      koreanName?: string;
-    };
-    
     const fetchData = async () => {
       try {
         const data = await fetchSurveyData(user.uid, surveyId as string);
         setSurveyData(data);
-    
-        const recommendedDogNames: RecommendedDogName[] = await fetchRecommendedDogs(data);
-        console.log("Recommended Dog Names:", recommendedDogNames); // 확인
-    
-        const breedsData = getBreedsData();
-        console.log("Breeds Data:", breedsData); // 확인
-    
-        if (breedsData) {
-          const dogs = recommendedDogNames
-            .map((name) => {
-              const dogData = breedsData[name.englishName.toLowerCase()];
-              console.log(`Dog Data for ${name.englishName.toLowerCase()}:`, dogData); // 확인
-              if (dogData) {
-                return { ...dogData, scores: mapDogDataToUserScores(dogData) };
-              }
-              return null;
-            })
-            .filter(Boolean);
-    
-          console.log("Mapped Dogs:", dogs); // 최종 매핑된 데이터 확인
-          setRecommendedDogs(dogs);
-          setSelectedDog(dogs[0]);
-        } else {
-          console.error('강아지 데이터를 찾을 수 없습니다.');
-        }
+
+        const { bestDogs, top100Dogs, bestMatchesFromFiltered } = await fetchRecommendedDogs(data);
+
+        // 강아지 데이터를 순서대로 저장
+        const dogs = [bestDogs, top100Dogs, bestMatchesFromFiltered];
+        setMappedDogs(dogs); // 순서 저장
+        setRecommendedDogs(dogs[0]); // 기본값으로 "점수 기반" 설정
+        setSelectedDog(dogs[0][0]); // 첫 번째 강아지를 기본 선택
       } catch (error) {
-        console.error('Error loading survey data:', error);
+        console.error("Error loading survey data:", error);
       } finally {
         setLoading(false);
       }
     };
-    
 
     fetchData();
   }, [user, surveyId]);
 
-  // 강아지 이미지 가져오기
+  const applyFilter = (filter: string) => {
+    switch (filter) {
+      case "점수 기반":
+        setRecommendedDogs(mappedDogs[0]);
+        break;
+
+      case "인기있는 강아지":
+        setRecommendedDogs(mappedDogs[1]);
+        break;
+
+      case "유저가 선호하는 강아지":
+        setRecommendedDogs(mappedDogs[2]);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
-    const loadDogImages = async () => {
-      if (selectedDog) {
+    if (selectedDog) {
+      const loadDogImages = async () => {
         const fetchedImages = await fetchImagesFromStorage(selectedDog.englishName);
         setImages(fetchedImages || []);
-      }
-    };
-    loadDogImages();
+      };
+      loadDogImages();
+    }
   }, [selectedDog]);
 
   // 그래프 렌더링 함수
   const renderComparisonChart = () => {
-    if (!surveyData) return null;
-
+    if (!surveyData) {
+      console.log("Survey data is null or undefined.");
+      return null;
+    }
+  
+    if (!selectedDog) {
+      console.log("Selected dog is null or undefined.");
+      return null;
+    }
+  
+    console.log("Selected Dog:", selectedDog);
+  
     const userScores: DogOwnerEvaluation = calculateScore(surveyData);
-
+    console.log("User Scores:", userScores);
+  
     const fieldLabels: Record<string, string> = {
       adaptability: "적응력",
       affectionTowardsFamily: "가족과의 친화도",
@@ -177,7 +184,24 @@ const SurveyResult: React.FC = () => {
       suitableForChildren: "아이들과의 친화도",
       trainability: "훈련 가능성",
     };
-
+  
+    const fieldMapping: Record<string, string> = {
+      adaptability: "adaptabilityLevel",
+      affectionTowardsFamily: "affectionWithFamily",
+      barkingLevel: "barkingLevel",
+      droolingLevel: "droolingLevel",
+      energyLevel: "energyLevel",
+      groomingNeed: "groomingLevel",
+      guardInstinct: "guardProtectiveInstinct",
+      goodWithOtherPets: "goodWithOtherDogs",
+      mentalStimulationNeed: "needsMentalStimulation",
+      opennessToStrangers: "opennessToStrangers",
+      playfulnessLevel: "playfulnessLevel",
+      sheddingLevel: "sheddingLevel",
+      suitableForChildren: "goodWithYoungChildren",
+      trainability: "trainabilityLevel",
+    };
+  
     const excludedAttributes = [
       "ownerRate",
       "coatType",
@@ -185,16 +209,18 @@ const SurveyResult: React.FC = () => {
       "smallDogScore",
       "mediumDogScore",
       "largeDogScore",
-      "extraLargeDogScore"
+      "extraLargeDogScore",
     ];
-
+  
     return Object.keys(userScores)
       .filter((scoreKey) => !excludedAttributes.includes(scoreKey))
       .map((scoreKey) => {
         const userScore = Number(userScores[scoreKey as keyof DogOwnerEvaluation] || 0);
-        const dogScore = selectedDog?.scores?.[scoreKey] || 0;
+        const dogScore = Number(selectedDog[fieldMapping[scoreKey]] || 0); // 필드 매핑 직접 참조
         const label = fieldLabels[scoreKey] || scoreKey;
-
+  
+        console.log(`Rendering chart for ${scoreKey}:`, { userScore, dogScore });
+  
         return (
           <ChartRow key={scoreKey}>
             <Label>{label}</Label>
@@ -211,17 +237,25 @@ const SurveyResult: React.FC = () => {
         );
       });
   };
+  
 
   if (loading) return <LoaderDiv><ClipLoader /></LoaderDiv>;
   if (!surveyData) return <p>설문 결과를 찾을 수 없습니다.</p>;
 
   return (
     <DetailContainer>
-      <h2>강아지와의 점수 비교</h2>
+      <h2>나에게 맞는 강아지 추천</h2>
 
       <FilterContainer>
-        {["점수 기반", "제일 인기있는 강아지", "유저가 원하는 강아지 우선"].map((filter) => (
-          <FilterButton key={filter} active={activeFilter === filter} onClick={() => setActiveFilter(filter)}>
+        {["점수 기반", "인기있는 강아지", "유저가 선호하는 강아지"].map((filter) => (
+          <FilterButton
+            key={filter}
+            active={activeFilter === filter}
+            onClick={() => {
+              setActiveFilter(filter);
+              applyFilter(filter);
+            }}
+          >
             {filter}
           </FilterButton>
         ))}

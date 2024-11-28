@@ -93,25 +93,23 @@ export const authenticateUser = (callback: (user: any) => void) => {
   return onAuthStateChanged(auth, callback);
 };
 
-export const fetchRecommendedDogs = async (surveyData: SurveyData) => {
+export const fetchRecommendedDogs = async (surveyData: SurveyData): Promise<{
+  bestDogs: any[];
+  top100Dogs: any[];
+  bestMatchesFromFiltered: any[];
+}> => {
   try {
     const result = await recommendDogsBasedOnUserInput(surveyData);
 
-    if (!result || !result.bestDogs) {
+    if (!result || !result.bestDogs || !result.top100Dogs || !result.bestMatchesFromFiltered) {
       throw new Error("Invalid result from recommendDogsBasedOnUserInput");
     }
 
-    const { bestDogs } = result;
-
-    const breedsData = getBreedsData();
-
-    if (breedsData) {
-      return bestDogs
-        .map((dog) => breedsData[dog.englishName.toLowerCase()])
-        .filter(Boolean);
-    }
-
-    throw new Error("Dog breed data not found");
+    return {
+      bestDogs: result.bestDogs,
+      top100Dogs: result.top100Dogs,
+      bestMatchesFromFiltered: result.bestMatchesFromFiltered,
+    };
   } catch (error) {
     console.error("Error in fetchRecommendedDogs:", error);
     throw error;
