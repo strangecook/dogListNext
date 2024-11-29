@@ -49,8 +49,9 @@ export const ChartContainer = styled.div`
 `;
 
 export const ChartRow = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  flex-direction: column;
   gap: 10px;
 `;
 
