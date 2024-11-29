@@ -27,6 +27,7 @@ import { calculateScore } from '../../components/survey/UserTest';
 import { getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
 import { DogOwnerEvaluation } from '../../types/DogOwnerEvaluation';
 import styled from 'styled-components';
+import Link from 'next/link';
 
 // 설명 텍스트 스타일
 const Explanation = styled.div`
@@ -56,6 +57,18 @@ const LegendColor = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
   border-radius: 5px;
 `;
+
+const ExplanationContainer = styled.div`
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
 
 const getScoreExplanation = (scoreKey: string, userScore: number) => {
   switch (scoreKey) {
@@ -157,17 +170,17 @@ const SurveyResult: React.FC = () => {
       console.log("Survey data is null or undefined.");
       return null;
     }
-  
+
     if (!selectedDog) {
       console.log("Selected dog is null or undefined.");
       return null;
     }
-  
+
     console.log("Selected Dog:", selectedDog);
-  
+
     const userScores: DogOwnerEvaluation = calculateScore(surveyData);
     console.log("User Scores:", userScores);
-  
+
     const fieldLabels: Record<string, string> = {
       adaptability: "적응력",
       affectionTowardsFamily: "가족과의 친화도",
@@ -184,7 +197,7 @@ const SurveyResult: React.FC = () => {
       suitableForChildren: "아이들과의 친화도",
       trainability: "훈련 가능성",
     };
-  
+
     const fieldMapping: Record<string, string> = {
       adaptability: "adaptabilityLevel",
       affectionTowardsFamily: "affectionWithFamily",
@@ -201,7 +214,7 @@ const SurveyResult: React.FC = () => {
       suitableForChildren: "goodWithYoungChildren",
       trainability: "trainabilityLevel",
     };
-  
+
     const excludedAttributes = [
       "ownerRate",
       "coatType",
@@ -211,16 +224,16 @@ const SurveyResult: React.FC = () => {
       "largeDogScore",
       "extraLargeDogScore",
     ];
-  
+
     return Object.keys(userScores)
       .filter((scoreKey) => !excludedAttributes.includes(scoreKey))
       .map((scoreKey) => {
         const userScore = Number(userScores[scoreKey as keyof DogOwnerEvaluation] || 0);
         const dogScore = Number(selectedDog[fieldMapping[scoreKey]] || 0); // 필드 매핑 직접 참조
         const label = fieldLabels[scoreKey] || scoreKey;
-  
+
         console.log(`Rendering chart for ${scoreKey}:`, { userScore, dogScore });
-  
+
         return (
           <ChartRow key={scoreKey}>
             <Label>{label}</Label>
@@ -237,7 +250,7 @@ const SurveyResult: React.FC = () => {
         );
       });
   };
-  
+
 
   if (loading) return <LoaderDiv><ClipLoader /></LoaderDiv>;
   if (!surveyData) return <p>설문 결과를 찾을 수 없습니다.</p>;
@@ -268,6 +281,12 @@ const SurveyResult: React.FC = () => {
           </DogButton>
         ))}
       </DogListContainer>
+
+      <ExplanationContainer>
+        {activeFilter === "점수 기반" && (<p> 유저의 점수 기반으로 가장 유사한 강아지들을 추천합니다.<br /> 설문 데이터를 기반으로 한 객관적인 분석 결과입니다. </p>)}
+        {activeFilter === "인기있는 강아지" && <p>인기 50위까지의 강아지를 추천해주는 결과입니다. <br /> 인기와 사회적 선호도가 높은 품종입니다.</p>}
+        {activeFilter === "유저가 선호하는 강아지" && <p>사용자가 설문의 마지막 응답에 따른 결과입니다. <br /> 설문 응답 패턴을 분석하여 개인적인 선호도에 맞춘 결과입니다.</p>}
+      </ExplanationContainer>
 
       {images.length ? (
         images.length > 1 ? (
@@ -301,6 +320,29 @@ const SurveyResult: React.FC = () => {
         </LegendItem>
       </Legend>
       <ChartContainer>{renderComparisonChart()}</ChartContainer>
+      {selectedDog && (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <Link href={`/breeds/${encodeURIComponent(selectedDog.englishName)}`}>
+            <span style={{
+              display: 'inline-block',
+              padding: '10px 20px',
+              backgroundColor: '#4caf50',
+              color: '#fff',
+              borderRadius: '5px',
+              textDecoration: 'none',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              transition: 'background-color 0.3s ease',
+              cursor: 'pointer',
+            }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4caf50'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3e8e41'}
+            >
+              {selectedDog.koreanName || selectedDog.englishName}의 자세한 정보 보러가기
+            </span>
+          </Link>
+        </div>
+      )}
     </DetailContainer>
   );
 };
