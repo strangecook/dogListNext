@@ -162,7 +162,7 @@ const SurveyResult: React.FC = () => {
       console.log("Selected dog is null or undefined.");
       return null;
     }
-
+    console.log("surveyData", surveyData)
     console.log("Selected Dog:", selectedDog);
 
     const userScores: DogOwnerEvaluation = calculateScore(surveyData);
@@ -219,7 +219,7 @@ const SurveyResult: React.FC = () => {
         const dogScore = Number(selectedDog[fieldMapping[scoreKey]] || 0); // 필드 매핑 직접 참조
         const label = fieldLabels[scoreKey] || scoreKey;
 
-        console.log(`Rendering chart for ${scoreKey}:`, { userScore, dogScore });
+        // console.log(`Rendering chart for ${scoreKey}:`, { userScore, dogScore });
 
         return (
           <ChartRow key={scoreKey}>

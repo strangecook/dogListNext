@@ -1,25 +1,37 @@
 export const getScoreExplanation = (scoreKey: string, userScore: number): string => {
-    switch (scoreKey) {
-      case 'adaptability':
-        return adaptabilityExplanation(userScore);
-      case 'affectionTowardsFamily':
-        return affectionExplanation(userScore);
-      case 'goodWithOtherDogs':
-        return otherDogsExplanation(userScore);
-      case 'goodWithYoungChildren':
-        return youngChildrenExplanation(userScore);
-      case 'energyLevel':
-        return energyExplanation(userScore);
-      case 'trainability':
-        return trainabilityExplanation(userScore);
-      case 'barkingLevel':
-        return barkingExplanation(userScore);
-      case 'sheddingLevel':
-        return sheddingExplanation(userScore);
-      default:
-        return '이 항목에 대한 설명은 준비 중입니다.';
-    }
-  };
+  switch (scoreKey) {
+    case 'adaptability':
+      return adaptabilityExplanation(userScore);
+    case 'affectionTowardsFamily':
+      return affectionExplanation(userScore);
+    case 'goodWithOtherPets':
+      return otherDogsExplanation(userScore);
+    case 'suitableForChildren':
+      return youngChildrenExplanation(userScore);
+    case 'energyLevel':
+      return energyExplanation(userScore);
+    case 'trainability':
+      return trainabilityExplanation(userScore);
+    case 'barkingLevel':
+      return barkingExplanation(userScore);
+    case 'sheddingLevel':
+      return sheddingExplanation(userScore);
+    case 'groomingNeed':
+      return groomingExplanation(userScore);
+    case 'droolingLevel':
+      return droolingExplanation(userScore);
+    case 'opennessToStrangers':
+      return opennessToStrangersExplanation(userScore);
+    case 'playfulnessLevel':
+      return playfulnessExplanation(userScore);
+    case 'guardInstinct':
+      return guardInstinctExplanation(userScore);
+    case 'mentalStimulationNeed':
+      return mentalStimulationExplanation(userScore);
+    default:
+      return '이 항목에 대한 설명은 준비 중입니다.';
+  }
+};
   
   // 각 항목에 대한 세부 함수 정의
   const adaptabilityExplanation = (score: number): string => {
@@ -159,6 +171,107 @@ export const getScoreExplanation = (scoreKey: string, userScore: number): string
     }
   };
   
-
+  const groomingExplanation = (score: number): string => {
+    switch (score) {
+      case 1:
+        return '손질이 거의 필요하지 않으며, 매우 관리가 쉽습니다.';
+      case 2:
+        return '간단한 손질만 필요하며, 주기적인 관리를 통해 유지할 수 있습니다.';
+      case 3:
+        return '보통 수준의 손질이 필요하며, 정기적인 관리를 권장합니다.';
+      case 4:
+        return '자주 손질이 필요하며, 꾸준한 관리가 요구됩니다.';
+      case 5:
+        return '매우 빈번한 손질이 필요하며, 전문가의 관리가 필요할 수 있습니다.';
+      default:
+        return '손질 필요 점수에 대한 정보가 없습니다.';
+    }
+  };
+  
+  const droolingExplanation = (score: number): string => {
+    switch (score) {
+      case 1:
+        return '침 흘림이 거의 없으며, 깔끔한 편입니다.';
+      case 2:
+        return '드물게 침을 흘리며, 관리가 간단합니다.';
+      case 3:
+        return '보통 수준의 침 흘림으로, 간단한 관리가 필요합니다.';
+      case 4:
+        return '자주 침을 흘리며, 지속적인 청결 관리가 필요합니다.';
+      case 5:
+        return '매우 자주 침을 흘리며, 빈번한 청소와 관리가 필요합니다.';
+      default:
+        return '침 흘림 점수에 대한 정보가 없습니다.';
+    }
+  };
+  
+  const opennessToStrangersExplanation = (score: number): string => {
+    switch (score) {
+      case 1:
+        return '낯선 사람을 매우 경계하며, 시간이 많이 필요합니다.';
+      case 2:
+        return '낯선 사람에게 다소 경계하지만, 적응할 수 있습니다.';
+      case 3:
+        return '보통 수준으로 낯선 사람에게 친근하게 다가갑니다.';
+      case 4:
+        return '낯선 사람과 빠르게 친해질 수 있으며, 우호적입니다.';
+      case 5:
+        return '낯선 사람과 매우 친밀하게 지낼 수 있으며, 사교적입니다.';
+      default:
+        return '낯선 사람에 대한 개방성 점수에 대한 정보가 없습니다.';
+    }
+  };
+  
+  const playfulnessExplanation = (score: number): string => {
+    switch (score) {
+      case 1:
+        return '놀이에 거의 관심이 없으며, 조용한 활동을 선호합니다.';
+      case 2:
+        return '가끔씩 놀이를 즐기며, 간단한 활동을 좋아합니다.';
+      case 3:
+        return '보통 수준으로 놀이를 즐기며, 적당한 활동이 필요합니다.';
+      case 4:
+        return '활발하게 놀이를 즐기며, 많은 활동을 요구합니다.';
+      case 5:
+        return '매우 활발하게 놀이를 즐기며, 지속적인 활동이 필요합니다.';
+      default:
+        return '놀이 성향 점수에 대한 정보가 없습니다.';
+    }
+  };
+  
+  const guardInstinctExplanation = (score: number): string => {
+    switch (score) {
+      case 1:
+        return '경비 본능이 거의 없으며, 친근한 성향을 보입니다.';
+      case 2:
+        return '약간의 경비 본능이 있으며, 특정 상황에서 경계합니다.';
+      case 3:
+        return '보통 수준의 경비 본능으로, 낯선 상황에서 반응합니다.';
+      case 4:
+        return '강한 경비 본능이 있으며, 보호자 역할을 잘 수행합니다.';
+      case 5:
+        return '매우 강한 경비 본능으로, 뛰어난 경계심을 보입니다.';
+      default:
+        return '경비 본능 점수에 대한 정보가 없습니다.';
+    }
+  };
+  
+  const mentalStimulationExplanation = (score: number): string => {
+    switch (score) {
+      case 1:
+        return '정신적 자극이 거의 필요하지 않으며, 간단한 활동으로도 만족합니다.';
+      case 2:
+        return '적당한 정신적 자극이 필요하며, 가벼운 놀이를 좋아합니다.';
+      case 3:
+        return '보통 수준의 정신적 자극이 필요하며, 다양한 활동을 즐깁니다.';
+      case 4:
+        return '많은 정신적 자극이 필요하며, 복잡한 활동을 좋아합니다.';
+      case 5:
+        return '매우 높은 정신적 자극이 필요하며, 지속적으로 새로운 활동을 요구합니다.';
+      default:
+        return '정신적 자극 점수에 대한 정보가 없습니다.';
+    }
+  };
+  
   // 나머지도 동일한 방식으로 분리
   
