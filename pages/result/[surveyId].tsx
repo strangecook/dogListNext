@@ -82,6 +82,7 @@ const SurveyResult: React.FC = () => {
   const [mappedDogs, setMappedDogs] = useState<any[][]>([]); // 강아지 데이터 순서를 저장
   const [showUserScore, setShowUserScore] = useState(true);  // 사용자 점수 표시 상태
   const [showDogScore, setShowDogScore] = useState(true);    // 강아지 점수 표시 상태
+  const [independentExplanations, setIndependentExplanations] = useState<string[]>([]); // 독립적인 설명 저장
   const router = useRouter();
   const { surveyId } = router.query;
 
@@ -121,6 +122,31 @@ const SurveyResult: React.FC = () => {
 
     fetchData();
   }, [user, surveyId]);
+
+  useEffect(() => {
+    if (!surveyData) return;
+  
+    const explanations: string[] = [];
+  
+    Object.values(surveyQuestionMapping).forEach((mapping) => {
+      const relatedAnswer = surveyData[mapping.key as keyof typeof surveyData];
+  
+      if (typeof relatedAnswer === "string") {
+        const ownerRateExplanations = mapping.explanation(relatedAnswer).filter(
+          (entry) => entry.key === "ownerRate"
+        );
+  
+        ownerRateExplanations.forEach((entry) => {
+          const descriptionWithIndex = `${mapping.index}번에 대한 응답 - ${entry.description}`;
+          if (!explanations.includes(descriptionWithIndex)) {
+            explanations.push(descriptionWithIndex);
+          }
+        });
+      }
+    });
+  
+    setIndependentExplanations(explanations);
+  }, [surveyData]);
 
   const applyFilter = (filter: string) => {
     switch (filter) {
@@ -211,6 +237,7 @@ const SurveyResult: React.FC = () => {
       "largeDogScore",
       "extraLargeDogScore",
     ];
+
     return Object.keys(userScores)
       .filter((scoreKey) => !excludedAttributes.includes(scoreKey))
       .map((scoreKey) => {
@@ -263,16 +290,19 @@ const SurveyResult: React.FC = () => {
 
               return explanations.map((explanation, i) => (
                 <Explanation key={`${scoreKey}-question-${idx}-${i}`}>
-                <strong>{`${questionMapping.question}`}</strong> {/* 번호와 질문 텍스트 */}
-                <span>{`사용자의 응답은: ${relatedAnswer}`}</span> {/* 유저의 답변 */}
-                <br />
-                <span>{`${explanation.description}`}</span> {/* 추천 이유 설명 */}
-              </Explanation>
+                  <strong>{`${questionMapping.question}`}</strong> {/* 번호와 질문 텍스트 */}
+                  <span>{`사용자의 응답: ${relatedAnswer}`}</span> {/* 유저의 답변 */}
+                  <br />
+                  <span>{`${explanation.description}`}</span> {/* 추천 이유 설명 */}
+                </Explanation>
               ));
             })}
           </ChartRow>
         );
-      });
+      }
+      );
+
+
   };
 
   if (loading) return <LoaderDiv><ClipLoader /></LoaderDiv>;
@@ -343,6 +373,14 @@ const SurveyResult: React.FC = () => {
         </LegendItem>
       </Legend>
       <ChartContainer>{renderComparisonChart()}</ChartContainer>
+      {independentExplanations.length > 0 && (
+        <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
+          <h3>추가 도움말</h3>
+          {independentExplanations.map((description, idx) => (
+            <p key={`independent-${idx}`}>{description}</p>
+          ))}
+        </div>
+      )}
       {selectedDog && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Link href={`/breeds/${encodeURIComponent(selectedDog.englishName)}`}>
