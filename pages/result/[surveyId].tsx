@@ -18,17 +18,17 @@ import {
   SingleImageContainer,
   LoaderDiv,
 } from '../../components/result/SurveyResultStyles';
-import { fetchImagesFromStorage, mapDogDataToUserScores, fetchSurveyData, authenticateUser, fetchRecommendedDogs } from '../../components/result/resultDataManager';
+import { fetchImagesFromStorage, fetchSurveyData, authenticateUser, fetchRecommendedDogs } from '../../components/result/resultDataManager';
 import { SurveyData } from '../../components/survey/SurveyDataType';
 import { ClipLoader } from 'react-spinners';
 import Slider from 'react-slick';
 import { sliderSettings } from '../../components/BreedName/SliderComponents';
 import { calculateScore } from '../../components/survey/UserTest';
-import { getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
 import { DogOwnerEvaluation } from '../../types/DogOwnerEvaluation';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { getScoreExplanation } from '../../utils/getScoreExplanation ';
+import { surveyQuestionMapping } from '../../components/survey/surveyQuestionMapping';
 
 // 설명 텍스트 스타일
 const Explanation = styled.div`
@@ -211,23 +211,41 @@ const SurveyResult: React.FC = () => {
       "largeDogScore",
       "extraLargeDogScore",
     ];
-
     return Object.keys(userScores)
       .filter((scoreKey) => !excludedAttributes.includes(scoreKey))
       .map((scoreKey) => {
         const userScore = Number(userScores[scoreKey as keyof DogOwnerEvaluation] || 0);
-        const dogScore = Number(selectedDog[fieldMapping[scoreKey]] || 0); // 필드 매핑 직접 참조
-        const label = fieldLabels[scoreKey] || scoreKey;
+        const dogScore = Number(selectedDog[fieldMapping[scoreKey]] || 0);
 
-        // console.log(`Rendering chart for ${scoreKey}:`, { userScore, dogScore });
+        const relevantQuestions = Object.values(surveyQuestionMapping).filter((mapping) => {
+          const answer = surveyData[mapping.key as keyof typeof surveyData]; // 실제 데이터 키로 값 가져오기
+
+          console.log("Key:", mapping.key, "Answer from Survey Data:", answer);
+
+          if (Array.isArray(answer)) {
+            return answer.some((ans) =>
+              mapping.explanation(ans).some((entry) => entry.key === scoreKey)
+            );
+          }
+
+          if (typeof answer === "string") {
+            return mapping.explanation(answer).some((entry) => entry.key === scoreKey);
+          }
+
+          return false;
+        });
 
         return (
           <ChartRow key={scoreKey}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: `100%` }}>
-              <Label>{label}</Label>
+              <Label>{fieldLabels[scoreKey] || scoreKey}</Label>
               <BarWrapper>
-                {showUserScore && <UserBar key={`${selectedDog?.englishName}-user-${scoreKey}`} width={userScore * 20} />}
-                {showDogScore && <DogBar key={`${selectedDog?.englishName}-dog-${scoreKey}`} width={dogScore * 20} />}
+                {showUserScore && (
+                  <UserBar key={`${selectedDog?.englishName}-user-${scoreKey}`} width={userScore * 20} />
+                )}
+                {showDogScore && (
+                  <DogBar key={`${selectedDog?.englishName}-dog-${scoreKey}`} width={dogScore * 20} />
+                )}
               </BarWrapper>
               <Explanation>
                 사용자 점수: {userScore}, <br /> 강아지 점수: {dogScore}
@@ -235,11 +253,27 @@ const SurveyResult: React.FC = () => {
               </Explanation>
             </div>
             {getScoreExplanation(scoreKey, dogScore)}
+
+            {relevantQuestions.map((questionMapping, idx) => {
+              const relatedAnswer = surveyData[questionMapping.key as keyof typeof surveyData];
+
+              const explanations = questionMapping.explanation(
+                relatedAnswer as string
+              ).filter((entry) => entry.key === scoreKey);
+
+              return explanations.map((explanation, i) => (
+                <Explanation key={`${scoreKey}-question-${idx}-${i}`}>
+                <strong>{`${questionMapping.question}`}</strong> {/* 번호와 질문 텍스트 */}
+                <span>{`사용자의 응답은: ${relatedAnswer}`}</span> {/* 유저의 답변 */}
+                <br />
+                <span>{`${explanation.description}`}</span> {/* 추천 이유 설명 */}
+              </Explanation>
+              ));
+            })}
           </ChartRow>
         );
       });
   };
-
 
   if (loading) return <LoaderDiv><ClipLoader /></LoaderDiv>;
   if (!surveyData) return <p>설문 결과를 찾을 수 없습니다.</p>;

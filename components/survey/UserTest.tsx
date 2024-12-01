@@ -23,7 +23,7 @@ const controlSettings: ControlSettings = {
     '30대': { energyLevel: -0.5, affectionTowardsFamily: 1, trainability: 0.5 },
     '40대': { energyLevel: -1.5, affectionTowardsFamily: 2, trainability: 0.5 },
     '50대': { energyLevel: -2, affectionTowardsFamily: 2, trainability: -0.5 },
-    '60대': { energyLevel: -3, affectionTowardsFamily: 3, trainability: -2 }
+    '60대': { energyLevel: -3, affectionTowardsFamily: 3, trainability: -1.5 }
   },
 
   // 2. 정기적인 수입이 있습니까?
