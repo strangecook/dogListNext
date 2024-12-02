@@ -205,7 +205,7 @@ const SurveyResult: React.FC = () => {
       goodWithOtherPets: "다른 반려동물과의 친화도",
       mentalStimulationNeed: "정신적 자극 필요성",
       opennessToStrangers: "낯선 사람에 대한 개방성",
-      playfulnessLevel: "활발함",
+      playfulnessLevel: "장난기",
       sheddingLevel: "털 빠짐 정도",
       suitableForChildren: "아이들과의 친화도",
       trainability: "훈련 가능성",

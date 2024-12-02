@@ -360,7 +360,7 @@ trainingSpeed: {
     trainability: 0.5           // 보통 수준의 훈련 가능성
   },
   '빠르게 배웠으면 좋겠다': { 
-    trainability: 2           // 훈련 가능성이 높은 강아지 선호
+    trainability: 1.5           // 훈련 가능성이 높은 강아지 선호
   }
 },
 
