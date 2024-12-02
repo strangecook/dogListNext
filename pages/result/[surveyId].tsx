@@ -137,9 +137,9 @@ const SurveyResult: React.FC = () => {
         );
   
         ownerRateExplanations.forEach((entry) => {
-          const descriptionWithIndex = `${mapping.index}번에 대한 응답 - ${entry.description}`;
-          if (!explanations.includes(descriptionWithIndex)) {
-            explanations.push(descriptionWithIndex);
+          const descriptionWithDetails = `${mapping.question} \n ${entry.description}`;
+          if (!explanations.includes(descriptionWithDetails)) {
+            explanations.push(descriptionWithDetails);
           }
         });
       }
@@ -147,6 +147,7 @@ const SurveyResult: React.FC = () => {
   
     setIndependentExplanations(explanations);
   }, [surveyData]);
+  
 
   const applyFilter = (filter: string) => {
     switch (filter) {
@@ -246,8 +247,6 @@ const SurveyResult: React.FC = () => {
 
         const relevantQuestions = Object.values(surveyQuestionMapping).filter((mapping) => {
           const answer = surveyData[mapping.key as keyof typeof surveyData]; // 실제 데이터 키로 값 가져오기
-
-          console.log("Key:", mapping.key, "Answer from Survey Data:", answer);
 
           if (Array.isArray(answer)) {
             return answer.some((ans) =>
@@ -374,12 +373,16 @@ const SurveyResult: React.FC = () => {
       </Legend>
       <ChartContainer>{renderComparisonChart()}</ChartContainer>
       {independentExplanations.length > 0 && (
-        <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
+        <>
           <h3>추가 도움말</h3>
           {independentExplanations.map((description, idx) => (
             <p key={`independent-${idx}`}>{description}</p>
           ))}
-        </div>
+        </>
+      )}
+
+      {independentExplanations.length === 0 && (
+        <p>현재 선택에 따라 추가적으로 표시할 정보가 없습니다.</p>
       )}
       {selectedDog && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>

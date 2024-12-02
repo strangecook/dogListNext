@@ -41,7 +41,7 @@ export const surveyQuestionMapping: Record<
   },
   incomeSource: {
     key: "incomeSource",
-    question: "정기적인 수입이 있습니까?",
+    question: "2. 정기적인 수입이 있습니까?",
     index: 2, // 질문 번호 추가
     explanation: (answer: string) => {
       const descriptions: Record<string, { key: string; description: string }[]> = {
