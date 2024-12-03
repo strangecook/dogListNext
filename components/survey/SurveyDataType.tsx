@@ -26,7 +26,6 @@ export interface SurveyData {
   
     // Dog Preferences
     dogSize: string;
-    monthlyExpenses: string;
     budgetForAdoption: string;
     monthlyExpense: string;
     obedienceLevel: string;

@@ -33,7 +33,6 @@ const SurveyIntro: React.FC = () => {
     walkingPark: '',
     walkingFrequency: '',
     cookingPreference: '',
-    monthlyExpenses: '',
     budgetForAdoption: '',
     monthlyExpense: '',
     obedienceLevel: '',
@@ -61,25 +60,27 @@ const SurveyIntro: React.FC = () => {
   const handleNextStep = () => setStep((prevStep) => Math.min(prevStep + 1, 4));
   const handlePreviousStep = () => setStep((prevStep) => Math.max(prevStep - 1, 0));
   const calculateRemainingQuestions = (userInfo: SurveyData): number => {
-    return Object.values(userInfo).filter((value) => value === '').length;
+    return Object.entries(userInfo).filter(([key, value]) => {
+      if (key === 'selectedPreferences') {
+        return Array.isArray(value) && value.length === 0; // 배열이고 비어있는 경우
+      }
+      if (Array.isArray(value)) {
+        return value.length === 0; // 다른 배열도 비어있다면
+      }
+      return value === ''; // 문자열이고 비어있는 경우
+    }).length;
   };
 
   const totalQuestions = Object.keys(userInfo).length; // 총 질문 개수
   const answeredQuestions = totalQuestions - calculateRemainingQuestions(userInfo); // 응답한 질문 개수
-
-  useEffect(() => {
-    const remaining = calculateRemainingQuestions(userInfo);
-    console.log(`남은 질문: ${remaining}`); // 디버그용 콘솔 출력
-  }, [userInfo]);
-
 
   return (
     <SurveyContainer step={step}>
       {/* 프로그래스 바 */}
       {step > 0 && (
         <ProgressBar
-          answered={Object.values(userInfo).filter((value) => value !== '').length}
-          total={Object.keys(userInfo).length}
+          answered={answeredQuestions}
+          total={totalQuestions}
         />
       )}
 
