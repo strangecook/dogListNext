@@ -70,6 +70,46 @@ const ExplanationContainer = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
+const ExplanationBox = styled.div`
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin: 10px 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: #333;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 90%; /* 화면 크기에 따라 유연하게 조정 */
+
+  strong {
+    font-weight: bold;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 8px;
+    color: #222;
+  }
+
+  span {
+    display: block;
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  &:hover {
+    background: #fafafa;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    transition: all 0.3s ease;
+  }
+`;
+
 // SurveyResult 컴포넌트
 const SurveyResult: React.FC = () => {
   const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
@@ -125,17 +165,17 @@ const SurveyResult: React.FC = () => {
 
   useEffect(() => {
     if (!surveyData) return;
-  
+
     const explanations: string[] = [];
-  
+
     Object.values(surveyQuestionMapping).forEach((mapping) => {
       const relatedAnswer = surveyData[mapping.key as keyof typeof surveyData];
-  
+
       if (typeof relatedAnswer === "string") {
         const ownerRateExplanations = mapping.explanation(relatedAnswer).filter(
           (entry) => entry.key === "ownerRate"
         );
-  
+
         ownerRateExplanations.forEach((entry) => {
           const descriptionWithDetails = `${mapping.question} \n ${entry.description}`;
           if (!explanations.includes(descriptionWithDetails)) {
@@ -144,23 +184,26 @@ const SurveyResult: React.FC = () => {
         });
       }
     });
-  
+
     setIndependentExplanations(explanations);
   }, [surveyData]);
-  
+
 
   const applyFilter = (filter: string) => {
     switch (filter) {
       case "점수 기반":
         setRecommendedDogs(mappedDogs[0]);
+        setSelectedDog(mappedDogs[0][0])
         break;
 
       case "인기있는 강아지":
         setRecommendedDogs(mappedDogs[1]);
+        setSelectedDog(mappedDogs[1][0])
         break;
 
       case "유저가 선호하는 강아지":
         setRecommendedDogs(mappedDogs[2]);
+        setSelectedDog(mappedDogs[2][0])
         break;
 
       default:
@@ -278,7 +321,6 @@ const SurveyResult: React.FC = () => {
                 <br />
               </Explanation>
             </div>
-            {getScoreExplanation(scoreKey, dogScore)}
 
             {relevantQuestions.map((questionMapping, idx) => {
               const relatedAnswer = surveyData[questionMapping.key as keyof typeof surveyData];
@@ -296,6 +338,11 @@ const SurveyResult: React.FC = () => {
                 </Explanation>
               ));
             })}
+            <ExplanationBox>
+              <strong>{`${fieldLabels[scoreKey]} 설명`}</strong>
+              <p>{getScoreExplanation(scoreKey, dogScore)}</p>
+            </ExplanationBox>
+
           </ChartRow>
         );
       }

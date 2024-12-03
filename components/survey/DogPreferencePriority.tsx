@@ -22,6 +22,7 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
     const router = useRouter();
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     const [disabledOptions, setDisabledOptions] = useState<string[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false); // 추가된 상태
 
     // 상충하는 옵션 설정
     const conflictingOptions: Record<string, string[]> = {
@@ -147,6 +148,8 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
             return;
         }
 
+        setIsSubmitting(true);
+
         setUserInfo({
             ...userInfo,
             selectedPreferences: selectedOptions // 선택된 옵션들을 userInfo에 저장
@@ -157,6 +160,7 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
             console.log("user", user);
             if (!user) {
                 console.error('사용자가 인증되지 않았습니다.');
+                setIsSubmitting(false); // 에러 발생 시 버튼 활성화 복원
                 return;
             }
 
@@ -187,6 +191,7 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
             }, 3000);
         } catch (error) {
             console.error('데이터 저장 중 오류가 발생했습니다:', error);
+            setIsSubmitting(false); // 에러 발생 시 버튼 활성화 복원
         }
     };
 
@@ -221,8 +226,8 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
             ))}
             <ButtonContainer>
                 <button onClick={onPrevious}>이전</button>
-                <button onClick={handleSubmit} disabled={selectedOptions.length === 0}>
-                    설문 완료
+                <button onClick={handleSubmit} disabled={selectedOptions.length === 0 || isSubmitting}>
+                    {isSubmitting ? '제출 중...' : '설문 완료'}
                 </button>
             </ButtonContainer>
         </FormContainer>
@@ -381,6 +386,7 @@ const Subtitle = styled.p`
 
   @media (max-width: 768px) {
     font-size: 14px;
+    margin-top: 10px;
     margin-bottom: 10px;
   }
 `;
