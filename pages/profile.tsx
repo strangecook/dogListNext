@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { auth, storage, db } from '../components/firebase';
 import { onAuthStateChanged, updateProfile, reauthenticateWithCredential, EmailAuthProvider, User } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { query, where, getDocs, collection, doc, setDoc } from 'firebase/firestore';
+import { query, where, getDoc, getDocs, collection, doc, setDoc } from 'firebase/firestore';
 import Modal from 'react-modal';
 import Head from 'next/head';
 import Image from 'next/image';
 import pawImage from '../public/dog-paw.png';
+import { useRouter } from 'next/router';
 
 Modal.setAppElement('#__next');
 
@@ -132,6 +133,40 @@ const customStyles = {
   },
 };
 
+const SurveyListContainer = styled.div`
+  width: 80%;
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 20px;
+  font-family: 'Nanum Gothic', sans-serif;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const SurveyItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+`;
+
+const SurveyButton = styled.button`
+  padding: 8px 12px;
+  font-size: 14px;
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
 const Profile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [displayName, setDisplayName] = useState<string>('');
@@ -142,18 +177,9 @@ const Profile: React.FC = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>('');
   const [isNameValid, setIsNameValid] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        setDisplayName(currentUser.displayName || '');
-        setPhotoURL(currentUser.photoURL || '');
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
+  const [surveys, setSurveys] = useState<{ id: string }[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   const checkDisplayNameExists = async (name: string, userId: string): Promise<boolean> => {
     try {
@@ -175,7 +201,7 @@ const Profile: React.FC = () => {
       setIsNameValid(false);
       return;
     }
-  
+
 
     const nameExists = await checkDisplayNameExists(displayName, user.uid);
     setIsNameValid(!nameExists);
@@ -247,6 +273,50 @@ const Profile: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUserSurveys = async (uid: string) => {
+      setIsLoading(true);
+      try {
+        // 'users/{userId}/surveys' 하위 컬렉션 참조
+        const userSurveysRef = collection(doc(db, 'users', uid), 'surveys');
+        const querySnapshot = await getDocs(userSurveysRef);
+
+        if (!querySnapshot.empty) {
+          const userSurveys = querySnapshot.docs.map((doc) => ({
+            id: doc.id, // 문서 ID
+            ...doc.data(), // 기타 데이터
+          }));
+          setSurveys(userSurveys); // surveys 상태에 저장
+        } else {
+          console.error('사용자의 설문조사가 없습니다.');
+        }
+      } catch (error) {
+        console.error('설문조사 데이터를 가져오는 중 오류 발생:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setDisplayName(currentUser.displayName || '');
+        setPhotoURL(currentUser.photoURL || '');
+        fetchUserSurveys(currentUser.uid);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+
+
+  const handleViewResult = (event: React.MouseEvent<HTMLButtonElement>, surveyNumber: string) => {
+    event.preventDefault();
+    router.push(`/result/${surveyNumber}`);
+  };
+  
+
   if (!user) {
     return <ProfileContainer>로그인이 필요합니다.</ProfileContainer>;
   }
@@ -292,6 +362,27 @@ const Profile: React.FC = () => {
           placeholder="새 비밀번호"
         />
         <ProfileButton type="button" onClick={updatePassword}>비밀번호 업데이트</ProfileButton>
+        <SurveyListContainer>
+          <h2>설문조사 목록</h2>
+          {isLoading ? (
+            <p>로딩 중...</p>
+          ) : surveys.length > 0 ? (
+            <ul>
+              {surveys.map((survey) => (
+                <SurveyItem key={survey.id}>
+                  <span>설문조사 번호: {survey.id}</span>
+                  <SurveyButton onClick={(e) => handleViewResult(e, survey.id)}>
+                    결과 보기
+                  </SurveyButton>
+
+                </SurveyItem>
+              ))}
+            </ul>
+          ) : (
+            <p>저장된 설문조사가 없습니다.</p>
+          )}
+        </SurveyListContainer>
+
       </ProfileForm>
       <Modal
         isOpen={modalIsOpen}
