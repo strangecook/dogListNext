@@ -79,6 +79,7 @@ export const Context = styled.div`
     border: 1px solid #ccc;
     max-width: 400px;
     margin: 0 auto; /* 중앙 정렬 */
+    opacity: 0.8;
   }
 
   .emaildiv {

@@ -40,7 +40,7 @@ const ProfileForm = styled.form`
 const Label = styled.label`
   width: 80%;
   text-align: left;
-  margin-bottom: 5px;
+  margin: 10px;
   font-weight: bold;
 `;
 
@@ -68,6 +68,7 @@ const ProfileButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 10px;
+  margin-bottom: 10px;
 
   &:hover {
     background-color: #45a049;

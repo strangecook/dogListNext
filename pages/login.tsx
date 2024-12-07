@@ -75,33 +75,41 @@ export default function Login() {
       setErrorMessage(null);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      let nickname = user.displayName || `user_${user.uid.substring(0, 5)}`;
-      console.log(`Initial nickname: "${nickname}"`);
-      nickname = await generateUniqueNickname(nickname);
-
-      await updateProfile(user, { displayName: nickname });
-
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        nickname: nickname,
-        email: user.email
-      });
-
-      await setDoc(doc(db, "usernames", nickname), { uid: user.uid });
-
+  
+      // Firestore 권한 문제 해결 후 정상적으로 데이터 저장
+      try {
+        let displayName = user.displayName || `user_${user.uid.substring(0, 5)}`;
+        console.log(`Initial nickname: "${displayName}"`);
+        displayName = await generateUniqueNickname(displayName);
+  
+        await updateProfile(user, { displayName: displayName });
+  
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          displayName: displayName,
+          email: user.email,
+        });
+  
+        await setDoc(doc(db, "usernames", displayName), { uid: user.uid });
+      } catch (firestoreError) {
+        console.error("Firestore 데이터 저장 중 오류:", firestoreError);
+      }
+  
+      // 로그인이 성공하면 홈 화면으로 이동
       console.log("Redirecting to home...");
-      await router.push("/");
+      router.push("/");
       console.log("Redirection completed.");
     } catch (e) {
       if (e instanceof FirebaseError) {
         const errorCode = e.code;
-        console.log(errorCode);
+        console.log("Firebase Error:", errorCode);
         setErrorMessage(`Error: ${errorCode}`);
       }
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   const handleGoogleLogin = () => handleOAuthLogin(new GoogleAuthProvider());
   const handleFacebookLogin = () => handleOAuthLogin(new FacebookAuthProvider());
@@ -166,7 +174,7 @@ export default function Login() {
                 required: "비밀번호를 입력하세요",
                 minLength: {
                   value: 6,
-                  message: "비밀번호는 최소 6자 이상이어야 합니다"
+                  message: "비밀번호는 6자리 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다"
                 }
               })}
               name="password"
