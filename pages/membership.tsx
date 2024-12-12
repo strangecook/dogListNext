@@ -3,47 +3,22 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import Modal from 'react-modal';
 import {
-  MembershipContainer,
-  Subtitle,
-  SectionContainer,
-  BadgeContainer,
-  BadgeTitle,
-  BadgeDescription,
-  BadgePrice,
-  BadgeButton,
-  DonationContainer,
-  DonationTitle,
-  DonationDescription,
-  DonationAmounts,
-  DonationAmount,
-  DonationButton,
-  BenefitsContainer,
-  BenefitItem,
+  SurveyContainer,
+  SurveyIntro,
+  Title,
+  Description,
+  StartButton,
   ModalContent,
   ModalTitle,
-  ModalButton,
+  ModalDescription,
+  CloseButton,
   customStyles
 } from '../components/Membership/MembershipCss';
+
 import Head from 'next/head';
 
-interface DonationAmountType {
-  id: number;
-  amount: string;
-}
-
 const Membership: NextPage = () => {
-  const [selectedAmount, setSelectedAmount] = useState<DonationAmountType | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-
-  const donationAmounts: DonationAmountType[] = [
-    { id: 1, amount: '$5' },
-    { id: 2, amount: '$10' },
-    { id: 3, amount: '$20' },
-  ];
-
-  const handleAmountSelect = (amount: DonationAmountType) => {
-    setSelectedAmount(amount);
-  };
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -53,95 +28,59 @@ const Membership: NextPage = () => {
     setModalIsOpen(false);
   };
 
-  const handleDonate = () => {
-    if (selectedAmount) {
-      openModal();
-    }
-  };
-
-  const handleBadgePurchase = () => {
+  const handleSurveyStart = () => {
     openModal();
   };
 
   return (
-    <MembershipContainer>
+    <SurveyContainer>
       <Head>
-        <title>멤버십 - 강아지위키</title>
-        <meta name="description" content="강아지위키 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다." />
-        <meta name="keywords" content="멤버십, 강아지, 개 품종, 강아지위키, 초기멤버, 제작자 기부" />
+        <title>강아지 추천 설문 - 강아지위키</title>
+        <meta name="description" content="2900원으로 설문을 시작하고 당신에게 맞는 강아지를 찾아보세요." />
+        <meta name="keywords" content="강아지, 설문, 추천, 강아지위키" />
 
-        {/* 이 페이지에 특화된 Open Graph Meta Tags */}
-        <meta property="og:title" content="멤버십 - 강아지위키" />
-        <meta property="og:description" content="강아지위키 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다." />
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="강아지 추천 설문 - 강아지위키" />
+        <meta property="og:description" content="2900원으로 설문을 시작하고 당신에게 맞는 강아지를 찾아보세요." />
         <meta property="og:image" content="/mainImage.avif" />
-        <meta property="og:url" content="https://www.doglist.info/membership" />
+        <meta property="og:url" content="https://www.doglist.info/survey" />
         <meta property="og:type" content="website" />
 
-        {/* JSON-LD 구조화된 데이터: 이 페이지에 특화된 데이터 */}
+        {/* JSON-LD Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "멤버십 - 강아지위키",
-            "description": "강아지위키 멤버십에 가입하고 다양한 혜택을 누리세요. 초기멤버 뱃지 구매와 제작자 기부를 통해 지원할 수 있습니다.",
-            "url": "https://www.doglist.info/membership"
+            "name": "강아지 추천 설문 - 강아지위키",
+            "description": "2900원으로 설문을 시작하고 당신에게 맞는 강아지를 찾아보세요.",
+            "url": "https://www.doglist.info/survey"
           })}
         </script>
-        <link rel="canonical" href="https://www.doglist.info/membership" />
+        <link rel="canonical" href="https://www.doglist.info/survey" />
       </Head>
-      <SectionContainer>
-        <BadgeContainer>
-          <BadgeTitle>초기멤버 뱃지</BadgeTitle>
-          <BadgeDescription>
-            초기멤버 뱃지를 구매하고 영구적인 뱃지를 가지세요!
-          </BadgeDescription>
-          <BadgePrice>$1</BadgePrice>
-          <BadgeButton onClick={handleBadgePurchase}>구매하기</BadgeButton>
-        </BadgeContainer>
 
-        <DonationContainer>
-          <DonationTitle>제작자 기부</DonationTitle>
-          <DonationDescription>
-            다양한 금액으로 제작자에게 기부하고, 개발에 힘이 되도록 응원해주세요!
-          </DonationDescription>
-          <DonationAmounts>
-            {donationAmounts.map((amount) => (
-              <DonationAmount
-                key={amount.id}
-                onClick={() => handleAmountSelect(amount)}
-                selected={selectedAmount?.id === amount.id}
-              >
-                {amount.amount}
-              </DonationAmount>
-            ))}
-          </DonationAmounts>
-          <DonationButton onClick={handleDonate} disabled={!selectedAmount}>
-            {selectedAmount ? '기부하기' : '금액 선택'}
-          </DonationButton>
-        </DonationContainer>
-      </SectionContainer>
-
-      <BenefitsContainer>
-        <Subtitle>구독 혜택</Subtitle>
-        <BenefitItem>프로필에 초기멤버 뱃지 표시</BenefitItem>
-        <BenefitItem>특별한 초기멤버 전용 제작자의 관심</BenefitItem>
-        <BenefitItem>향후 서비스 개선 시 우선적인 피드백 기회 제공</BenefitItem>
-        <BenefitItem>제작자와의 직접적인 소통 기회</BenefitItem>
-      </BenefitsContainer>
+      <SurveyIntro>
+        <Title>강아지 추천 설문</Title>
+        <Description>
+          설문에 참여하고 2900원으로 당신에게 딱 맞는 강아지를 찾아보세요!
+        </Description>
+        <StartButton onClick={handleSurveyStart}>설문 시작하기</StartButton>
+      </SurveyIntro>
 
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Coming Soon"
+        contentLabel="Survey Modal"
         ariaHideApp={false}
       >
         <ModalContent>
-          <ModalTitle>곧 출시 예정입니다!</ModalTitle>
-          <ModalButton onClick={closeModal}>닫기</ModalButton>
+          <ModalTitle>설문이 곧 시작됩니다!</ModalTitle>
+          <ModalDescription>현재 설문 준비 중입니다. 곧 서비스가 제공될 예정입니다.</ModalDescription>
+          <CloseButton onClick={closeModal}>닫기</CloseButton>
         </ModalContent>
       </Modal>
-    </MembershipContainer>
+    </SurveyContainer>
   );
 };
 
