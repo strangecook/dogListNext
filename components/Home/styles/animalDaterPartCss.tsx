@@ -14,15 +14,13 @@ export const Container = styled.div`
   }
 `;
 
+
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 25px;
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
-  }
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 `;
+
 
 export const Card = styled.div`
   position: relative;
@@ -63,37 +61,20 @@ export const Dropdown = styled.select`
   transition: border-color 0.3s ease;
 
   &:focus {
-    border-color: #4caf50;
+    border-color: #FFD700;
     outline: none;
-  }
-`;
-
-export const SearchBarContainer = styled.div`
-  position: relative; // 추가된 부분
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-  @media (max-width: 768px) {
-    justify-content: center;
-    flex-direction: row;
   }
 `;
 
 export const SearchBar = styled.input`
   padding: 10px;
   font-size: 1em;
-  border: 1px solid #ccc;
+  border: none;
+  background-color: #f0f0f0; /* 회색 배경 */
   border-radius: 8px 0 0 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
   width: 100%;
-  
-  &:focus {
-    border-color: #4caf50;
-    outline: none;
-  }
+  outline: none;
+
 
   @media (max-width: 768px) {
     width: 70%;
@@ -107,22 +88,21 @@ export const SearchBar = styled.input`
 `;
 
 export const SearchButton = styled.button`
-  padding: 10px 20px;
-  font-size: 1em;
-  color: white;
-  background-color: #4caf50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* 버튼의 너비 */
+  height: 40px; /* 버튼의 높이 */
   border: none;
-  border-radius: 0 8px 8px 0;
+  border-radius: 50%; /* 둥근 버튼 */
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-  @media (max-width: 768px) {
-    border-radius: 0 8px 8px 0;
-    margin-left: 0;
-    width: 30%;
-    font-size: 0.8em;
+  .SearchButton-Image {
+    width: 20px; /* 아이콘 크기 */
+    height: 20px;
   }
 `;
+
 
 export const AutocompleteList = styled.ul`
   position: absolute; // 변경된 부분
@@ -212,71 +192,22 @@ export const Text = styled.p`
   }
 `;
 
-export const ConsonantFilterContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
 
 export const ConsonantButton = styled.button<ConsonantButtonProps>`
   padding: 10px 20px;
   font-size: 1em;
-  color: white;
-  background-color: ${props => (props.$selected ? '#4caf50' : '#9e9e9e')};
+  font-weight: 600;
+  color: black;
+  background-color: ${props => (props.$selected ? '#black' : 'white')};
   border: none;
   border-radius: 8px;
   margin: 0 5px;
+  width: 85px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   
   &:hover {
-    background-color: #4caf50;
-  }
-`;
-
-export const ThemeFilterContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-export const ThemeButton = styled.button<ConsonantButtonProps>`
-  padding: 10px 20px;
-  font-size: 1em;
-  color: white;
-  background-color: ${props => (props.$selected ? '#4caf50' : '#9e9e9e')};
-  border: none;
-  border-radius: 8px;
-  margin: 0 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-  &:hover {
-    background-color: #4caf50;
-  }
-`;
-
-export const FilterInfoContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  background-color: #f9f9f9;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-  @media (max-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 50px;
+    background-color: black;
+    color: white;
   }
 `;
 
@@ -295,28 +226,6 @@ export const FilterInfo = styled.div`
   }
 `;
 
-export const ResetButton = styled.button`
-  padding: 10px 20px;
-  font-size: 1em;
-  color: white;
-  background-color: #f44336;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 10%;
-  
-  &:hover {
-    background-color: #d32f2f;
-  }
-
-  @media (max-width: 768px) {
-    width: 55%;
-    margin-left: 10px;
-    font-size: 0.8em;
-  }
-`;
-
 export const ScrollToTopButton = styled.button`
   position: fixed;
   bottom: 30px;
@@ -324,7 +233,7 @@ export const ScrollToTopButton = styled.button`
   padding: 10px 20px;
   font-size: 1.2em;
   color: white;
-  background-color: #4caf50;
+  background-color: #FFD700;
   border: none;
   border-radius: 30%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -351,4 +260,153 @@ export const SingleLineText = styled(Text)`
       display: none;
     }
   }
+`;
+
+export const ConsonantFilterContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 5px;
+  justify-items: center;
+  margin-bottom: 20px;
+
+`;
+
+export const WhiteBackground = styled.div`
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+    margin: 10px;
+  }
+`;
+
+
+export const SearchAndThemeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* 화면 크기에 따라 줄바꿈 */
+  gap: 10px; /* 검색창과 버튼 간의 간격 */
+  border-bottom: 2px #f0f0f0 solid;
+`;
+
+export const SearchBarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #f0f0f0; /* 회색 배경 */
+`;
+
+export const ThemeFilterContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* 화면이 좁아질 경우 버튼들이 줄바꿈 */
+  justify-content: flex-start;
+  width: 65%; /* 테마 버튼의 비율 */
+  height: 40px;
+  margin: 0 auto 20px auto; /* 중앙 정렬 및 하단 간격 */
+  @media (max-width: 768px) {
+    width: 100%; /* 모바일에서는 전체 너비 */
+  }
+`;
+
+export const ThemeButton = styled.button<ConsonantButtonProps>`
+  padding: 10px 20px;
+  font-size: 0.9em;
+  color: ${(props) => (props.$selected ? '#FFD000' : 'black')};
+  background-color: #ffffff;
+  border: 1px solid ${(props) => (props.$selected ? '#FFD000' : '#ccc')};
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 16px;
+    font-size: 0.8em;
+  }
+`;
+
+export const SearchBarWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; /* 회색 배경 */
+  border-radius: 8px; /* 모서리를 둥글게 */
+  padding: 10px; /* 내부 여백 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 */
+  margin: 0 auto 20px 5px; /* 중앙 정렬 및 하단 간격 */
+  width: 33%; /* 검색창의 비율 */
+  height: 40px;
+`;
+
+export const FilterInfoContainer = styled.div`
+  display: flex;
+  justify-content: space-between; /* 양 끝으로 배치 */
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 10px 20px;
+
+
+  @media (max-width: 768px) {
+    flex-direction: row; /* 모바일에서도 가로 정렬 */
+    padding: 5px 10px;
+  }
+`;
+
+export const FilterLabel = styled.div`
+  font-size: 1em;
+  font-weight: bold;
+  color: #333;
+`;
+
+export const ResetButton = styled.button`
+  display: flex; /* Flexbox 적용 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  gap: 8px; /* 이미지와 텍스트 사이 간격 */
+  padding: 10px 20px;
+  font-size: 0.8em;
+  color: black;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-items: center;
+
+  &:hover {
+    background-color: #d32f2f;
+    color: white;
+
+    .ResetButton-Image {
+      transform: rotate(360deg); /* 360도 회전 */
+      transition: transform 0.5s ease-in-out; /* 회전 애니메이션 */
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.8em;
+    padding: 8px 16px;
+  }
+
+  .ResetButton-Image {
+    width: 16px; /* 이미지 너비 */
+    height: 16px; /* 이미지 높이 */
+    align-items: center;
+  }
+`;
+
+export const Divider = styled.div`
+  width: 100%; /* 가로로 길게 */
+  height: 1px; /* 선의 두께 */
+  background-color: #ddd; /* 선 색상 */
+  margin: 20px 0; /* 위아래 여백 */
 `;
