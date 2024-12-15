@@ -1,166 +1,138 @@
 import styled from 'styled-components';
-import Image from 'next/image';
 
 export const DescriptionCover = styled.div`
-  position: relative;
   width: 100%;
-  height: 100vh;
+  padding: 50px 20px;
+  background-color: #F6F6F6;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  overflow: hidden;
-`;
-
-export const CombinedImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-`;
-
-export const MainImage = styled(Image)`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-`;
-
-export const OverlayImage = styled(Image)`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.5; /* 투명도를 조정하여 겹치는 효과 */
-  z-index: 2;
-`;
-
-export const StyledImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
+  text-align: center;
+  height: 680px;
 `;
 
 
 export const Context = styled.div`
-  position: relative;
+  position: relative; /* 겹치기 위해 부모를 relative로 설정 */
+  width: 100%;
+  height: 400px; /* 필요한 높이 설정 */
+`;
+
+
+export const TitleText = styled.div`
+  position: absolute; /* CircleImageContainer 위에 배치 */
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 중앙 정렬 */
+  z-index: 2; /* 텍스트가 위 레이어 */
   text-align: center;
-  color: #fff;
-  z-index: 3; /* 이미지 위에 표시되도록 설정 */
-  top: 220px;
-  right: 230px;
+  width: 100%;
 
-  .contextH1 {
-    white-space: pre-wrap;
-    font-size: 3vw;
-    line-height: 1.2em;
-    -webkit-text-stroke-width: 1.5px;
-    -webkit-text-stroke-color: black;
-    margin-bottom: 20px; /* 아래 여백 추가 */
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 0.8;
+    color: #333;
+    span {
+      color: #FFD000;
+    }
   }
 
-  .contextH3 {
-    white-space: pre-wrap;
-    font-size: 1.5vw;
-    margin-top: 0;
-    margin-bottom: 20px;
-    -webkit-text-stroke-width: 0.3px;
-    -webkit-text-stroke-color: black;
+  p {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #666;
   }
+`;
 
-  .emailcontainer {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 15px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    align-items: center;
+export const SubscribeForm = styled.div`
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  input {
+    padding: 10px;
+    font-size: 1rem;
     border: 1px solid #ccc;
-    max-width: 400px;
-    margin: 0 auto; /* 중앙 정렬 */
-    opacity: 0.8;
+    border-radius: 5px;
+    width: 300px;
   }
 
-  .emaildiv {
-    width: 100%;
-
-    .emailInput {
-      width: 100%;
-      padding: 10px;
-      border: 0;
-      border-bottom: 2px solid #ccc;
-      font-size: 1rem;
-    }
-
-    .emailInput:focus {
-      border-color: #4caf50;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
-  }
-
-  .buttonNormal,
-  .buttonHovered {
+  button {
     padding: 10px 20px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .buttonNormal {
-    background-color: #4caf50;
+    font-size: 1rem;
+    background-color: #ffa500;
     color: white;
-    border: solid 1px;
-  }
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 
-  .buttonHovered {
-    background-color: white;
-    color: #4caf50;
-    border: solid 1px;
-  }
-
-  @media (max-width: 768px) {
-    margin-top: 70vh;
-    right: 0;
-    top: 0px;
-
-    .emailcontainer {
-      display: none;
-    }
-    .contextH1 {
-      font-size: 6vw;
-    }
-
-    .contextH3 {
-      font-size: 3vw;
-    }
-
-    .emailcontainer {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-
-    .buttonNormal,
-    .buttonHovered {
-      width: 100%;
+    &:hover {
+      background-color: #cc8400;
     }
   }
 `;
 
-export const Notification = styled.p<{ $isError: boolean }>`
-  color: ${(props) => (props.$isError ? 'red' : 'green')};
-  font-weight: bold;
-  text-align: center;
-  margin-top: 10px;
-  width: 50%;
-  max-width: 350px;
-  padding: 7px;
-  z-index: 3; /* 이미지 위에 표시되도록 설정 */
+export const CircleImageContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* 이미지가 아래 레이어 */
+  
+  .circle-image {
+    position: absolute;
+    border-radius: 50%;
+    border: 5px solid #FFD000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 
-  @media (max-width: 768px) {
-    width: 100%;
+    &:hover {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+
+  .image1 {
+    top: -50px;
+    left: 10%;
+    width: 120px;
+    height: 120px;
+  }
+
+  .image2 {
+    top: 0;
+    right: 10%;
+    width: 150px;
+    height: 150px;
+  }
+
+  .image3 {
+    bottom: 60px;
+    left: 15%;
+    width: 100px;
+    height: 100px;
+  }
+
+  .image4 {
+    bottom: 20px;
+    right: 15%;
+    width: 140px;
+    height: 140px;
+  }
+
+
+  .image5 {
+    top: 160px;
+    left: 10%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .image6 {
+    top: 200px;
+    right: 10%;
+    width: 150px;
+    height: 150px;
   }
 `;
