@@ -240,7 +240,7 @@ export const ScrollToTopButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #388e3c;
+    background-color: #FFD000;
   }
 `;
 

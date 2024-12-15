@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FormContainer, NavigationButton, ButtonContainer, Blocked, FormTitle } from './commonStyles'; // 공통 스타일 가져오기
+import { FormContainer, NavigationButton, ButtonContainer, FormTitle } from './commonStyles'; // 공통 스타일 가져오기
 import { SurveyData } from './SurveyDataType';
 import { QuestionGroup } from './QuestionGroup';
 import { calculateScore } from './UserTest';
@@ -36,7 +36,6 @@ const UserInformation: React.FC<UserInformationProps> = ({ onNext, onPrevious, u
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
-        <Blocked />
         <FormTitle>유저 정보</FormTitle>
         <QuestionGroup
           question="나이가 몇 세이신가요?"

@@ -356,13 +356,13 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
         ))}
         {loading && (
           <>
-            <Card style={{ height: "300px" }}>
+            <Card style={{ height: "200px" }}>
               <ClipLoader color="#4caf50" size={50} />
             </Card>
-            <Card style={{ height: "300px" }}>
+            <Card style={{ height: "200px" }}>
               <ClipLoader color="#4caf50" size={50} />
             </Card>
-            <Card style={{ height: "300px" }}>
+            <Card style={{ height: "200px" }}>
               <ClipLoader color="#4caf50" size={50} />
             </Card>
           </>

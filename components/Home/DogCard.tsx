@@ -74,6 +74,7 @@ const Card = styled.div`
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
+  max-width: 350px;
 
   &:hover {
     transform: scale(1.05);
@@ -116,7 +117,8 @@ const CardContentBottomRight = styled.div`
 `;
 
 const SingleLineText = styled(Text)`
-  font-size: 1em;
+  font-size: 0.8em;
+  font-weight: 700;
   margin: 0;
   background: rgba(0, 0, 0, 0.5);
   padding: 5px 10px;

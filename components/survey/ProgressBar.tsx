@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // ProgressBarContainer도 스타일 정의
 const ProgressBarContainer = styled.div`
-  position: fixed;
+  position: sticky;
   top: 0px; /* 네비게이션 바 아래 */
   width: 100%;
   max-width: 800px;

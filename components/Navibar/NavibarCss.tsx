@@ -234,12 +234,13 @@ export const MobileMenu = styled.div`
 
 export const MobileMenuItem = styled.div`
   padding: 10px 20px;
-  color: black;
+  color: white;
   white-space: nowrap;
   cursor: pointer;
   font-size: 16px;
   &:hover {
     background-color: #FFD000;
+    color: black;
   }
 `;
 

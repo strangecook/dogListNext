@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FormContainer, NavigationButton, ButtonContainer, FormTitle, Blocked } from './commonStyles'; // 공통 스타일을 가져옴
+import { FormContainer, NavigationButton, ButtonContainer, FormTitle } from './commonStyles'; // 공통 스타일을 가져옴
 import { SurveyData } from './SurveyDataType';
 import { QuestionGroup } from './QuestionGroup';
 
@@ -33,7 +33,6 @@ const DogPreferences: React.FC<DogPreferencesProps> = ({ onNext, onPrevious, use
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
-        <Blocked />
         <FormTitle>강아지 선호</FormTitle>
 
         <QuestionGroup

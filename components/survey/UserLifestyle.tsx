@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FormContainer, NavigationButton, ButtonContainer, FormTitle, Blocked } from './commonStyles'; // 공통 스타일 가져옴
+import { FormContainer, NavigationButton, ButtonContainer, FormTitle } from './commonStyles'; // 공통 스타일 가져옴
 import { SurveyData } from './SurveyDataType';
 import { QuestionGroup } from './QuestionGroup';
 
@@ -33,7 +33,6 @@ const UserLifestyle: React.FC<UserLifestyleProps> = ({ onNext, onPrevious, userI
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
-        <Blocked />
         <FormTitle>유저 생활 패턴</FormTitle>
 
         <QuestionGroup
