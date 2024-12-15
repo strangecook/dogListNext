@@ -21,7 +21,7 @@ export const Context = styled.div`
 
 export const TitleText = styled.div`
   position: absolute; /* CircleImageContainer 위에 배치 */
-  top: 75%;
+  top: 85%;
   left: 50%;
   transform: translate(-50%, -50%); /* 중앙 정렬 */
   z-index: 2; /* 텍스트가 위 레이어 */
@@ -43,6 +43,10 @@ export const TitleText = styled.div`
     font-size: 1rem;
     color: #666;
   }
+  
+  .TextGap{
+    height: 40px;
+  }
 `;
 
 export const SubscribeForm = styled.div`
@@ -51,26 +55,21 @@ export const SubscribeForm = styled.div`
   justify-content: center;
   gap: 10px;
 
-  input {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
-  }
-
   button {
+    width: 180px;
     padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #ffa500;
-    color: white;
+    font-size: 1.5rem;
+    font-weight: 900;
+    background-color: #FFD000;
+    color: black;
     border: none;
-    border-radius: 5px;
+    border-radius: 40px;
     cursor: pointer;
     transition: background-color 0.3s;
 
     &:hover {
       background-color: #cc8400;
+      color: white;
     }
   }
 `;
@@ -84,7 +83,7 @@ export const CircleImageContainer = styled.div`
   .circle-image {
     position: absolute;
     border-radius: 50%;
-    border: 5px solid #FFD000;
+    border: 5px solid #FDC000;
     transition: transform 0.3s ease, opacity 0.3s ease;
 
     &:hover {
@@ -94,45 +93,90 @@ export const CircleImageContainer = styled.div`
   }
 
   .image1 {
-    top: -50px;
-    left: 10%;
-    width: 120px;
-    height: 120px;
+    top: 12px;
+    left: 13%;
+    width: 160px;
+    height: 160px;
+    border: 8px solid #FDC000;
   }
 
   .image2 {
-    top: 0;
-    right: 10%;
+    top: 20px;
+    right: 13%;
     width: 150px;
     height: 150px;
+    border: 8px solid #FDC000;
   }
 
   .image3 {
-    bottom: 60px;
-    left: 15%;
-    width: 100px;
-    height: 100px;
-  }
-
-  .image4 {
-    bottom: 20px;
-    right: 15%;
+    bottom: -186px;
+    left: 19%;
     width: 140px;
     height: 140px;
+    border: 7px solid #A0E06D;  
   }
-
-
+  
+  .image4 {
+    bottom: 35px;
+    right: 10.8%;
+    width: 88px;
+    height: 88px;
+    border: 7px solid #A0E06D;  
+  }
+  
+  
   .image5 {
-    top: 160px;
-    left: 10%;
-    width: 40px;
-    height: 40px;
+    top: 282px;
+    left: 10.5%;
+    width: 84px;
+    height: 84px;
+    border: 7px solid #8FB5F7;  
   }
 
   .image6 {
-    top: 200px;
-    right: 10%;
-    width: 150px;
-    height: 150px;
+    bottom: -190px;
+    right: 19.3%;
+    width: 166px;
+    height: 166px;
+    border: 7px solid #8FB5F7;  
   }
+
+  .color-circle {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: red; /* 기본 색 */
+  z-index: 1;
+}
+
+/* 각 동그라미의 위치 조정 */
+.circle1 {
+  top: 88px;
+  left: 532px;
+  background-color: #96EDB9;
+}
+
+.circle2 {
+  top: 22px;
+  right: 586px;
+  background-color: #96C3ED;
+}
+
+.circle3 {
+  bottom: -68px;
+  left: 141px;
+  width: 16px;
+  height: 16px;
+  background-color: #FF9B8E;
+}
+
+.circle4 {
+  bottom: 67px;
+  right: 342px;
+  width: 10px;
+  height: 10px;
+  background-color: #FFDB00;
+}
+
 `;

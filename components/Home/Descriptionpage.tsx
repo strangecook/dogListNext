@@ -27,6 +27,10 @@ const Descriptionpage: React.FC = () => {
           <Image src={dog4} alt="강아지 4" className="circle-image image4" />
           <Image src={dog5} alt="강아지 5" className="circle-image image5" />
           <Image src={dog6} alt="강아지 6" className="circle-image image6" />
+          <div className="color-circle circle1"></div>
+          <div className="color-circle circle2"></div>
+          <div className="color-circle circle3"></div>
+          <div className="color-circle circle4"></div>
         </CircleImageContainer>
 
         {/* 텍스트 */}
@@ -34,9 +38,9 @@ const Descriptionpage: React.FC = () => {
           <h1>당신의 <span>완벽한 강아지</span>를 찾는 여정,</h1>
           <h1>지금 시작하세요</h1>
           <p>당신의 삶에 새로운 친구를 만들어 보세요. 함께하는 모든 순간이 즐거움으로 가득할 거예요.</p>
+          <div className="TextGap"></div>
           <SubscribeForm>
-            <input type="email" placeholder="이메일을 입력하세요." />
-            <button>구독하기</button>
+            <button>찾아보기</button>
           </SubscribeForm>
         </TitleText>
       </Context>
