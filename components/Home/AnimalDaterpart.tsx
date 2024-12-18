@@ -3,7 +3,7 @@ import {
   Container, Card, Grid, SearchBar, SearchButton, SearchBarContainer, AutocompleteList,
   AutocompleteItem, ConsonantFilterContainer, ConsonantButton, ThemeFilterContainer,
   ThemeButton, FilterInfoContainer, FilterInfo, ResetButton, ScrollToTopButton, WhiteBackground, SearchAndThemeContainer,
-  SearchBarWrapper, FilterLabel, Divider
+  SearchBarWrapper, FilterLabel, Divider, ToggleButton
 } from './styles/animalDaterPartCss';
 import DogCard from './DogCard';
 import { fetchAndStoreBreeds, getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
@@ -15,6 +15,7 @@ import { Breed } from '../../types/Breed'; // Breed 타입 import
 import Image from 'next/image';
 import search from '../../public/free-icon-magnifier.png'
 import reload from '../../public/free-icon-reload.png'
+import adjustment from '../../public/free-icon-contrast-adjustment.png'
 
 const consonants = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"];
 const themes = [
@@ -58,6 +59,8 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
   const autocompleteRef = useRef<HTMLDivElement>(null);
   const [selectedConsonant, setSelectedConsonant] = useState<string | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [filtersExpanded, setFiltersExpanded] = useState(false); // 필터 열림 여부 상태
 
   useEffect(() => {
     setLoading(false);
@@ -78,6 +81,20 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
+    };
+
+    handleResize(); // 초기 실행
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const toggleFilters = () => {
+    setFiltersExpanded((prevState) => !prevState); // 열기/펼치기 토글
+  };
 
   const handleCardClick = (breed: Breed) => {
     setSelectedBreed(breed);
@@ -312,20 +329,46 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
             ))}
           </ThemeFilterContainer>
         </SearchAndThemeContainer>
+        {isMobile && (
+          <>
+            <ToggleButton onClick={toggleFilters}>
+              <Image src={adjustment} alt="adjustment" className='adjustment-Image' />
+              {filtersExpanded ? "상세 필터 닫기" : "상세 검색"}
+            </ToggleButton>
+            {filtersExpanded &&
+              <>
+                <FilterInfoContainer>
+                  {/* 왼쪽: 상세 검색 텍스트 */}
+                  <FilterLabel>상세 검색</FilterLabel>
 
-        <FilterInfoContainer>
-          {/* 왼쪽: 상세 검색 텍스트 */}
-          <FilterLabel>상세 검색</FilterLabel>
+                  {/* 오른쪽: 필터 초기화 버튼 */}
+                  <ResetButton onClick={resetFilters}>
+                    <Image src={reload} alt="Reset" className='ResetButton-Image' />
+                    선택 초기화
+                  </ResetButton>
+                </FilterInfoContainer>
+                <Filters filters={filters} setFilters={setFilters} />
+              </>
+            }
+          </>
+        )}
 
-          {/* 오른쪽: 필터 초기화 버튼 */}
-          <ResetButton onClick={resetFilters}>
-            <Image src={reload} alt="Reset" className='ResetButton-Image' />
-            선택 초기화
-          </ResetButton>
-        </FilterInfoContainer>
-        {/* 추가 필터 컴포넌트 */}
-        <Filters filters={filters} setFilters={setFilters} />
+        {/* 데스크톱에서는 항상 필터 표시 */}
+        {!isMobile &&
+          <>
+            <FilterInfoContainer>
+              {/* 왼쪽: 상세 검색 텍스트 */}
+              <FilterLabel>상세 검색</FilterLabel>
 
+              {/* 오른쪽: 필터 초기화 버튼 */}
+              <ResetButton onClick={resetFilters}>
+                <Image src={reload} alt="Reset" className='ResetButton-Image' />
+                선택 초기화
+              </ResetButton>
+            </FilterInfoContainer>
+            <Filters filters={filters} setFilters={setFilters} />
+          </>
+        }
       </WhiteBackground>
 
       {/* 자음 필터 버튼 */}
