@@ -188,12 +188,12 @@ export const MenuTrigger = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
 
     .menu-square {
-      width: 15px;
-      height: 15px;
+      width: 10px;
+      height: 10px;
     }
 
     gap: 3px; /* 모바일에서는 간격 축소 */

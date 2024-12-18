@@ -21,7 +21,6 @@ const FooterContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   line-height: 1.6;
-  font-family: 'Nanum Gothic', sans-serif;
 
   @media (min-width: 768px) {
     flex-direction: row;

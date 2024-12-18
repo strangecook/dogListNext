@@ -8,7 +8,6 @@ interface ConsonantButtonProps {
 export const Container = styled.div`
   padding: 80px;
   background-color: #f7f7f7;
-  font-family: 'Nanum Gothic', sans-serif;
   @media (max-width: 768px) {
     padding: 20px;
   }
@@ -177,7 +176,6 @@ export const Title = styled.h2`
   margin: 0;
   font-size: 1.8em;
   font-weight: 700;
-  font-family: 'Nanum Gothic', sans-serif;
 `;
 
 export const Text = styled.p`
@@ -186,7 +184,6 @@ export const Text = styled.p`
   -webkit-text-stroke-width: 0.3px;
   -webkit-text-stroke-color: black;
   color: #f5f5f5;
-  font-family: 'Nanum Gothic', sans-serif;
   @media (max-width: 768px) {
     font-size: 0.6em;
   }

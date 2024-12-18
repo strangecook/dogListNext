@@ -4,7 +4,6 @@ export const DetailContainer = styled.div`
   max-width: 800px;
   margin: 80px auto 20px auto;
   padding: 20px;
-  font-family: 'Nanum Gothic', sans-serif;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -74,7 +73,6 @@ export const BarContainer = styled.div`
   gap: 8px;
   align-items: center;
   margin: 8px 0;
-  font-family: 'Nanum Gothic', sans-serif;
   font-size: 0.8em;
 `;
 
@@ -124,7 +122,6 @@ export const CoatTypeWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3열 그리드 */
   gap: 10px;
-  font-family: 'Nanum Gothic', sans-serif;
 `;
 
 export const CoatTypeItem = styled.div<{ selected: boolean }>`

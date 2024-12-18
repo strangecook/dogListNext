@@ -92,7 +92,6 @@ const Text = styled.p`
   -webkit-text-stroke-width: 0.3px;
   -webkit-text-stroke-color: black;
   color: #f5f5f5;
-  font-family: 'Nanum Gothic', sans-serif;
   @media (max-width: 768px) {
     font-size: 0.6em;
   }
@@ -138,7 +137,6 @@ const SingleLineText = styled(Text)`
 const BarContainer = styled.div`
   width: 100%;
   margin: 3px 0;
-  font-family: 'Nanum Gothic', sans-serif;
   text-align: left;
   display: flex;
   align-items: center;
@@ -304,7 +302,6 @@ const TopSection = styled.div`
   justify-content: space-between;
   padding: 10px 0px 0px 0px;
   color: white;
-  font-family: "Nanum Gothic", sans-serif;
   font-size: 1em;
   width: 100%;
 `;
@@ -315,7 +312,6 @@ const DogName = styled.h3`
   font-size: 0.8em;
   text-align: left; /* 왼쪽 정렬 */
   color: white; /* 텍스트 색상 */
-  font-family: 'Nanum Gothic', sans-serif;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* 텍스트 가독성을 높이기 위한 그림자 */
 `;
 

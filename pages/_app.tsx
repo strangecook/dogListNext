@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/WantedSans.css';
 import type { AppProps } from 'next/app';
 import NaviBar from '../components/Navibar/Navibar';
 import { useEffect } from 'react';

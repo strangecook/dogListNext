@@ -8,7 +8,6 @@ export const FormContainer = styled.div`
   padding: 20px;
   max-width: 800px;
   margin: 40px auto;
-  font-family: Arial, sans-serif;
   width: 100%;
 
   @media (max-width: 768px) {

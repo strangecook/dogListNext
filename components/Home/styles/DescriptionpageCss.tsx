@@ -36,7 +36,12 @@ export const TitleText = styled.div`
     span {
       color: #FFD000;
     }
+    @media (max-width: 768px) {
+      font-size: 1.8em;
+      line-height: 1;
+    }
   }
+
 
   p {
     margin-top: 20px;
@@ -98,6 +103,14 @@ export const CircleImageContainer = styled.div`
     width: 160px;
     height: 160px;
     border: 8px solid #FDC000;
+
+    @media (max-width: 768px) {
+    top: 12px;
+    left: 0%;
+    width: 100px;
+    height: 100px;
+    border: 6px solid #FDC000;
+    }
   }
 
   .image2 {
@@ -106,6 +119,14 @@ export const CircleImageContainer = styled.div`
     width: 150px;
     height: 150px;
     border: 8px solid #FDC000;
+
+    @media (max-width: 768px) {
+    top: 50px;
+    right: 0%;
+    width: 100px;
+    height: 100px;
+    border: 6px solid #FDC000;
+    }
   }
 
   .image3 {
@@ -155,12 +176,25 @@ export const CircleImageContainer = styled.div`
   top: 88px;
   left: 532px;
   background-color: #96EDB9;
+
+  @media (max-width: 768px) {
+    width: 10px;
+    height: 10px;
+    top: 90px;
+    left: 124px;
+  }
 }
 
 .circle2 {
   top: 22px;
   right: 586px;
   background-color: #96C3ED;
+  @media (max-width: 768px) {
+    width: 10px;
+    height: 10px;
+    top: 22px;
+    right: 150px;
+  }
 }
 
 .circle3 {
