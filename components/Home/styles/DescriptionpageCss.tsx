@@ -29,7 +29,7 @@ export const TitleText = styled.div`
   width: 100%;
 
   h1 {
-    font-size: 3.5rem;
+    font-size: 3.6rem;
     font-weight: 900;
     line-height: 0.8;
     color: #333;
@@ -37,16 +37,22 @@ export const TitleText = styled.div`
       color: #FFD000;
     }
     @media (max-width: 768px) {
-      font-size: 1.8em;
-      line-height: 1;
+      font-size: 2em;
+      line-height: 0.8;
     }
   }
 
 
   p {
     margin-top: 20px;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 400;
     color: #666;
+
+    @media (max-width: 768px) {
+    font-size: 1rem;
+    font-weight: 600;
+    }
   }
   
   .TextGap{
@@ -55,15 +61,16 @@ export const TitleText = styled.div`
 `;
 
 export const SubscribeForm = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   gap: 10px;
 
   button {
-    width: 180px;
+    width: 330px;
+    height: 60px;
     padding: 10px 20px;
-    font-size: 1.5rem;
+    font-size: 0.9rem;
     font-weight: 900;
     background-color: #FFD000;
     color: black;
@@ -75,6 +82,25 @@ export const SubscribeForm = styled.div`
     &:hover {
       background-color: #cc8400;
       color: white;
+
+      .button_rightArrow{
+      filter: invert(100%); /* 흰색으로 변경 */
+    }
+    }
+
+    .button_rightArrow{
+      width: 10px;
+      height: 10px;
+      vertical-align: middle; /* 텍스트와 정렬 유지 */
+  position: relative; /* 상대적인 위치 조정 */
+  top: -2px; /* 위로 2px 이동 */
+    }
+
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+      width: 280px;
+      height: 60px;
     }
   }
 `;
@@ -89,12 +115,6 @@ export const CircleImageContainer = styled.div`
     position: absolute;
     border-radius: 50%;
     border: 5px solid #FDC000;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-
-    &:hover {
-      transform: scale(1.1);
-      opacity: 1;
-    }
   }
 
   .image1 {
@@ -105,11 +125,11 @@ export const CircleImageContainer = styled.div`
     border: 8px solid #FDC000;
 
     @media (max-width: 768px) {
-    top: 12px;
+    top: 42px;
     left: 0%;
     width: 100px;
     height: 100px;
-    border: 6px solid #FDC000;
+    border: 5px solid #FDC000;
     }
   }
 
@@ -121,11 +141,11 @@ export const CircleImageContainer = styled.div`
     border: 8px solid #FDC000;
 
     @media (max-width: 768px) {
-    top: 50px;
+    top: 80px;
     right: 0%;
     width: 100px;
     height: 100px;
-    border: 6px solid #FDC000;
+    border: 5px solid #FDC000;
     }
   }
 
@@ -134,7 +154,15 @@ export const CircleImageContainer = styled.div`
     left: 19%;
     width: 140px;
     height: 140px;
-    border: 7px solid #A0E06D;  
+    border: 7px solid #A0E06D;
+
+    @media (max-width: 768px) {
+      bottom: -200px;
+      left: 10%;
+    width: 80px;
+    height: 80px;
+    border: 5px solid #A0E06D;
+    }
   }
   
   .image4 {
@@ -142,7 +170,11 @@ export const CircleImageContainer = styled.div`
     right: 10.8%;
     width: 88px;
     height: 88px;
-    border: 7px solid #A0E06D;  
+    border: 7px solid #A0E06D;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
   
   
@@ -151,7 +183,12 @@ export const CircleImageContainer = styled.div`
     left: 10.5%;
     width: 84px;
     height: 84px;
-    border: 7px solid #8FB5F7;  
+    border: 7px solid #8FB5F7; 
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+
   }
 
   .image6 {
@@ -160,6 +197,14 @@ export const CircleImageContainer = styled.div`
     width: 166px;
     height: 166px;
     border: 7px solid #8FB5F7;  
+
+    @media (max-width: 768px) {
+      bottom: -230px;
+      right: 10.3%;
+    width: 100px;
+    height: 100px;
+    border: 5px solid #8FB5F7;
+    }
   }
 
   .color-circle {
@@ -180,7 +225,7 @@ export const CircleImageContainer = styled.div`
   @media (max-width: 768px) {
     width: 10px;
     height: 10px;
-    top: 90px;
+    top: 120px;
     left: 124px;
   }
 }
@@ -192,22 +237,22 @@ export const CircleImageContainer = styled.div`
   @media (max-width: 768px) {
     width: 10px;
     height: 10px;
-    top: 22px;
+    top: 52px;
     right: 150px;
   }
 }
 
 .circle3 {
-  bottom: -68px;
-  left: 141px;
-  width: 16px;
-  height: 16px;
+  bottom: 0px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
   background-color: #FF9B8E;
 }
 
 .circle4 {
-  bottom: 67px;
-  right: 342px;
+  bottom: 130px;
+  right: 0px;
   width: 10px;
   height: 10px;
   background-color: #FFDB00;
