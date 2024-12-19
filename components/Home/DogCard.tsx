@@ -59,7 +59,7 @@ const Overlay = styled.div<{ $showContent: boolean }>`
 
   @media (max-width: 768px) {
     background: rgba(0, 0, 0, 0.8);
-    opacity: ${({ $showContent }) => ($showContent ? 1 : 0)};
+    opacity: ${({ $showContent }) => ($showContent ? 1 : 0)} !important;
     transition: opacity 0.3s ease-in-out;
     padding: 5px;
     overflow: hidden;
@@ -93,7 +93,7 @@ const Text = styled.p`
   -webkit-text-stroke-color: black;
   color: #f5f5f5;
   @media (max-width: 768px) {
-    font-size: 0.6em;
+    font-size: 1em;
   }
 `;
 
@@ -127,10 +127,7 @@ const SingleLineText = styled(Text)`
   align-items: center;
 
   @media (max-width: 768px) {
-    font-size: 0.6em;
-    span {
-      display: none;
-    }
+    font-size: 0.8em;
   }
 `;
 
@@ -152,7 +149,7 @@ const BarContainer = styled.div`
 const Emoji = styled.span`
   margin-right: 4px;
   @media (max-width: 768px) {
-    display: none;
+    /* display: none; */
   }
 `;
 
@@ -165,7 +162,7 @@ const BarWrapper = styled.div`
   position: relative;
   height: 12px;
   @media (max-width: 768px) {
-    height: 4px;
+    height: 15px;
   }
 `;
 
@@ -189,37 +186,7 @@ const Bar = styled.div<{ width: string; $reverse?: string }>`
   transition: width 0.5s ease-in-out;
 
   @media (max-width: 768px) {
-    height: 4px;
-  }
-`;
-
-const InfoIcon = styled.span<{ $tooltip: string }>`
-  margin-left: 8px;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.3);
-  padding: 2px 5px;
-  border-radius: 20px;
-  z-index: 10;
-  @media (max-width: 768px) {
-    display: none;
-  }
-
-  &:hover::after {
-    content: "${({ $tooltip }) => $tooltip}";
-    position: absolute;
-    top: -5px;
-    left: 105%;
-    transform: translateX(0);
-    background: rgba(0, 0, 0, 0.9);
-    color: #fff;
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 0.8em;
-    white-space: pre-wrap;
-    width: 250px;
-    z-index: 100;
+    height: 15px;
   }
 `;
 
@@ -241,9 +208,9 @@ const BarSection = styled.div`
 
   @media (max-width: 768px) {
     padding: 2px 5px;
-    margin: 2px 0;
+    margin: 3px 0;
     display: flex;
-    height: 12px;
+    height: 20px;
   }
 `;
 
@@ -263,18 +230,23 @@ const FixedImageContainer = styled(ImageContainer)`
   border-radius: 8px;
 `;
 
-const DetailButton = styled(Link) <{ isLoading: boolean }>`
-  display: inline-block;
+const DetailButton = styled(Link)<{ $isLoading: boolean }>`
+  display: flex;
   width: 100%;
+  height: 30px;
   margin: 3px auto;
-  background-color: ${({ isLoading }) => (isLoading ? '#A9A9A9' : '#4caf50')}; // 로딩 중이면 회색
+  background-color: ${({ $isLoading }) => ($isLoading ? '#A9A9A9' : '#4caf50')};
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
   text-align: center;
-  pointer-events: ${({ isLoading }) => (isLoading ? 'none' : 'auto')}; // 로딩 중이면 클릭 불가
+  margin-top: 25px; /* 위에서 20px 아래로 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  pointer-events: ${({ $isLoading }) => ($isLoading ? 'none' : 'auto')};
   transition: background-color 0.3s ease;
 `;
+
 
 const StyledImage = styled(Image)`
   object-fit: cover; // objectFit 대신 CSS 스타일 사용
@@ -385,6 +357,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
 
   const handleCardClick = (breed: Breed) => {
     if (window.innerWidth <= 768) {
+      console.log('showContent', showContent);
       setShowContent(!showContent);
     } else {
       setSelectedBreed(breed);
@@ -398,12 +371,9 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
 
   const handleDetailButtonClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation();
-    setIsLoadingDetail(true); // 로딩 상태 시작
+    console.log('Detail button clicked');
+    setIsLoadingDetail(true);
     setSelectedBreed(breed);
-  };
-
-  const handleBarLeave = () => {
-    setHoveredBar(false); // 호버 상태 해제
   };
 
   const averageChildFriendly = breed.affectionWithFamily;
@@ -538,7 +508,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
                 <DetailButton
                   href={`/breeds/${breed.englishName.toLowerCase()}`}
                   onClick={handleDetailButtonClick}
-                  isLoading={isLoadingDetail}
+                  $isLoading={isLoadingDetail}
                 >
                   {isLoadingDetail ? '로딩 중...' : '자세한 정보'}
                 </DetailButton>

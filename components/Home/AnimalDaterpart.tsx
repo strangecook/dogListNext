@@ -92,7 +92,8 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleFilters = () => {
+  const toggleFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setFiltersExpanded((prevState) => !prevState); // 열기/펼치기 토글
   };
 
