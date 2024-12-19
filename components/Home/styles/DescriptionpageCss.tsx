@@ -243,19 +243,35 @@ export const CircleImageContainer = styled.div`
 }
 
 .circle3 {
-  bottom: 0px;
-  left: 10px;
-  width: 10px;
-  height: 10px;
+  bottom: -68px;
+  left: 141px;
+  width: 16px;
+  height: 16px;
   background-color: #FF9B8E;
+
+  @media (max-width: 768px) {
+    bottom: 0px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: #FF9B8E;
+  }
 }
 
 .circle4 {
-  bottom: 130px;
-  right: 0px;
+  bottom: 67px;
+  right: 342px;
   width: 10px;
   height: 10px;
   background-color: #FFDB00;
+  
+  @media (max-width: 768px) {
+    bottom: 130px;
+    right: 0px;
+    width: 10px;
+    height: 10px;
+    background-color: #FFDB00;
+  }
 }
 
 `;

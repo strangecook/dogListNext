@@ -84,6 +84,10 @@ const Card = styled.div`
   &:hover .hide-on-hover {
     opacity: 0;
   }
+
+  @media (max-width: 768px) {
+    max-width: none;
+  }
 `;
 
 const Text = styled.p`

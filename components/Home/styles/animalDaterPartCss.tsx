@@ -18,6 +18,10 @@ export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* 모바일에서 한 줄로 전체 너비 사용 */
+  }
 `;
 
 

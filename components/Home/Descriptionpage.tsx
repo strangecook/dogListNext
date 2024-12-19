@@ -2,12 +2,12 @@ import React, { useState,useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { DescriptionCover, Context, CircleImageContainer, TitleText, SubscribeForm } from './styles/DescriptionpageCss';
-import dog1 from '../../public/mainwebImage.webp';
-import dog2 from '../../public/mainwebImage.webp';
-import dog3 from '../../public/mainwebImage.webp';
-import dog4 from '../../public/mainwebImage.webp';
-import dog5 from '../../public/mainwebImage.webp';
-import dog6 from '../../public/mainwebImage.webp';
+import dog1 from '../../public/dogPic5@.webp';
+import dog2 from '../../public/dogPic14@.webp';
+import dog3 from '../../public/dogPic20@.webp';
+import dog4 from '../../public/dogPic23@.webp';
+import dog5 from '../../public/dogPic21@.webp';
+import dog6 from '../../public/dogPic16@.webp';
 import rightArrow from '../../public/free-icon-right-arrow.png'
 
 const Descriptionpage: React.FC = () => {

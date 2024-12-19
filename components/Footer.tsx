@@ -77,6 +77,7 @@ const Footer = () => {
         <BusinessInfo>
           <InfoItem><strong>상호명:</strong> 인플로우</InfoItem>
           <InfoItem><strong>사업자 등록 번호:</strong> 223-29-01831</InfoItem>
+          <InfoItem><strong>통신판매업신고증:</strong> 2024-전남광양-0278</InfoItem>
           <InfoItem><strong>대표자명:</strong> 허인재</InfoItem>
           <InfoItem><strong>사업장 주소지:</strong> (57798) 전남 광양시 눈소4길 65</InfoItem>
           <InfoItem><strong>전화번호:</strong> 061-791-5090</InfoItem>
