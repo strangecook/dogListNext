@@ -154,14 +154,6 @@ const Membership: NextPage = () => {
           설문에 참여하고 2900원으로 당신에게 딱 맞는 강아지를 찾아보세요!
         </Description>
         <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={isCouponChecked}
-              onChange={handleCouponChange}
-            />
-            쿠폰 적용 (500원 할인)
-          </label>
         </div>
         <div id="payment-method"></div>
         <div id="agreement"></div>
