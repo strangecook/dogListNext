@@ -8,6 +8,14 @@ import dogLogoImage from '../public/mainwebImage.webp'; // 데스크탑 배경 �
 import dogMediaImage from '../public/mediaImage.webp'; // 모바일 배경 이미지
 import { SurveyData } from '../components/survey/SurveyDataType';
 import ProgressBar from '../components/survey/ProgressBar';
+import { DescriptionCover, Context, CircleImageContainer, TitleText } from "../components/Home/styles/DescriptionpageCss";
+import dog1 from '../public/dogPic5@.webp';
+import dog2 from '../public/dogPic14@.webp';
+import dog3 from '../public/dogPic20@.webp';
+import dog4 from '../public/dogPic23@.webp';
+import dog5 from '../public/dogPic21@.webp';
+import dog6 from '../public/dogPic16@.webp';
+import Image from 'next/image';
 
 const SurveyIntro: React.FC = () => {
   const [step, setStep] = useState<number>(0); // 0: 시작, 1: 유저 정보, 2: 유저 생활 패턴, 3: 강아지 선호
@@ -85,14 +93,35 @@ const SurveyIntro: React.FC = () => {
       )}
 
       {step === 0 && (
-        <IntroContainer>
-          <Title>강아지 맞춤 설문조사</Title>
-          <Description>
-            이 설문조사는 당신의 생활 패턴과 선호에 맞는 강아지를 추천하기 위한 것입니다.
-            <br /> 각 항목에 대한 질문에 성실히 답변해 주세요.
-          </Description>
-          <StartButton onClick={handleStartClick}>시작하기</StartButton>
-        </IntroContainer>
+        <DescriptionCover>
+          <Context>
+            <CircleImageContainer>
+              {/* 겹쳐 보이는 원형 이미지들 */}
+              <Image src={dog1} alt="강아지 1" className="circle-image image1" />
+              <Image src={dog2} alt="강아지 2" className="circle-image image2" />
+              <Image src={dog3} alt="강아지 3" className="circle-image image3" />
+              <Image src={dog4} alt="강아지 4" className="circle-image image4" />
+              <Image src={dog5} alt="강아지 5" className="circle-image image5" />
+              <Image src={dog6} alt="강아지 6" className="circle-image image6" />
+              <div className="color-circle circle1"></div>
+              <div className="color-circle circle2"></div>
+              <div className="color-circle circle3"></div>
+              <div className="color-circle circle4"></div>
+            </CircleImageContainer>
+
+            {/* 텍스트 */}
+            <TitleText>
+              <IntroContainer>
+                <Title>강아지 맞춤 설문조사</Title>
+                <Description>
+                  이 설문조사는 당신의 생활 패턴과 선호에 맞는 강아지를 추천하기 위한 것입니다.
+                  <br /> 각 항목에 대한 질문에 성실히 답변해 주세요.
+                </Description>
+                <StartButton onClick={handleStartClick}>시작하기</StartButton>
+              </IntroContainer>
+            </TitleText>
+          </Context>
+        </DescriptionCover>
       )}
 
       {step === 1 && (
@@ -137,23 +166,9 @@ const SurveyContainer = styled.div<{ step: number }>`
   flex-direction: column;
   align-items: center;
   justify-content: center; /* Center content vertically */
-  background: ${(props) =>
-    props.step === 0
-      ? `url(${dogLogoImage.src}) no-repeat center center`
-      : '#E2EEE0'};
   background-size: cover;
   min-height: 100vh; /* Cover entire viewport */
-  width: 100vw; /* Ensure full-width */
   margin: 0; /* Remove any default margin */
-
-  @media (max-width: 768px) {
-    background: ${(props) =>
-    props.step === 0
-      ? `url(${dogMediaImage.src}) no-repeat center center`
-      : '#E2EEE0'};
-    background-size: cover;
-    min-height: 100vh;
-  }
 `;
 
 const IntroContainer = styled.div`
@@ -173,8 +188,6 @@ const IntroContainer = styled.div`
 const Title = styled.h1`
   font-size: 36px;
   margin-bottom: 20px;
-  -webkit-text-stroke-width: 1.5px;
-  -webkit-text-stroke-color: black;
   @media (max-width: 768px) {
     font-size: 28px;
     -webkit-text-stroke-width: 1px;
@@ -186,7 +199,6 @@ const Description = styled.p`
   line-height: 1.6;
   margin-bottom: 30px;
   -webkit-text-stroke-width: 0.1px;
-  -webkit-text-stroke-color: black;
   @media (max-width: 768px) {
     font-size: 16px;
   }

@@ -21,7 +21,7 @@ export const Context = styled.div`
 
 export const TitleText = styled.div`
   position: absolute; /* CircleImageContainer 위에 배치 */
-  top: 85%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%); /* 중앙 정렬 */
   z-index: 2; /* 텍스트가 위 레이어 */
@@ -30,7 +30,7 @@ export const TitleText = styled.div`
 
   h1 {
     font-size: 3.6rem;
-    font-weight: 900;
+    font-weight: 700;
     line-height: 0.8;
     color: #333;
     span {
@@ -38,7 +38,7 @@ export const TitleText = styled.div`
     }
     @media (max-width: 768px) {
       font-size: 2em;
-      line-height: 0.8;
+      font-weight: 500;
     }
   }
 
@@ -58,6 +58,10 @@ export const TitleText = styled.div`
   .TextGap{
     height: 40px;
   }
+
+  @media (max-width: 768px) {
+    top: 70%;
+    }
 `;
 
 export const SubscribeForm = styled.div`
@@ -264,7 +268,7 @@ export const CircleImageContainer = styled.div`
   width: 10px;
   height: 10px;
   background-color: #FFDB00;
-  
+
   @media (max-width: 768px) {
     bottom: 130px;
     right: 0px;

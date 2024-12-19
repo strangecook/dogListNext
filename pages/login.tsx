@@ -12,6 +12,14 @@ import { auth, db } from "../components/firebase";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { AuthProvider } from "firebase/auth";
+import { DescriptionCover, Context, CircleImageContainer, TitleText } from "../components/Home/styles/DescriptionpageCss";
+import dog1 from '../public/dogPic5@.webp';
+import dog2 from '../public/dogPic14@.webp';
+import dog3 from '../public/dogPic20@.webp';
+import dog4 from '../public/dogPic23@.webp';
+import dog5 from '../public/dogPic21@.webp';
+import dog6 from '../public/dogPic16@.webp';
+
 
 interface LoginFormData {
   email: string;
@@ -75,26 +83,26 @@ export default function Login() {
       setErrorMessage(null);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-  
+
       // Firestore 권한 문제 해결 후 정상적으로 데이터 저장
       try {
         let displayName = user.displayName || `user_${user.uid.substring(0, 5)}`;
         console.log(`Initial nickname: "${displayName}"`);
         displayName = await generateUniqueNickname(displayName);
-  
+
         await updateProfile(user, { displayName: displayName });
-  
+
         await setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
           displayName: displayName,
           email: user.email,
         });
-  
+
         await setDoc(doc(db, "usernames", displayName), { uid: user.uid });
       } catch (firestoreError) {
         console.error("Firestore 데이터 저장 중 오류:", firestoreError);
       }
-  
+
       // 로그인이 성공하면 홈 화면으로 이동
       console.log("Redirecting to home...");
       router.push("/");
@@ -109,7 +117,7 @@ export default function Login() {
       setIsLoading(false);
     }
   };
-  
+
 
   const handleGoogleLogin = () => handleOAuthLogin(new GoogleAuthProvider());
   const handleFacebookLogin = () => handleOAuthLogin(new FacebookAuthProvider());
@@ -121,7 +129,7 @@ export default function Login() {
   };
 
   return (
-    <LoginCover>
+    <DescriptionCover>
       <Head>
         <title>로그인 - 강아지위키</title>
         <meta name="description" content="강아지위키에 로그인하여 다양한 강아지 품종에 대한 정보를 확인하세요." />
@@ -148,60 +156,119 @@ export default function Login() {
         </script>
         <link rel="canonical" href="https://www.doglist.info/login" />
       </Head>
-      <DogLoginImage>
-        <Image
-          src={dogLoginPicture}
-          alt="dog"
-          style={{ width: '100vw', height: '100%', objectFit: 'cover', position: 'absolute' }}
-          sizes="100vw, 50vw"
-        />
-        <LoginBox>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              {...register("email", {
-                required: "이메일을 입력하세요",
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: "유효한 이메일 주소를 입력하세요"
-                }
-              })}
-              name="email"
-              placeholder="이메일"
-              type="email"
-            />
-            <Input
-              {...register("password", {
-                required: "비밀번호를 입력하세요",
-                minLength: {
-                  value: 6,
-                  message: "비밀번호는 6자리 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다"
-                }
-              })}
-              name="password"
-              placeholder="비밀번호"
-              type="password"
-            />
-            {getFirstErrorMessage() && <ErrorMessage>{getFirstErrorMessage()}</ErrorMessage>}
-            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-            <Input
-              type="submit"
-              value={isLoading ? "계정 확인 중..." : "로그인"}
-              disabled={isLoading}
-            />
-          </Form>
-          <ButtonWrapper>
-            <GoogleLoginButton onClick={handleGoogleLogin} disabled={isLoading}>
-              <Image src={googleLogo} alt="Google Logo" width={24} height={24} />
-              {isLoading ? "로그인 중..." : "Google로 로그인"}
-            </GoogleLoginButton>
-            <FacebookLoginButton onClick={handleFacebookLogin} disabled={isLoading}>
-              <Image src={facebookLogo} alt="Facebook Logo" width={24} height={24} />
-              {isLoading ? "로그인 중..." : "Facebook으로 로그인"}
-            </FacebookLoginButton>
-          </ButtonWrapper>
-          <SignUpButton onClick={moveToCreatePage}>회원가입</SignUpButton>
-        </LoginBox>
-      </DogLoginImage>
-    </LoginCover>
+      <Context>
+        <CircleImageContainer>
+          {/* 겹쳐 보이는 원형 이미지들 */}
+          <Image src={dog1} alt="강아지 1" className="circle-image image1" />
+          <Image src={dog2} alt="강아지 2" className="circle-image image2" />
+          <Image src={dog3} alt="강아지 3" className="circle-image image3" />
+          <Image src={dog4} alt="강아지 4" className="circle-image image4" />
+          <Image src={dog5} alt="강아지 5" className="circle-image image5" />
+          <Image src={dog6} alt="강아지 6" className="circle-image image6" />
+          <div className="color-circle circle1"></div>
+          <div className="color-circle circle2"></div>
+          <div className="color-circle circle3"></div>
+          <div className="color-circle circle4"></div>
+        </CircleImageContainer>
+
+        {/* 텍스트 */}
+        <TitleText>
+          <LoginBox>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Input
+                {...register("email", {
+                  required: "이메일을 입력하세요",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "유효한 이메일 주소를 입력하세요"
+                  }
+                })}
+                name="email"
+                placeholder="이메일"
+                type="email"
+              />
+              <Input
+                {...register("password", {
+                  required: "비밀번호를 입력하세요",
+                  minLength: {
+                    value: 6,
+                    message: "비밀번호는 6자리 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다"
+                  }
+                })}
+                name="password"
+                placeholder="비밀번호"
+                type="password"
+              />
+              {getFirstErrorMessage() && <ErrorMessage>{getFirstErrorMessage()}</ErrorMessage>}
+              {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+              <Input
+                type="submit"
+                value={isLoading ? "계정 확인 중..." : "로그인"}
+                disabled={isLoading}
+              />
+            </Form>
+            <ButtonWrapper>
+              <GoogleLoginButton onClick={handleGoogleLogin} disabled={isLoading}>
+                <Image src={googleLogo} alt="Google Logo" width={24} height={24} />
+                {isLoading ? "로그인 중..." : "Google로 로그인"}
+              </GoogleLoginButton>
+              <FacebookLoginButton onClick={handleFacebookLogin} disabled={isLoading}>
+                <Image src={facebookLogo} alt="Facebook Logo" width={24} height={24} />
+                {isLoading ? "로그인 중..." : "Facebook으로 로그인"}
+              </FacebookLoginButton>
+            </ButtonWrapper>
+            <SignUpButton onClick={moveToCreatePage}>회원가입</SignUpButton>
+          </LoginBox>
+        </TitleText>
+      </Context>
+    </DescriptionCover>
   );
 }
+
+
+{/* <LoginBox>
+<Form onSubmit={handleSubmit(onSubmit)}>
+  <Input
+    {...register("email", {
+      required: "이메일을 입력하세요",
+      pattern: {
+        value: /^\S+@\S+$/i,
+        message: "유효한 이메일 주소를 입력하세요"
+      }
+    })}
+    name="email"
+    placeholder="이메일"
+    type="email"
+  />
+  <Input
+    {...register("password", {
+      required: "비밀번호를 입력하세요",
+      minLength: {
+        value: 6,
+        message: "비밀번호는 6자리 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다"
+      }
+    })}
+    name="password"
+    placeholder="비밀번호"
+    type="password"
+  />
+  {getFirstErrorMessage() && <ErrorMessage>{getFirstErrorMessage()}</ErrorMessage>}
+  {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+  <Input
+    type="submit"
+    value={isLoading ? "계정 확인 중..." : "로그인"}
+    disabled={isLoading}
+  />
+</Form>
+<ButtonWrapper>
+  <GoogleLoginButton onClick={handleGoogleLogin} disabled={isLoading}>
+    <Image src={googleLogo} alt="Google Logo" width={24} height={24} />
+    {isLoading ? "로그인 중..." : "Google로 로그인"}
+  </GoogleLoginButton>
+  <FacebookLoginButton onClick={handleFacebookLogin} disabled={isLoading}>
+    <Image src={facebookLogo} alt="Facebook Logo" width={24} height={24} />
+    {isLoading ? "로그인 중..." : "Facebook으로 로그인"}
+  </FacebookLoginButton>
+</ButtonWrapper>
+<SignUpButton onClick={moveToCreatePage}>회원가입</SignUpButton>
+</LoginBox> */}
