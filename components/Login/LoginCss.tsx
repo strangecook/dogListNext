@@ -25,13 +25,14 @@ export const LoginBox = styled.div`
   border-radius: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 40px 60px;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 20px;
   z-index: 1; /* LoginBox가 DogLoginImage 위에 위치하도록 설정 */
+  margin: auto;
 `;
 
 export const Form = styled.form`

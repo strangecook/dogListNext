@@ -2,7 +2,8 @@ import { useEffect, useState, useCallback, useRef, ChangeEvent, KeyboardEvent } 
 import {
   Container, Card, Grid, SearchBar, SearchButton, SearchBarContainer, AutocompleteList,
   AutocompleteItem, ConsonantFilterContainer, ConsonantButton, ThemeFilterContainer,
-  ThemeButton, FilterInfoContainer, FilterInfo, ResetButton, ScrollToTopButton
+  ThemeButton, FilterInfoContainer, FilterInfo, ResetButton, ScrollToTopButton, WhiteBackground, SearchAndThemeContainer,
+  SearchBarWrapper, FilterLabel, Divider, ToggleButton
 } from './styles/animalDaterPartCss';
 import DogCard from './DogCard';
 import { fetchAndStoreBreeds, getBreedsData } from '../../dataFetch/fetchAndStoreBreeds';
@@ -11,14 +12,18 @@ import Filters from './Filters';
 import useStore from '../../store/useStore';
 import { ClipLoader } from 'react-spinners';
 import { Breed } from '../../types/Breed'; // Breed 타입 import
+import Image from 'next/image';
+import search from '../../public/free-icon-magnifier.png'
+import reload from '../../public/free-icon-reload.png'
+import adjustment from '../../public/free-icon-contrast-adjustment.png'
 
 const consonants = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"];
 const themes = [
-  { id: 1, name: '한국에서 인기있는 반려견' },
-  { id: 2, name: '1인가구에 좋은 반려견' },
-  { id: 3, name: '초보 견주에게 좋은 반려견' },
-  { id: 4, name: '자녀를 가지고 있는 가정에게 좋은 반려견' },
-  { id: 5, name: '노부부에게 좋은 반려견' }
+  { id: 1, name: '#한국에서 인기있는' },
+  { id: 2, name: '#1인가구에 좋은' },
+  { id: 3, name: '#초보 견주에게 좋은' },
+  { id: 4, name: '#자녀가 있는 가정' },
+  { id: 5, name: '#노부부에게 좋은' }
 ];
 
 const getKoreanConsonant = (char: string): string => {
@@ -54,6 +59,8 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
   const autocompleteRef = useRef<HTMLDivElement>(null);
   const [selectedConsonant, setSelectedConsonant] = useState<string | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [filtersExpanded, setFiltersExpanded] = useState(false); // 필터 열림 여부 상태
 
   useEffect(() => {
     setLoading(false);
@@ -74,6 +81,21 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
+    };
+
+    handleResize(); // 초기 실행
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const toggleFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setFiltersExpanded((prevState) => !prevState); // 열기/펼치기 토글
+  };
 
   const handleCardClick = (breed: Breed) => {
     setSelectedBreed(breed);
@@ -251,77 +273,122 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
 
   return (
     <Container>
-      <ins className="adsbygoogle"
+      {/* 광고 배너 */}
+      <ins
+        className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client="ca-pub-9810617727266867"
         data-ad-slot="7630514013"
         data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <FilterInfoContainer>
-        <FilterInfo>
-          현재 필터:{" "}
-          {selectedConsonant || selectedTheme || filters.size !== 'all' || filters.breedGroup !== 'all' || filters.affectionWithFamily !== 'all' || filters.goodWithOtherDogs !== 'all' || filters.trainabilityLevel !== 'all' || filters.energyLevel !== 'all' || filters.sheddingLevel !== 'all' || searchQuery
-            ? (
-              <>
-                {selectedConsonant && `자음: ${selectedConsonant}, `}
-                {selectedTheme && `테마: ${themes.find(theme => theme.id === selectedTheme)?.name}, `}
-                {filters.size !== 'all' && `크기: ${filters.size}, `}
-                {filters.breedGroup !== 'all' && `견종 그룹: ${filters.breedGroup}, `}
-                {filters.affectionWithFamily !== 'all' && `가족과의 애정: ${filters.affectionWithFamily}, `}
-                {filters.goodWithOtherDogs !== 'all' && `다른 개와의 친화력: ${filters.goodWithOtherDogs}, `}
-                {filters.trainabilityLevel !== 'all' && `훈련 가능성: ${filters.trainabilityLevel}, `}
-                {filters.energyLevel !== 'all' && `에너지 수준: ${filters.energyLevel}, `}
-                {filters.sheddingLevel !== 'all' && `털 빠짐 정도: ${filters.sheddingLevel}, `}
-                {searchQuery && `검색어: ${searchQuery}`}
-              </>
-            ) : "없음"
-          }
-        </FilterInfo>
+        data-full-width-responsive="true"
+      ></ins>
 
-        <ResetButton onClick={resetFilters}>필터 초기화</ResetButton>
-      </FilterInfoContainer>
+      <WhiteBackground>
+
+
+
+        <SearchAndThemeContainer>
+          {/* 검색창 */}
+          <SearchBarWrapper>
+            <SearchBarContainer ref={autocompleteRef}>
+              <SearchBar
+                type="text"
+                placeholder="한국어나 영어로 종을 검색하세요"
+                value={searchInput}
+                onChange={handleSearchInputChange}
+                onKeyDown={handleSearchInputKeyDown}
+              />
+              <SearchButton onClick={handleSearchButtonClick}>
+                <Image src={search} alt="Search" className='SearchButton-Image' />
+              </SearchButton>
+              {autocompleteResults.length > 0 && (
+                <AutocompleteList>
+                  {autocompleteResults.map((breed, index) => (
+                    <AutocompleteItem
+                      key={index}
+                      onClick={() => handleAutocompleteItemClick(breed)}
+                    >
+                      {breed.koreanName} ({breed.englishName})
+                    </AutocompleteItem>
+                  ))}
+                </AutocompleteList>
+              )}
+            </SearchBarContainer>
+          </SearchBarWrapper>
+
+
+          {/* 테마 필터 버튼 */}
+          <ThemeFilterContainer>
+            {themes.map((theme) => (
+              <ThemeButton
+                key={theme.id}
+                $selected={theme.id === selectedTheme}
+                onClick={() => handleThemeClick(theme.id)}
+              >
+                {theme.name}
+              </ThemeButton>
+            ))}
+          </ThemeFilterContainer>
+        </SearchAndThemeContainer>
+        {isMobile && (
+          <>
+            <ToggleButton onClick={toggleFilters}>
+              <Image src={adjustment} alt="adjustment" className='adjustment-Image' />
+              {filtersExpanded ? "상세 필터 닫기" : "상세 검색"}
+            </ToggleButton>
+            {filtersExpanded &&
+              <>
+                <FilterInfoContainer>
+                  {/* 왼쪽: 상세 검색 텍스트 */}
+                  <FilterLabel>상세 검색</FilterLabel>
+
+                  {/* 오른쪽: 필터 초기화 버튼 */}
+                  <ResetButton onClick={resetFilters}>
+                    <Image src={reload} alt="Reset" className='ResetButton-Image' />
+                    선택 초기화
+                  </ResetButton>
+                </FilterInfoContainer>
+                <Filters filters={filters} setFilters={setFilters} />
+              </>
+            }
+          </>
+        )}
+
+        {/* 데스크톱에서는 항상 필터 표시 */}
+        {!isMobile &&
+          <>
+            <FilterInfoContainer>
+              {/* 왼쪽: 상세 검색 텍스트 */}
+              <FilterLabel>상세 검색</FilterLabel>
+
+              {/* 오른쪽: 필터 초기화 버튼 */}
+              <ResetButton onClick={resetFilters}>
+                <Image src={reload} alt="Reset" className='ResetButton-Image' />
+                선택 초기화
+              </ResetButton>
+            </FilterInfoContainer>
+            <Filters filters={filters} setFilters={setFilters} />
+          </>
+        }
+      </WhiteBackground>
+
+      {/* 자음 필터 버튼 */}
       <ConsonantFilterContainer>
         {consonants.map((consonant, index) => (
           <ConsonantButton
             key={index}
-            $selected={consonant === selectedConsonant} // 수정된 부분
+            $selected={consonant === selectedConsonant}
             onClick={() => handleConsonantClick(consonant)}
           >
             {consonant}
           </ConsonantButton>
         ))}
       </ConsonantFilterContainer>
-      <ThemeFilterContainer>
-        {themes.map((theme) => (
-          <ThemeButton
-            key={theme.id}
-            $selected={theme.id === selectedTheme} // 수정된 부분
-            onClick={() => handleThemeClick(theme.id)}
-          >
-            {theme.name}
-          </ThemeButton>
-        ))}
-      </ThemeFilterContainer>
-      <SearchBarContainer ref={autocompleteRef}>
-        <SearchBar
-          type="text"
-          placeholder="한국어나 영어로 종을 검색하세요"
-          value={searchInput}
-          onChange={handleSearchInputChange}
-          onKeyDown={handleSearchInputKeyDown}
-        />
-        <SearchButton onClick={handleSearchButtonClick}>Search</SearchButton>
-        {autocompleteResults.length > 0 && (
-          <AutocompleteList>
-            {autocompleteResults.map((breed, index) => (
-              <AutocompleteItem key={index} onClick={() => handleAutocompleteItemClick(breed)}>
-                {breed.koreanName} ({breed.englishName})
-              </AutocompleteItem>
-            ))}
-          </AutocompleteList>
-        )}
-      </SearchBarContainer>
-      <Filters filters={filters} setFilters={setFilters} />
+
+      {/* 중간을 나눠주는 선 */}
+      <Divider />
+
+      {/* 강아지 카드 리스트 */}
       <Grid>
         {displayedBreeds.map((breed, index) => (
           <DogCard
@@ -333,18 +400,20 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
         ))}
         {loading && (
           <>
-            <Card style={{ height: "300px" }}>
+            <Card style={{ height: "200px" }}>
               <ClipLoader color="#4caf50" size={50} />
             </Card>
-            <Card style={{ height: "300px" }}>
+            <Card style={{ height: "200px" }}>
               <ClipLoader color="#4caf50" size={50} />
             </Card>
-            <Card style={{ height: "300px" }}>
+            <Card style={{ height: "200px" }}>
               <ClipLoader color="#4caf50" size={50} />
             </Card>
           </>
         )}
       </Grid>
+
+      {/* 모달 */}
       {selectedBreed && (
         <CustomModal
           isOpen={modalIsOpen}
@@ -352,10 +421,13 @@ const AnimalDaterPart: React.FC<AnimalDaterPartProps> = ({ initialBreedsData }) 
           breed={selectedBreed}
         />
       )}
+
+      {/* 스크롤 맨 위로 버튼 */}
       {showScrollButton && (
         <ScrollToTopButton onClick={scrollToTop}>▲</ScrollToTopButton>
       )}
     </Container>
+
   );
 };
 

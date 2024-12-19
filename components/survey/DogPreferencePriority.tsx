@@ -22,6 +22,7 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
     const router = useRouter();
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     const [disabledOptions, setDisabledOptions] = useState<string[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false); // 추가된 상태
 
     // 상충하는 옵션 설정
     const conflictingOptions: Record<string, string[]> = {
@@ -102,71 +103,96 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
     // 체크박스 선택 처리
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, option: string) => {
         const isChecked = event.target.checked;
-        if (isChecked && selectedOptions.length < 3) {
-            setSelectedOptions([...selectedOptions, option]);
-
-            // 선택된 옵션과 상충하는 항목 비활성화
-            const conflicts = conflictingOptions[option];
-            if (conflicts) {
-                setDisabledOptions((prev) => [...prev, ...conflicts]);
+    
+        setSelectedOptions((prevSelectedOptions) => {
+            let updatedSelectedOptions;
+    
+            if (isChecked && prevSelectedOptions.length < 3) {
+                updatedSelectedOptions = [...prevSelectedOptions, option];
+    
+                // 선택된 옵션과 상충하는 항목 비활성화
+                const conflicts = conflictingOptions[option];
+                if (conflicts) {
+                    setDisabledOptions((prev) => [...prev, ...conflicts]);
+                }
+            } else if (!isChecked) {
+                updatedSelectedOptions = prevSelectedOptions.filter((selected) => selected !== option);
+    
+                // 선택 해제 시 상충 항목 다시 활성화
+                const conflicts = conflictingOptions[option];
+                if (conflicts) {
+                    setDisabledOptions((prev) => prev.filter((opt) => !conflicts.includes(opt)));
+                }
+            } else {
+                updatedSelectedOptions = prevSelectedOptions; // 변경 사항 없음
             }
-        } else if (!isChecked) {
-            setSelectedOptions(selectedOptions.filter((selected) => selected !== option));
-
-            // 선택 해제 시 상충 항목 다시 활성화
-            const conflicts = conflictingOptions[option];
-            if (conflicts) {
-                setDisabledOptions((prev) => prev.filter((opt) => !conflicts.includes(opt)));
-            }
-        }
+    
+            // userInfo의 selectedPreferences 동기화
+            setUserInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                selectedPreferences: updatedSelectedOptions, // 상태를 동기화
+            }));
+    
+            return updatedSelectedOptions;
+        });
     };
+    
 
     const handleSubmit = async () => {
+
+        const isComplete = Object.values(userInfo).every((value) => value !== '');
+        console.log(isComplete)
+    
+        if (!isComplete) {
+            alert('모든 질문에 답변해야 합니다.');
+            return;
+        }
+
+        setIsSubmitting(true);
+
         setUserInfo({
             ...userInfo,
             selectedPreferences: selectedOptions // 선택된 옵션들을 userInfo에 저장
         });
 
-        console.log('강아지 선호 사항 제출:', userInfo);
-        console.log("실험하기", calculateScore(userInfo));
-        console.log("추천강아지", recommendDogsBasedOnUserInput(userInfo));
+        try {
+            const user = auth.currentUser;
+            console.log("user", user);
+            if (!user) {
+                console.error('사용자가 인증되지 않았습니다.');
+                setIsSubmitting(false); // 에러 발생 시 버튼 활성화 복원
+                return;
+            }
 
-        // try {
-        //     const user = auth.currentUser;
-        //     console.log("user", user);
-        //     if (!user) {
-        //         console.error('사용자가 인증되지 않았습니다.');
-        //         return;
-        //     }
+            const userId = user.uid;
+            const userSurveysRef = collection(doc(db, 'users', userId), 'surveys');
 
-        //     const userId = user.uid;
-        //     const userSurveysRef = collection(doc(db, 'users', userId), 'surveys');
+            // 현재 설문조사 문서 개수를 가져와서 번호 설정
+            const querySnapshot = await getDocs(userSurveysRef);
+            const currentSurveyCount = querySnapshot.size;
+            const newSurveyId = (currentSurveyCount + 1).toString(); // 단순 번호 ID
 
-        //     // 현재 설문조사 문서 개수를 가져와서 번호 설정
-        //     const querySnapshot = await getDocs(userSurveysRef);
-        //     const currentSurveyCount = querySnapshot.size;
-        //     const newSurveyId = (currentSurveyCount + 1).toString(); // 단순 번호 ID
+            // 새로운 설문 데이터를 병합하여 저장
+            await setDoc(
+                doc(userSurveysRef, newSurveyId),
+                {
+                    ...userInfo,
+                    selectedPreferences: selectedOptions, // 선택된 옵션 저장
+                    timestamp: new Date(),
+                },
+                { merge: true }
+            );
 
-        //     // 새로운 설문 데이터를 병합하여 저장
-        //     await setDoc(
-        //         doc(userSurveysRef, newSurveyId),
-        //         {
-        //             ...userInfo,
-        //             selectedPreferences: selectedOptions, // 선택된 옵션 저장
-        //             timestamp: new Date(),
-        //         },
-        //         { merge: true }
-        //     );
+            console.log(`설문조사 데이터가 ID ${newSurveyId}로 병합/저장되었습니다.`);
+            console.log('유저별 설문조사 데이터가 성공적으로 저장되었습니다.');
 
-        //     console.log(`설문조사 데이터가 ID ${newSurveyId}로 병합/저장되었습니다.`);
-        //     console.log('유저별 설문조사 데이터가 성공적으로 저장되었습니다.');
-
-        //     setTimeout(() => {
-        //         router.push(`result/${newSurveyId}`);
-        //     }, 3000);
-        // } catch (error) {
-        //     console.error('데이터 저장 중 오류가 발생했습니다:', error);
-        // }
+            setTimeout(() => {
+                router.push(`result/${newSurveyId}`);
+            }, 3000);
+        } catch (error) {
+            console.error('데이터 저장 중 오류가 발생했습니다:', error);
+            setIsSubmitting(false); // 에러 발생 시 버튼 활성화 복원
+        }
     };
 
     useEffect(() => {
@@ -200,8 +226,8 @@ const DogPreferencePriority: React.FC<DogPreferencePriorityProps> = ({ onNext, o
             ))}
             <ButtonContainer>
                 <button onClick={onPrevious}>이전</button>
-                <button onClick={handleSubmit} disabled={selectedOptions.length === 0}>
-                    설문 완료
+                <button onClick={handleSubmit} disabled={selectedOptions.length === 0 || isSubmitting}>
+                    {isSubmitting ? '제출 중...' : '설문 완료'}
                 </button>
             </ButtonContainer>
         </FormContainer>
@@ -262,7 +288,6 @@ const FormContainer = styled.div`
   padding: 20px;
   max-width: 800px;
   margin: 40px auto;
-  font-family: Arial, sans-serif;
   width: 100%;
 
   @media (max-width: 768px) {
@@ -360,6 +385,7 @@ const Subtitle = styled.p`
 
   @media (max-width: 768px) {
     font-size: 14px;
+    margin-top: 10px;
     margin-bottom: 10px;
   }
 `;

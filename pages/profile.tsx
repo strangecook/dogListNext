@@ -1,21 +1,21 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { auth, storage, db } from '../components/firebase';
-import { onAuthStateChanged, updateProfile, updateEmail, reauthenticateWithCredential, EmailAuthProvider, User } from 'firebase/auth';
+import { onAuthStateChanged, updateProfile, reauthenticateWithCredential, EmailAuthProvider, User } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, getDoc, setDoc, query, collection, where, getDocs } from 'firebase/firestore';
+import { query, where, getDoc, getDocs, collection, doc, setDoc } from 'firebase/firestore';
 import Modal from 'react-modal';
 import Head from 'next/head';
 import Image from 'next/image';
 import pawImage from '../public/dog-paw.png';
+import { useRouter } from 'next/router';
 
-Modal.setAppElement('#__next'); // Next.js의 루트 엘리먼트를 지정
+Modal.setAppElement('#__next');
 
 const ProfileContainer = styled.div`
   max-width: 600px;
   margin: 80px auto 20px auto;
   padding: 20px;
-  font-family: 'Nanum Gothic', sans-serif;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -39,7 +39,7 @@ const ProfileForm = styled.form`
 const Label = styled.label`
   width: 80%;
   text-align: left;
-  margin-bottom: 5px;
+  margin: 10px;
   font-weight: bold;
 `;
 
@@ -67,17 +67,10 @@ const ProfileButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 10px;
+  margin-bottom: 10px;
 
   &:hover {
     background-color: #45a049;
-  }
-`;
-
-const GoBackButton = styled(ProfileButton)`
-  background-color: #f44336;
-
-  &:hover {
-    background-color: #d32f2f;
   }
 `;
 
@@ -100,6 +93,32 @@ const ModalButton = styled.button`
   }
 `;
 
+const NameInputContainer = styled.div`
+  display: flex;
+  width: 80%;
+`;
+
+const NameInput = styled(ProfileInput)`
+  flex: 1;
+  margin-right: 10px;
+`;
+
+const CheckButton = styled.button`
+  padding: 10px;
+  font-size: 14px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
 const customStyles = {
   content: {
     top: '50%',
@@ -114,83 +133,127 @@ const customStyles = {
   },
 };
 
+const SurveyListContainer = styled.div`
+  width: 80%;
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const SurveyItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+`;
+
+const SurveyButton = styled.button`
+  padding: 8px 12px;
+  font-size: 14px;
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
 const Profile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [displayName, setDisplayName] = useState<string>('');
-  const [email, setEmail] = useState<string>(user?.email || '');
   const [photoURL, setPhotoURL] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [currentPassword, setCurrentPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
+  const [file, setFile] = useState<File | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>('');
-  const [file, setFile] = useState<File | null>(null);
+  const [isNameValid, setIsNameValid] = useState<boolean | null>(null);
+  const [surveys, setSurveys] = useState<{ id: string }[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        setDisplayName(currentUser.displayName || '');
-        setEmail(currentUser.email || '');
-        setPhotoURL(currentUser.photoURL || '');
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const checkNicknameExists = async (nickname: string): Promise<boolean> => {
-    const q = query(collection(db, 'users'), where('nickname', '==', nickname));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
+  const checkDisplayNameExists = async (name: string, userId: string): Promise<boolean> => {
+    try {
+      const q = query(
+        collection(db, 'users'),
+        where('displayName', '==', name),
+        where('uid', '!=', userId) // 현재 사용자의 uid는 제외
+      );
+      const querySnapshot = await getDocs(q);
+      return !querySnapshot.empty;
+    } catch (error) {
+      console.error('이름 중복 확인 오류:', error);
+      return false;
+    }
   };
 
-  const handleProfileUpdate = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleCheckName = async () => {
+    if (!displayName.trim() || !user) {
+      setIsNameValid(false);
+      return;
+    }
 
-    if (user) {
+
+    const nameExists = await checkDisplayNameExists(displayName, user.uid);
+    setIsNameValid(!nameExists);
+  };
+
+  const updateDisplayName = async () => {
+    if (user && isNameValid) {
       try {
-        const isNicknameExists = await checkNicknameExists(displayName);
-        if (isNicknameExists) {
-          setModalMessage('닉네임이 이미 존재합니다. 다른 닉네임을 입력하세요.');
-          setModalIsOpen(true);
-          return;
-        }
-
-        let updatedPhotoURL = photoURL;
-
-        if (file) {
-          const storageRef = ref(storage, `profileImages/${user.uid}`);
-          await uploadBytes(storageRef, file);
-          updatedPhotoURL = await getDownloadURL(storageRef);
-        }
-
-        await updateProfile(user, {
-          displayName,
-          photoURL: updatedPhotoURL,
-        });
-
-        await setDoc(doc(db, 'users', user.uid), {
-          displayName,
-          photoURL: updatedPhotoURL,
-          email,
-          uid: user.uid,
-        });
-
-        // Null 체크 후 updateEmail 호출
-        if (email && email !== user.email) {
-          await updateEmail(user, email);
-        }
-
-        if (newPassword) {
-          const credential = EmailAuthProvider.credential(user.email as string, password);
-          await reauthenticateWithCredential(user, credential);
-          await (user as any).updatePassword(newPassword);
-        }
-
-        setModalMessage('프로필이 업데이트되었습니다.');
+        await updateProfile(user, { displayName });
+        await setDoc(doc(db, 'users', user.uid), { displayName }, { merge: true });
+        setModalMessage('이름이 업데이트되었습니다.');
         setModalIsOpen(true);
       } catch (error) {
-        console.error('프로필 업데이트 실패:', error);
-        setModalMessage('프로필 업데이트 중 오류가 발생했습니다.');
+        console.error('이름 업데이트 실패:', error);
+        setModalMessage('이름 업데이트 중 오류가 발생했습니다.');
+        setModalIsOpen(true);
+      }
+    } else {
+      setModalMessage('중복 확인 후 다시 시도하세요.');
+      setModalIsOpen(true);
+    }
+  };
+
+  const updateProfilePhoto = async () => {
+    if (user && file) {
+      try {
+        const storageRef = ref(storage, `profileImages/${user.uid}`);
+        await uploadBytes(storageRef, file);
+        const updatedPhotoURL = await getDownloadURL(storageRef);
+        await updateProfile(user, { photoURL: updatedPhotoURL });
+        await setDoc(doc(db, 'users', user.uid), { photoURL: updatedPhotoURL }, { merge: true });
+        setPhotoURL(updatedPhotoURL);
+        setModalMessage('프로필 사진이 업데이트되었습니다.');
+        setModalIsOpen(true);
+      } catch (error) {
+        console.error('프로필 사진 업데이트 실패:', error);
+        setModalMessage('프로필 사진 업데이트 중 오류가 발생했습니다.');
+        setModalIsOpen(true);
+      }
+    }
+  };
+
+  const updatePassword = async () => {
+    if (user) {
+      try {
+        const credential = EmailAuthProvider.credential(user.email || '', currentPassword);
+        await reauthenticateWithCredential(user, credential);
+        await (user as any).updatePassword(newPassword);
+        setModalMessage('비밀번호가 업데이트되었습니다.');
+        setModalIsOpen(true);
+      } catch (error) {
+        console.error('비밀번호 업데이트 실패:', error);
+        setModalMessage('비밀번호 업데이트 중 오류가 발생했습니다.');
         setModalIsOpen(true);
       }
     }
@@ -209,6 +272,50 @@ const Profile: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUserSurveys = async (uid: string) => {
+      setIsLoading(true);
+      try {
+        // 'users/{userId}/surveys' 하위 컬렉션 참조
+        const userSurveysRef = collection(doc(db, 'users', uid), 'surveys');
+        const querySnapshot = await getDocs(userSurveysRef);
+
+        if (!querySnapshot.empty) {
+          const userSurveys = querySnapshot.docs.map((doc) => ({
+            id: doc.id, // 문서 ID
+            ...doc.data(), // 기타 데이터
+          }));
+          setSurveys(userSurveys); // surveys 상태에 저장
+        } else {
+          console.error('사용자의 설문조사가 없습니다.');
+        }
+      } catch (error) {
+        console.error('설문조사 데이터를 가져오는 중 오류 발생:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setDisplayName(currentUser.displayName || '');
+        setPhotoURL(currentUser.photoURL || '');
+        fetchUserSurveys(currentUser.uid);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+
+
+  const handleViewResult = (event: React.MouseEvent<HTMLButtonElement>, surveyNumber: string) => {
+    event.preventDefault();
+    router.push(`/result/${surveyNumber}`);
+  };
+  
+
   if (!user) {
     return <ProfileContainer>로그인이 필요합니다.</ProfileContainer>;
   }
@@ -217,56 +324,33 @@ const Profile: React.FC = () => {
     <ProfileContainer>
       <Head>
         <title>프로필 - 강아지위키</title>
-        <meta name="description" content="사용자의 프로필을 업데이트하고, 사진을 업로드하며, 이메일과 비밀번호를 변경할 수 있는 페이지입니다." />
-        <meta name="keywords" content="프로필, 강아지, 개 품종, 강아지위키, 사용자 정보" />
-
-        {/* 이 페이지에 특화된 Open Graph Meta Tags */}
-        <meta property="og:title" content="프로필 - 강아지위키" />
-        <meta property="og:description" content="사용자의 프로필을 업데이트하고, 사진을 업로드하며, 이메일과 비밀번호를 변경할 수 있는 페이지입니다." />
-        <meta property="og:image" content={photoURL || pawImage.src} />
-        <meta property="og:url" content="https://www.doglist.info/profile" />
-        <meta property="og:type" content="profile" />  {/* 페이지 성격에 맞게 og:type을 "profile"로 설정 */}
-
-        {/* JSON-LD 구조화된 데이터: 이 페이지에 특화된 데이터 */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person", 
-            "name": displayName || "사용자",
-          "url": "https://www.doglist.info/profile",
-          "image": photoURL || pawImage.src,
-          "email": email
-    })}
-        </script>
-        <link rel="canonical" href="https://www.doglist.info/profile" />
       </Head>
       <ProfileImage src={photoURL || pawImage.src} alt="Profile" width={150} height={150} />
-      <ProfileForm onSubmit={handleProfileUpdate}>
+      <ProfileForm>
         <Label>이름</Label>
-        <ProfileInput
-          type="text"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-          placeholder="이름"
-        />
-        <Label>이메일</Label>
-        <ProfileInput
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="이메일"
-        />
+        <NameInputContainer>
+          <NameInput
+            type="text"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            placeholder="이름"
+          />
+          <CheckButton type="button" onClick={handleCheckName}>중복 확인</CheckButton>
+        </NameInputContainer>
+        {isNameValid === false && <p style={{ color: 'red' }}>이미 사용 중인 이름입니다.</p>}
+        {isNameValid === true && <p style={{ color: 'green' }}>사용 가능한 이름입니다.</p>}
+        <ProfileButton type="button" onClick={updateDisplayName}>이름 업데이트</ProfileButton>
+
+
         <Label>프로필 사진</Label>
-        <FileInput
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-        />
+        <FileInput type="file" accept="image/*" onChange={handleFileChange} />
+        <ProfileButton type="button" onClick={updateProfilePhoto}>프로필 사진 업데이트</ProfileButton>
+
         <Label>현재 비밀번호</Label>
         <ProfileInput
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
           placeholder="현재 비밀번호"
         />
         <Label>새 비밀번호</Label>
@@ -276,8 +360,28 @@ const Profile: React.FC = () => {
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="새 비밀번호"
         />
-        <ProfileButton type="submit">프로필 업데이트</ProfileButton>
-        <GoBackButton type="button" onClick={() => window.history.back()}>뒤로 가기</GoBackButton>
+        <ProfileButton type="button" onClick={updatePassword}>비밀번호 업데이트</ProfileButton>
+        <SurveyListContainer>
+          <h2>설문조사 목록</h2>
+          {isLoading ? (
+            <p>로딩 중...</p>
+          ) : surveys.length > 0 ? (
+            <ul>
+              {surveys.map((survey) => (
+                <SurveyItem key={survey.id}>
+                  <span>설문조사 번호: {survey.id}</span>
+                  <SurveyButton onClick={(e) => handleViewResult(e, survey.id)}>
+                    결과 보기
+                  </SurveyButton>
+
+                </SurveyItem>
+              ))}
+            </ul>
+          ) : (
+            <p>저장된 설문조사가 없습니다.</p>
+          )}
+        </SurveyListContainer>
+
       </ProfileForm>
       <Modal
         isOpen={modalIsOpen}

@@ -6,40 +6,40 @@ import { FilterOptions } from '../../types/FilterOptions';
 const FilterSection = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin-bottom: 20px;
+  justify-content: space-between; /* 좌우 간격 균등 */
+  gap: 5px; /* 요소 사이의 간격 추가 */
+
   @media (max-width: 768px) {
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px; /* 모바일에서도 균등 간격 */
   }
 `;
 
 const DropdownContainer = styled.div`
+  flex: 1 1 calc(25% - 20px); /* 각 칸의 너비를 동일하게 설정 */
+  max-width: 160px; /* 최대 너비 설정 */
   margin: 5px;
-  position: relative;
-  @media (max-width: 768px) {
-    flex: 1 1 calc(50% - 10px);
-    min-width: 100px;
-  }
 
-  &:nth-child(n+3) {
-    @media (max-width: 768px) {
-      display: none;
-    }
+  @media (max-width: 768px) {
+    flex: 1 1 calc(50% - 10px); /* 모바일에서는 두 개씩 배치 */
   }
 `;
 
+
 const Dropdown = styled.select`
+  margin-top: 5px;
   width: 100%;
   padding: 10px;
   font-size: 0.9em;
-  border: 1px solid #ccc;
+  border: none;
+  background-color: #f5f5f5;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   transition: border-color 0.3s ease;
   position: relative;
 
   &:focus {
-    border-color: #4caf50;
+    border-color: #FFD000;
     outline: none;
   }
 
@@ -91,7 +91,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
     <FilterSection>
       {filterOptions.map(({ name, label, options }) => (
         <DropdownContainer key={name}>
-          <Label>{label}:</Label>
+          <Label>{label}</Label>
           <Dropdown name={name} value={filters[name as keyof FilterOptions]} onChange={handleDropdownChange}>
             {options.map((option, index) => (
               <option key={index} value={option === '모두' ? 'all' : option}>

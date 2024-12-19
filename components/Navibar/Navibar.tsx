@@ -18,7 +18,7 @@ const LoginNavi: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       setCurrentUser(user);
     });
-  
+
     return () => unsubscribe();
   }, []);
 
@@ -91,14 +91,15 @@ const LoginNavi: React.FC = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            로그인페이지
+            로그인
           </span>
         )}
       </div>
       <MenuTrigger className={mobileMenuOpen ? 'active-1' : ''} onClick={toggleMobileMenu}>
-        <MenuSpan />
-        <MenuSpan />
-        <MenuSpan />
+        <div className="menu-square" />
+        <div className="menu-square" />
+        <div className="menu-square-d" />
+        <div className="menu-square" />
       </MenuTrigger>
       {mobileMenuOpen && <Overlay onClick={toggleMobileMenu} />}
       <MobileMenu className={mobileMenuOpen ? 'open' : ''}>

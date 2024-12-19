@@ -24,11 +24,11 @@ export default function CreateAccount() {
 
     try {
       console.log("Checking if nickname exists...");
-      const q = query(collection(db, "users"), where("nickname", "==", data.name));
+      const q = query(collection(db, "users"), where("displayName", "==", data.name));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        console.log("Nickname already exists");
+        console.log("displayName already exists");
         setErrorMessage("닉네임이 이미 존재합니다.");
         setIsLoading(false);
         return;
@@ -43,7 +43,7 @@ export default function CreateAccount() {
       console.log("Saving user data to Firestore...");
       await setDoc(doc(db, "users", credential.user.uid), {
         uid: credential.user.uid,
-        nickname: data.name,
+        displayName: data.name,
         email: data.email
       });
 
@@ -128,6 +128,11 @@ export default function CreateAccount() {
                 minLength: {
                   value: 6,
                   message: "비밀번호는 최소 6자 이상이어야 합니다"
+                },
+                validate: {
+                  pattern: (value) =>
+                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/.test(value) ||
+                    "비밀번호는 6자리 이상이며, 영문, 숫자, 특수문자를 포함해야 합니다"
                 }
               })}
               name="password"

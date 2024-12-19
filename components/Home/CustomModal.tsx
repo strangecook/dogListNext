@@ -15,7 +15,6 @@ const BarContainer = styled.div`
   gap: 8px;
   align-items: center;
   margin: 8px 0;
-  font-family: 'Nanum Gothic', sans-serif;
   font-size: 0.8em;
 `;
 
@@ -71,7 +70,6 @@ const CustomModalContainer = styled.div`
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  font-family: 'Nanum Gothic', sans-serif;
   color: #333;
   max-height: 75vh;
 `;

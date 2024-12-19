@@ -8,7 +8,6 @@ export const FormContainer = styled.div`
   padding: 20px;
   max-width: 800px;
   margin: 40px auto;
-  font-family: Arial, sans-serif;
   width: 100%;
 
   @media (max-width: 768px) {
@@ -90,16 +89,6 @@ export const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
-export const Blocked = styled.div`
-  background-color: #E2EEE0;
-  height: 100px;
-  width: calc(100% + 50px );
-  margin: 0 0 0 -25px ;
-
-  @media (max-width: 768px) {
-    height: 100px;
-  }
-`;
 
 export const FormTitle = styled.h2`
   background-color: #4CAF50;

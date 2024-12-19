@@ -1,17 +1,15 @@
 import styled from 'styled-components';
 
 export const NavBar = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 10;  
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 40px;
-  background-color: #272527;
+  background-color: white;
   box-sizing: border-box;
+  height: 64px;
 
   .naviDivLeft, .naviDivCenter, .naviDivRight {
     flex: 1;
@@ -29,38 +27,27 @@ export const NavBar = styled.div`
   }
 
   .navTitle {
-    color: white;
-    font-size: 36px;
+    color: black;
+    font-size: 20px;
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s ease;
-    margin-left: 10px;
   }
 
   .navTitle:hover {
-    color: #6CC18E;
+    color: #FFD000;
   }
 
   .navLink {
-    color: white;
+    color: black;
     margin: 0 15px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 14px;
     position: relative;
   }
 
   .navLink:hover, .navLink.active {
-    color: #4caf50;
-  }
-
-  .navLink.active::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: white;
+    color: #FFD000;
   }
 
   .naviLoginButton, .naviLoginButtonHovered {
@@ -75,15 +62,15 @@ export const NavBar = styled.div`
   }
 
   .naviLoginButton {
-    background-color: #4caf50;
-    color: white;
+    background-color: #FFD000;
+    color: black;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .naviLoginButtonHovered {
-    background-color: white;
-    color: #4caf50;
+    background-color: black;
+    color: #FFD000;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -99,15 +86,14 @@ export const NavBar = styled.div`
   }
 
   .MainImage {
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     margin: 8px;
-    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
     transition: filter 0.2s ease;
   }
 
   .mainHoverImageSpan .MainImage {
-    filter: invert(65%) sepia(50%) saturate(300%) hue-rotate(90deg) brightness(95%) contrast(95%);
+    filter: invert(75%) sepia(86%) saturate(504%) hue-rotate(1deg) brightness(103%) contrast(101%);
   }
 
   .userMenuContainer {
@@ -164,7 +150,7 @@ export const ProfileButtonHover = styled.div`
   cursor: pointer;
   padding: 10px;
   border-radius: 10px 10px 0px 0px;
-  color: white;
+  color: black;
   width: 180px;
   justify-content: flex-start;
   overflow: hidden;
@@ -178,77 +164,42 @@ export const UserName = styled.span`
 `;
 
 export const MenuTrigger = styled.div`
-  display: inline-block;
-  width: 44px;
-  height: 40px;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 10px); /* 2x2 그리드 */
+  grid-template-rows: repeat(2, 10px);
+  gap: 2px; /* 버튼 간 간격 */
   cursor: pointer;
+  width: 25px;
+  height: 25px;
 
-  span {
-    display: inline-block;
-    width: 100%;
-    height: 4px;
-    background-color: #fff;
-    border-radius: 4px;
-    position: absolute;
-    left: 0;
-    transition: all 0.4s;
+  .menu-square {
+    width: 10px;
+    height: 10px;
+    background-color: #333; /* 기본 색상 */
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #FFD000; /* 호버 시 노란색으로 변경 */
+    }
   }
-
-  span:nth-of-type(1) {
-    top: 0;
-  }
-
-  span:nth-of-type(2) {
-    top: 18px;
-  }
-
-  span:nth-of-type(3) {
-    bottom: 0;
-  }
-
-  &.active-1 span:nth-of-type(1) {
-    transform: translateY(20px) rotate(-45deg);
-  }
-
-  &.active-1 span:nth-of-type(2) {
-    opacity: 0;
-  }
-
-  &.active-1 span:nth-of-type(3) {
-    transform: translateY(-20px) rotate(45deg);
+  .menu-square-d{
+    background-color: #FFD000; /* 기본 색상 */
+    transition: background-color 0.3s ease;
   }
 
   @media (max-width: 768px) {
-    width: 30px;
-    height: 24px; /* Adjusted height to match the overall layout */
+    width: 25px;
+    height: 25px;
 
-    span {
-      height: 2px; /* Adjusted height for smaller screen */
+    .menu-square {
+      width: 10px;
+      height: 10px;
     }
 
-    span:nth-of-type(1) {
-      top: 0;
-    }
-
-    span:nth-of-type(2) {
-      top: 10px; /* Adjusted position for middle bar */
-    }
-
-    span:nth-of-type(3) {
-      top: 20px; /* Adjusted position for bottom bar */
-      bottom: auto; /* Reset bottom property to ensure proper positioning */
-    }
-
-    &.active-1 span:nth-of-type(1) {
-      transform: translateY(10px) rotate(-45deg); /* Adjusted transformation */
-    }
-
-    &.active-1 span:nth-of-type(3) {
-      transform: translateY(-10px) rotate(45deg); /* Adjusted transformation */
-    }
+    gap: 3px; /* 모바일에서는 간격 축소 */
   }
 `;
+
 
 
 export const MenuSpan = styled.span`
@@ -288,7 +239,8 @@ export const MobileMenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
   &:hover {
-    background-color: #4caf50;
+    background-color: #FFD000;
+    color: black;
   }
 `;
 

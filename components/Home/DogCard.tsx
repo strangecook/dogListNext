@@ -59,7 +59,7 @@ const Overlay = styled.div<{ $showContent: boolean }>`
 
   @media (max-width: 768px) {
     background: rgba(0, 0, 0, 0.8);
-    opacity: ${({ $showContent }) => ($showContent ? 1 : 0)};
+    opacity: ${({ $showContent }) => ($showContent ? 1 : 0)} !important;
     transition: opacity 0.3s ease-in-out;
     padding: 5px;
     overflow: hidden;
@@ -74,6 +74,7 @@ const Card = styled.div`
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
+  max-width: 350px;
 
   &:hover {
     transform: scale(1.05);
@@ -83,17 +84,20 @@ const Card = styled.div`
   &:hover .hide-on-hover {
     opacity: 0;
   }
+
+  @media (max-width: 768px) {
+    max-width: none;
+  }
 `;
 
 const Text = styled.p`
   margin: 0;
-  font-size: 1.2em;
+  font-size: 0.8em;
   -webkit-text-stroke-width: 0.3px;
   -webkit-text-stroke-color: black;
   color: #f5f5f5;
-  font-family: 'Nanum Gothic', sans-serif;
   @media (max-width: 768px) {
-    font-size: 0.6em;
+    font-size: 1em;
   }
 `;
 
@@ -116,7 +120,8 @@ const CardContentBottomRight = styled.div`
 `;
 
 const SingleLineText = styled(Text)`
-  font-size: 1em;
+  font-size: 0.8em;
+  font-weight: 700;
   margin: 0;
   background: rgba(0, 0, 0, 0.5);
   padding: 5px 10px;
@@ -126,17 +131,13 @@ const SingleLineText = styled(Text)`
   align-items: center;
 
   @media (max-width: 768px) {
-    font-size: 0.6em;
-    span {
-      display: none;
-    }
+    font-size: 0.8em;
   }
 `;
 
 const BarContainer = styled.div`
   width: 100%;
   margin: 3px 0;
-  font-family: 'Nanum Gothic', sans-serif;
   text-align: left;
   display: flex;
   align-items: center;
@@ -150,9 +151,9 @@ const BarContainer = styled.div`
 `;
 
 const Emoji = styled.span`
-  margin-right: 8px;
+  margin-right: 4px;
   @media (max-width: 768px) {
-    display: none;
+    /* display: none; */
   }
 `;
 
@@ -163,8 +164,9 @@ const BarWrapper = styled.div`
   overflow: hidden;
   margin-top: 3px;
   position: relative;
+  height: 12px;
   @media (max-width: 768px) {
-    height: 4px;
+    height: 15px;
   }
 `;
 
@@ -188,45 +190,19 @@ const Bar = styled.div<{ width: string; $reverse?: string }>`
   transition: width 0.5s ease-in-out;
 
   @media (max-width: 768px) {
-    height: 4px;
-  }
-`;
-
-const InfoIcon = styled.span<{ $tooltip: string }>`
-  margin-left: 8px;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.3);
-  padding: 2px 5px;
-  border-radius: 20px;
-  z-index: 10;
-  @media (max-width: 768px) {
-    display: none;
-  }
-
-  &:hover::after {
-    content: "${({ $tooltip }) => $tooltip}";
-    position: absolute;
-    top: -5px;
-    left: 105%;
-    transform: translateX(0);
-    background: rgba(0, 0, 0, 0.9);
-    color: #fff;
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 0.8em;
-    white-space: pre-wrap;
-    width: 250px;
-    z-index: 100;
+    height: 15px;
   }
 `;
 
 const BarSection = styled.div`
+  display: grid;
+  grid-template-columns: 40% 60%; /* 텍스트 40%, 그래프 바 60% */
   width: 100%;
-  margin: 5px 0;
+  margin: 2px 0;
   padding: 0 5px;
   box-sizing: border-box;
+  align-items: center; /* 세로 가운데 정렬 */
+  gap: 10px; /* 텍스트와 그래프 바 사이의 간격 */
 
   &.hide-on-mobile {
     @media (max-width: 768px) {
@@ -236,9 +212,9 @@ const BarSection = styled.div`
 
   @media (max-width: 768px) {
     padding: 2px 5px;
-    margin: 2px 0;
+    margin: 3px 0;
     display: flex;
-    height: 12px;
+    height: 20px;
   }
 `;
 
@@ -258,18 +234,23 @@ const FixedImageContainer = styled(ImageContainer)`
   border-radius: 8px;
 `;
 
-const DetailButton = styled(Link) <{ isLoading: boolean }>`
-  display: inline-block;
+const DetailButton = styled(Link)<{ $isLoading: boolean }>`
+  display: flex;
   width: 100%;
+  height: 30px;
   margin: 3px auto;
-  background-color: ${({ isLoading }) => (isLoading ? '#A9A9A9' : '#4caf50')}; // 로딩 중이면 회색
+  background-color: ${({ $isLoading }) => ($isLoading ? '#A9A9A9' : '#4caf50')};
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
   text-align: center;
-  pointer-events: ${({ isLoading }) => (isLoading ? 'none' : 'auto')}; // 로딩 중이면 클릭 불가
+  margin-top: 25px; /* 위에서 20px 아래로 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  pointer-events: ${({ $isLoading }) => ($isLoading ? 'none' : 'auto')};
   transition: background-color 0.3s ease;
 `;
+
 
 const StyledImage = styled(Image)`
   object-fit: cover; // objectFit 대신 CSS 스타일 사용
@@ -289,6 +270,73 @@ const LoaderContainer = styled.div`
   left: 0;
 `;
 
+
+// 스타일링
+const TopSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0px 0px 0px;
+  color: white;
+  font-size: 1em;
+  width: 100%;
+`;
+
+const DogName = styled.h3`
+  margin: 0;
+  padding: 5px; /* 텍스트와 카드 경계 간 여백 */
+  font-size: 0.8em;
+  text-align: left; /* 왼쪽 정렬 */
+  color: white; /* 텍스트 색상 */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* 텍스트 가독성을 높이기 위한 그림자 */
+`;
+
+
+const SizeTag = styled.span`
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.6em;
+  margin-left: 4px;
+`;
+
+const Tooltip = styled.span`
+  position: absolute; /* 오른쪽 위로 배치 */
+  top: 10px;
+  right: 10px;
+  width: 16px; /* 동그라미 크기 */
+  height: 16px; /* 동그라미 크기 */
+  border-radius: 50%; /* 동그라미 모양 */
+  background: rgba(255, 255, 255, 0.9); /* 흰색 배경 */
+  color: black; /* 아이콘 색상 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em; /* 아이콘 크기 */
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+`;
+
+
+const SubText = styled.div`
+  font-size: 0.8em;
+  width: 100%;
+  padding-left: 5px;
+  margin-bottom: 5px;
+  text-align: left; /* 왼쪽 정렬 */
+  border-bottom: 1px white solid;
+`;
+
+const TooltipText = styled.div`
+  color: #fff; /* 흰색 글자 */
+  font-size: 0.6em; /* 글자 크기 */
+  text-align: center; /* 중앙 정렬 */
+  transition: opacity 0.3s ease-in-out; /* 부드러운 전환 */
+  text-align: left; /* 왼쪽 정렬 */
+`;
+
+
 const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, ref) => {
   const [hovered, setHovered] = useState<boolean>(false);
   const [showContent, setShowContent] = useState<boolean>(false);
@@ -296,6 +344,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
   const [loading, setLoading] = useState<boolean>(true);
   const setSelectedBreed = useStore(state => state.setSelectedBreed);
   const [isLoadingDetail, setIsLoadingDetail] = useState<boolean>(false); // 로딩 상태 관리
+  const [hoveredBar, setHoveredBar] = useState<boolean>(true); // 현재 호버 중인 그래프
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -312,6 +361,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
 
   const handleCardClick = (breed: Breed) => {
     if (window.innerWidth <= 768) {
+      console.log('showContent', showContent);
       setShowContent(!showContent);
     } else {
       setSelectedBreed(breed);
@@ -325,7 +375,8 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
 
   const handleDetailButtonClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation();
-    setIsLoadingDetail(true); // 로딩 상태 시작
+    console.log('Detail button clicked');
+    setIsLoadingDetail(true);
     setSelectedBreed(breed);
   };
 
@@ -359,61 +410,100 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
           )
         )}
         <Overlay $showContent={showContent} style={{ opacity: hovered ? 1 : 0 }}>
+          <TopSection>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <DogName>{breed.koreanName}</DogName>
+              <SizeTag>{breed.size}</SizeTag>
+            </div>
+            <Tooltip
+              onMouseEnter={() => setHoveredBar(false)}
+              onMouseLeave={() => setHoveredBar(true)} >i
+            </Tooltip>
+          </TopSection>
+
+          {/* 영어 이름 */}
+          <SubText>{breed.englishName}</SubText>
+
+
           <BarSection>
             <BarContainer>
               <Emoji>👶</Emoji>
               <Text>가족과의 친화도</Text>
-              <InfoIcon $tooltip={`높은 값일수록 가족과 잘 어울립니다.`}>ℹ️</InfoIcon>
             </BarContainer>
-            <BarWrapper>
-              <Bar width={`${averageChildFriendly * 20}%`} />
-            </BarWrapper>
+            {hoveredBar
+              ?
+              <BarWrapper>
+                <Bar width={`${averageChildFriendly * 20}%`} />
+              </BarWrapper>
+              :
+              <TooltipText>
+                높은 값일수록 가족과 잘 어울립니다.
+              </TooltipText>
+            }
           </BarSection>
           <BarSection>
             <BarContainer>
               <Emoji>🐕</Emoji>
               <Text>친화력</Text>
-              <InfoIcon $tooltip={`높은 값일수록 강아지가 다른 반려견들과 잘 어울립니다.`}>ℹ️</InfoIcon>
             </BarContainer>
-            <BarWrapper>
-              <Bar width={`${averageDogFriendly * 20}%`} />
-            </BarWrapper>
+            {hoveredBar
+              ?
+              <BarWrapper>
+                <Bar width={`${averageDogFriendly * 20}%`} />
+              </BarWrapper>
+              :
+              <TooltipText>
+                높은 값일수록 다른 반려견들과 잘 어울립니다.
+              </TooltipText>
+            }
           </BarSection>
           <BarSection>
             <BarContainer>
               <Emoji>🎓</Emoji>
               <Text>훈련 가능성</Text>
-              <InfoIcon $tooltip={`높은 값일수록 강아지를 훈련하기 쉽습니다.`}>ℹ️</InfoIcon>
             </BarContainer>
-            <BarWrapper>
-              <Bar width={`${averageTrainability * 20}%`} />
-            </BarWrapper>
+            {hoveredBar
+              ?
+              <BarWrapper>
+                <Bar width={`${averageTrainability * 20}%`} />
+              </BarWrapper>
+              :
+              <TooltipText>
+                높은 값일수록 훈련하기 쉽습니다.
+              </TooltipText>
+            }
           </BarSection>
           <BarSection>
             <BarContainer>
               <Emoji>⚡</Emoji>
               <Text>에너지 수준</Text>
-              <InfoIcon $tooltip={`높은 값일수록 강아지가 에너지가 넘칩니다.`}>ℹ️</InfoIcon>
             </BarContainer>
-            <BarWrapper>
-              <Bar width={`${averageEnergy * 20}%`} />
-            </BarWrapper>
+            {hoveredBar
+              ?
+              <BarWrapper>
+                <Bar width={`${averageEnergy * 20}%`} />
+              </BarWrapper>
+              :
+              <TooltipText>
+                높은 값일수록 에너지가 넘칩니다.
+              </TooltipText>
+            }
           </BarSection>
           <BarSection>
             <BarContainer>
               <Emoji>🪮</Emoji>
               <Text>털 관리 및 빠짐</Text>
-              <InfoIcon $tooltip={`높은 값일수록 강아지 털 관리가 필요합니다.`}>ℹ️</InfoIcon>
             </BarContainer>
-            <BarWrapper>
-              <Bar width={`${averageGroomingLevel * 20}%`} $reverse="true" />
-            </BarWrapper>
-          </BarSection>
-          <BarSection>
-            <BarContainer>
-              <Emoji>📏</Emoji>
-              <Text>크기: {breed.size}</Text>
-            </BarContainer>
+            {hoveredBar
+              ?
+              <BarWrapper>
+                <Bar width={`${averageGroomingLevel * 20}%`} $reverse="true" />
+              </BarWrapper>
+              :
+              <TooltipText>
+                높은 값일수록 털 관리가 필요합니다.
+              </TooltipText>
+            }
           </BarSection>
           {
             showContent &&
@@ -422,7 +512,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
                 <DetailButton
                   href={`/breeds/${breed.englishName.toLowerCase()}`}
                   onClick={handleDetailButtonClick}
-                  isLoading={isLoadingDetail}
+                  $isLoading={isLoadingDetail}
                 >
                   {isLoadingDetail ? '로딩 중...' : '자세한 정보'}
                 </DetailButton>
@@ -435,7 +525,7 @@ const DogCard = forwardRef<HTMLDivElement, DogCardProps>(({ breed, onClick }, re
       </CardContentTopLeft>
       {
         showContent ||
-        <CardContentBottomRight>
+        <CardContentBottomRight style={{ opacity: hovered ? 0 : 1 }}>
           <SingleLineText>
             {breed.koreanName}
             <span>({breed.englishName})</span>

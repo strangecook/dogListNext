@@ -5,7 +5,6 @@ export const DetailContainer = styled.div`
   max-width: 800px;
   margin: 80px auto 20px auto;
   padding: 20px;
-  font-family: 'Nanum Gothic', sans-serif;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

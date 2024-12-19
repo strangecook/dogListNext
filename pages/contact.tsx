@@ -10,7 +10,6 @@ const ContactContainer = styled.div`
   max-width: 800px;
   margin: 80px auto 20px auto; 
   padding: 20px;
-  font-family: 'Nanum Gothic', sans-serif;
   background-color: white;
 `;
 
